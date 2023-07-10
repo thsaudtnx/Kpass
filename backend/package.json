@@ -1,0 +1,50 @@
+{
+  "name": "kpass-backend",
+  "version": "0.0.1",
+  "description": "kpass 백엔드입니다",
+  "main": "app.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production PORT=80 pm2 start app.js -i 0",
+    "dev": "nodemon server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Myungsoo Son",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "color-hash": "^2.0.2",
+    "concurrently": "^8.2.0",
+    "connect-redis": "^7.1.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "csurf": "^1.11.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "helmet": "^7.0.0",
+    "hpp": "^0.2.3",
+    "http-proxy-middleware": "^2.0.6",
+    "jsonwebtoken": "^9.0.1",
+    "mongoose": "^7.3.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.4.0",
+    "nunjucks": "^3.2.4",
+    "passport": "^0.6.0",
+    "passport-kakao": "^1.0.1",
+    "passport-local": "^1.0.0",
+    "pm2": "^5.3.0",
+    "redis": "^4.6.7",
+    "sanitize-html": "^2.11.0",
+    "sequelize": "^6.32.1",
+    "sequelize-cli": "^6.6.1",
+    "uuid4": "^2.0.3",
+    "winston": "^3.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
+  }
+}

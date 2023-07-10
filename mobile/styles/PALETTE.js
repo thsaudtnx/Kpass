@@ -1,0 +1,16 @@
+const PALETTE = {
+  PURPLE : '#6200EE',
+  DARK_PURPLE : '#3700B3',
+  LIGHT_PURPLE : '#BB86FC',
+  BORDER : '#D3D3D3',
+  GRAY : '#C0C0C0',
+  WHITE : '#FFFFFF',
+  BLACK : '#000000',
+  BLUE : '#3498db',
+  RED : '#E74C3C',
+  WHATSAPP_GREEN : '#075E54',
+  LOCATION_RED : '#960A0A',
+  BACKGROUND : '#E6E6FA',
+}
+
+export default PALETTE;
