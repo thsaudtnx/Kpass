@@ -46,7 +46,7 @@ export function ManageContextProvider({children}){
         .catch(err => {
           console.error(err);
         })
-  }, [pageNum, pageSize, field, inputText, sortBy, deletedData, data]);
+  }, [pageNum, pageSize, field, inputText, sortBy, deletedData, data, isUpdated]);
 
   useEffect(() => {
     if (isUpdated) setIsUpdated(false);

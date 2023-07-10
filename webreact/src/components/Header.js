@@ -8,7 +8,7 @@ import { LogContext } from "../contexts/LogContext";
 const Header = () => {
   const isMobile = useMediaQuery({query: '(max-width: 765px)'});
   const navigate = useNavigate();
-  const {server, setIsLoggedIn} = useContext(LogContext);
+  const {server} = useContext(LogContext);
 
   return (
     <div 
@@ -40,8 +40,7 @@ const Header = () => {
               await axios.post(`${server}/auth/logout`)
                 .then(res => {
                   console.log(res.data);
-                  setIsLoggedIn(false);
-                  navigate('/');
+                  if (res.data.ok) navigate('/');
                 })
                 .catch(error => {
                   console.error(error);

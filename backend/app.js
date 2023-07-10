@@ -7,7 +7,6 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const helmet = require('helmet');
 const hpp = require('hpp');
-const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -19,11 +18,8 @@ const logger = require('./logger');
 const app = express();
 passportConfig();
 app.set('port', process.env.PORT || 5000);
-app.set('view engine', 'html');
-nunjucks.configure('views', {
-  express : app,
-  watch : true,
-});
+
+
 sequelize.sync({force : false})
   .then(() => {
     console.log('sequelize 연결 성공');

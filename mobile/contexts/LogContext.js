@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import * as Location from "expo-location";
 
 export const LogContext = createContext();
-const server = 'http://192.168.0.126:5000'; //이 값은 맨날 바뀌니깐 확인 필요
+const server = 'http://192.168.0.105:5000'; //이 값은 맨날 바뀌니깐 확인 필요
 
 export function LogContextProvider({children}){
   const [position, setPosition] = useState({latitude : null, longitude : null,});

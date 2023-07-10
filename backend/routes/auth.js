@@ -109,9 +109,11 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
  *                      type: boolean
  */
 router.post('/logout', isLoggedIn, (req, res, next) => {
-  req.logout();
-  req.session.destroy();
-  res.json({logout : true});
+  req.logout(error => {
+    if (error) next(error);
+    req.session.destroy();
+    res.status(200).json({ok : 1, message : "로그아웃 성공"});
+  });
 });
 
 

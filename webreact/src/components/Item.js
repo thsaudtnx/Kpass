@@ -6,11 +6,13 @@ import { useContext } from "react";
 import { LogContext } from "../contexts/LogContext";
 import { useMediaQuery } from "react-responsive";
 import { useCallback } from "react";
+import { ManageContext } from "../contexts/ManageContext";
 
 
 const Item = ({data}) => {
   const isMobile = useMediaQuery({query: '(max-width: 765px)'});
   const {server} = useContext(LogContext);
+  const {setIsUpdated} = useContext(ManageContext);
   const [editModal, setEditModal] = useState(false);
   const [hover, setHover] = useState();
   const [showDetail, setShowDetail] = useState(false);
@@ -162,7 +164,7 @@ const Item = ({data}) => {
             justifyContent : 'center',
             cursor : 'pointer',
             border : '1px solid grey',}}
-            onClick={() => deleteItem()}>
+            onClick={() => {deleteItem();setIsUpdated(true);}}>
             삭제하기
           </div>
         </div>}
