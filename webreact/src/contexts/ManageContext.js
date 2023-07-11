@@ -1,19 +1,17 @@
 import React from "react";
 import { createContext, useState ,useEffect } from "react";
 import axios from 'axios';
-import { LogContext } from "./LogContext";
-import { useContext } from "react";
 import { useCallback } from "react";
+import {server} from '../lib/serverURL';
 
 export const ManageContext = createContext();
 
 export function ManageContextProvider({children}){
-  const {server} = useContext(LogContext);
 
-  const [isUpdated, setIsUpdated] = useState(false);
+  const [isUpdated, setIsUpdated] = useState(0);
   const [inputText, setInputText] = useState();
-  const [field, setField] = useState('전체');
-  const [sortBy, setSortBy] = useState('전체');
+  const [field, setField] = useState('ALL');
+  const [sortBy, setSortBy] = useState('ALL');
   const [deletedData, setDeletedData] = useState(false);
   const [data, setData] = useState();
   const [pageNum, setPageNum] = useState(0);
@@ -22,7 +20,8 @@ export function ManageContextProvider({children}){
   const [addModal, setAddModal] = useState(false);
 
   const getData = useCallback(async () => {
-    console.log(`pageNum : ${pageNum} \npageSize : ${pageSize} \nfield : ${field} \ninputText : ${inputText} \nsortBy : ${sortBy} \ndeletedData : ${deletedData}`);
+    console.log(`isUpdated : ${isUpdated} \nhasMore : ${hasMore}
+    \npageNum : ${pageNum} \npageSize : ${pageSize} \nfield : ${field} \ninputText : ${inputText} \nsortBy : ${sortBy} \ndeletedData : ${deletedData}`);
       await axios.get(`${server}/business/list`, {
         params : {
           pageNum : pageNum,
@@ -34,13 +33,14 @@ export function ManageContextProvider({children}){
         }
       })
         .then(res => {
-          if (res.data.length < pageSize){
-            setHasMore(false);
-            setPageNum(0);
-          } else setPageNum(pageNum + 1);
+          if (pageNum===0) setData(res.data)
+          else setData([...data, ...res.data])
 
-          if (pageNum===0) setData(res.data);
-          else setData([...data, ...res.data]);
+          if (res.data.length < pageSize) setHasMore(false)
+          else {
+            setPageNum(pageNum + 1); 
+            if (!hasMore) setHasMore(true)
+          }
           console.log(res.data);
         })
         .catch(err => {
@@ -49,7 +49,6 @@ export function ManageContextProvider({children}){
   }, [pageNum, pageSize, field, inputText, sortBy, deletedData, data, isUpdated]);
 
   useEffect(() => {
-    if (isUpdated) setIsUpdated(false);
     getData();
   }, [isUpdated])
 
@@ -71,8 +70,10 @@ export function ManageContextProvider({children}){
       setAddModal,
       data,
       setData,
+      getData,
       deletedData,
       setDeletedData,
+      isUpdated,
       setIsUpdated,}}>
       {children}
     </ManageContext.Provider>

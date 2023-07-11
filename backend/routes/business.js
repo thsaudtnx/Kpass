@@ -8,8 +8,7 @@ const router = express.Router();
  * @swagger
  * /business/list:
  *  get:
- *    summary: "업체 특정 분류로 조회"
- *    description: "요청 경로에 값을 담아 서버에 보낸다."
+ *    description: "GET business data with options"
  *    tags: [business]
  *    parameters:
  *      - in: query
@@ -44,7 +43,6 @@ const router = express.Router();
  *          type: string
  *    responses:
  *      "200":
- *        description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (업체 조회)
  *        content:
  *          application/json:
  *            schema:
@@ -52,38 +50,27 @@ const router = express.Router();
  *              properties:
  *                ok : 
  *                  type: integer
- *                  description: "response 코드"
  *                data : 
  *                  type : object
- *                  description : "불러온 데이터"
  *                  properties:
  *                    logo:
  *                      type: string
- *                      description: "로고"
  *                    name:
  *                      type: string
- *                      description: "업체명"
  *                    type:
  *                      type: string
- *                      description : "업종"
  *                    phone:
  *                      type: string
- *                      description: "전화번호"
  *                    address:
  *                      type: string
- *                      description: "주소"
  *                    latitude:
  *                      type: number
- *                      description : "위도"
  *                    longitude:
  *                      type: number
- *                      description: 경도"
  *                    kpass:
  *                      type: integer
- *                      description : "kpass 할인률"
  *                    travelwallet:
  *                      type: integer
- *                      description : "travelwallet 할인률"
  */
 router.get('/list', async (req, res, next) => {
   const {pageNum, pageSize, field, inputText, sortBy, deletedData} = req.query;
@@ -91,16 +78,16 @@ router.get('/list', async (req, res, next) => {
   const Op = Sequelize.Op;
   let where = {};
   let order = [];
-  if (field!=='전체') where['type'] = field;
+  if (field!=='ALL') where['type'] = field;
   if (inputText) where['name'] = {[Op.like]: `%${inputText}%`};
   switch(sortBy){
-    case '전체':
+    case 'ALL':
       order = ['id', 'ASC'];
       break;
-    case 'kpass 순':
+    case 'KPASS':
       order = ['kpass', 'DESC'];
       break;
-    case 'travelwallet 순':
+    case 'TRAVELWALLET':
       order = ['travelwallet', 'DESC'];
       break;
     default :
@@ -130,11 +117,9 @@ router.get('/list', async (req, res, next) => {
  *
  * /business/add:
  *  post:
- *    summary: "업체 등록"
- *    description: "신규 업체를 등록한다."
+ *    description: "ADD new business data"
  *    tags: [business]
  *    requestBody:
- *      description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다.
  *      required: true
  *      content:
  *        application/json:
@@ -143,34 +128,24 @@ router.get('/list', async (req, res, next) => {
  *            properties:
  *              logo:
  *                type: string
- *                description: "로고"
  *              name:
  *                type: string
- *                description: "업체명"
  *              type:
  *                type: string
- *                description : "업종"
  *              phone:
  *                type: string
- *                description: "전화번호"
  *              address:
  *                type: string
- *                description: "주소"
  *              latitude:
  *                type: number
- *                description : "위도"
  *              longitude:
  *                type: number
- *                description: 경도"
  *              kpass:
  *                type: integer
- *                description : "kpass 할인률"
  *              travelwallet:
  *                type: integer
- *                description : "travelwallet 할인률"
  *    responses:
  *      "200":
- *        description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (업체 등록)
  *        content:
  *          application/json:
  *            schema:
@@ -195,7 +170,7 @@ router.post('/add', async (req, res, next) => {
         kpass : req.body.kpass,
         travelwallet : req.body.travelwallet,
       });
-      res.send({message : '추가 되었습니다.'})
+      res.status(200).json({ok : 1, message : 'INSERT SUCCESS'})
     } catch(err) {
     console.error(err);
     next(err);
@@ -206,8 +181,7 @@ router.post('/add', async (req, res, next) => {
  * @swagger
  * /business/delete/:id:
  *   delete:
- *    summary: "특정 업체 삭제"
- *    description: "요청 경로에 값을 담아 서버에 보낸다."
+ *    description: "Delete specific business data"
  *    tags: [business]
  *    parameters:
  *      - in: path
@@ -217,7 +191,6 @@ router.post('/add', async (req, res, next) => {
  *          type: string
  *    responses:
  *      "200":
- *        description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (유저 삭제)
  *        content:
  *          application/json:
  *            schema:
@@ -228,7 +201,6 @@ router.post('/add', async (req, res, next) => {
  *                  example : 1
  *                message:
  *                  type: string
- *                  example : "1번이 삭제되었습니다."
  */
 router.delete('/delete/:id', async (req, res, next) => {
   console.log(req.params);
@@ -238,7 +210,7 @@ router.delete('/delete/:id', async (req, res, next) => {
           id : req.params.id
         }
       });
-      res.send({message : `${req.params.id}번이 삭제되었습니다`});
+      res.status(200).json({ok : 1, message : `ID :${req.params.id} DELETED SUCCESS`});
     } catch(err) {
     console.error(err);
     next(err);
@@ -249,8 +221,7 @@ router.delete('/delete/:id', async (req, res, next) => {
  * @swagger
  * /business/edit/:id:
  *   patch:
- *    summary: "특정 업체 수정"
- *    description: "요청 경로에 값을 담아 서버에 보낸다."
+ *    description: "Update specific business data"
  *    tags: [business]
  *    parameters:
  *      - in: path
@@ -259,7 +230,6 @@ router.delete('/delete/:id', async (req, res, next) => {
  *        schema:
  *          type: string
  *    requestBody:
- *      description: 유저 수정 항목
  *      required: true
  *      content:
  *        application/json:
@@ -268,34 +238,24 @@ router.delete('/delete/:id', async (req, res, next) => {
  *            properties:
  *              logo:
  *                type: string
- *                description: "로고"
  *              name:
  *                type: string
- *                description: "업체명"
  *              type:
  *                type: string
- *                description : "업종"
  *              phone:
  *                type: string
- *                description: "전화번호"
  *              address:
  *                type: string
- *                description: "주소"
  *              latitude:
  *                type: number
- *                description : "위도"
  *              longitude:
  *                type: number
- *                description: 경도"
  *              kpass:
  *                type: integer
- *                description : "kpass 할인률"
  *              travelwallet:
  *                type: integer
- *                description : "travelwallet 할인률"
  *    responses:
  *      "200":
- *        description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다.(유저 수정)
  *        content:
  *          application/json:
  *            schema:
@@ -303,27 +263,16 @@ router.delete('/delete/:id', async (req, res, next) => {
  *              properties:
  *                ok:
  *                  type: integer
- *                  example : 1
  *                message:
  *                  type: string
- *                  example : "1번이 수정되었습니다."
  */
 router.patch ('/edit/:id', async (req, res, next) => {
   try {
-      const result = await Business.update({
-        logo : req.body.logo,
-        name : req.body.name,
-        type : req.body.type,
-        phone : req.body.phone,
-        address : req.body.address,
-        latitude : req.body.latitude,
-        longitude : req.body.longitude,
-        kpass : req.body.kpass,
-        travelwallet : req.body.travelwallet,
-      }, {
+      const result = await Business.update(req.body, {
         where : {id : req.params.id}
-      }); 
-      res.send({message : `${req.params.id}번이 수정되었습니다.`});
+      });
+      console.log(result.data);
+      res.status(200).json({ok : 1, message : `ID ${req.params.id} UPDATED SUCCESS`});
     } catch(err) {
     console.error(err);
     next(err);
@@ -331,8 +280,7 @@ router.patch ('/edit/:id', async (req, res, next) => {
 });
 
 
-//여기서부터는 이미지 다루는 라우터
-//이미지는 삭제, 추가, 수정 구현하기 business table과 id 동일시
+//Using Multer to add and delete image file
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
@@ -340,7 +288,7 @@ const path = require('path');
 try {
   fs.readdirSync('upload');
 } catch (error){
-  console.error('upload 폴더가 없어 upload 폴더를 생성합니다.');
+  console.error('There is no upload folder so creating a upload folder');
   fs.mkdirSync('upload');
 }
 
@@ -357,7 +305,7 @@ const upload = multer({
   }),
   limits : {fileSize : 5 * 1024 * 1024},
 });
-router.use('/upload', express.static('upload')); //파일에 접근하기 디렉토리 경로 설정
+router.use('/upload', express.static('upload')); //set directory path to access the file
 
 
 /**
@@ -365,15 +313,12 @@ router.use('/upload', express.static('upload')); //파일에 접근하기 디렉
  *
  * /business/upload:
  *  post:
- *    summary: "로고 업로드"
- *    description: "multer 이용한 로고 업로드"
+ *    description: "Uploda logo image using multer"
  *    tags: [business]
  *    requestBody:
- *      description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다.
  *      required: false
  *    responses:
  *      "200":
- *        description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다.
  *        content:
  *          application/json:
  *            schema:
@@ -381,7 +326,6 @@ router.use('/upload', express.static('upload')); //파일에 접근하기 디렉
  *              properties:
  *                ok:
  *                  type: integer
- *                  example : 1
  *                filepath:
  *                  type: string
  *              
@@ -399,8 +343,7 @@ router.post('/upload', upload.single('file'), (req, res, next) => {
  * @swagger
  * /business/upload/:filepath:
  *   delete:
- *    summary: "로고 삭제"
- *    description: "multer을 이용한 로고 삭제"
+ *    description: "Delete logo image using multer"
  *    tags: [business]
  *    parameters:
  *      - in: path
@@ -410,7 +353,6 @@ router.post('/upload', upload.single('file'), (req, res, next) => {
  *          type: string
  *    responses:
  *      "200":
- *        description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (유저 수정)
  *        content:
  *          application/json:
  *            schema:
@@ -418,16 +360,14 @@ router.post('/upload', upload.single('file'), (req, res, next) => {
  *              properties:
  *                ok:
  *                  type: integer
- *                  example: 1
  *                message:
  *                  type: string
- *                  example: "이미지가 삭제되었습니다"
  */
 router.delete('/upload/:filepath', async (req, res, next) => {
   if (fs.existsSync('upload/' + req.params.filepath)){
     try {
       fs.unlinkSync('upload/' + req.params.filepath);
-      res.json({message : '이미지가 삭제되었습니다'});
+      res.json({message : 'IMAGE DELETED SUCCESS'});
     } catch(error){
       console.error(error);
     }

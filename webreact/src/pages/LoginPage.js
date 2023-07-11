@@ -4,25 +4,17 @@ import { useContext } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { LogContext } from "../contexts/LogContext";
+import {server} from '../lib/serverURL';
 
 const LoginPage = () => {
-  const {server, checkAuth} = useContext(LogContext);
+  const {isLoggedIn, setIsLoggedIn} = useContext(LogContext);
   const navigate = useNavigate();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
-  /* useEffect(() => {
-    (async()=>{
-      await axios.get(`${server}/auth/authentication`,  { withCredentials: true })
-        .then(res => {
-          console.log(res.data);
-          if (res.data.authenticated) navigate('/manage');
-        })
-        .catch(err => {
-          console.log(err);
-        })
-    })()
-  }, []); */
+  useEffect(() => {
+    if (isLoggedIn) navigate('/manage');
+  }, []);
 
   return (
     <div style={{background : '#e1e1e1', width : '100vw', height : '100vh'}}>
@@ -39,7 +31,7 @@ const LoginPage = () => {
         alignItems : 'center',
         display : 'flex',
         flexDirection : 'column'}}>
-        <div style={{fontSize : '20px', fontWeight : 'bold', marginBottom : '80px'}}>관리자 로그인</div>
+        <div style={{fontSize : '20px', fontWeight : 'bold', marginBottom : '80px'}}>LOGIN</div>
         <div className="local" 
           style={{display : 'flex', flexDirection : 'column'}}>
           <input 
@@ -90,14 +82,15 @@ const LoginPage = () => {
                 }, { withCredentials: true});
                 if (result.data.login){
                   console.log(result.data);
-                  window.alert('로그인 성공');
+                  window.alert('LOGIN SUCCESS');
+                  setIsLoggedIn(true);
                   navigate('/manage');
                 } else {
-                  window.alert('가입된 회원정보가 없습니다.');
+                  window.alert('NOT REGISTERED');
                 }
-              } else window.alert('빈 칸이 있습니다!');
+              } else window.alert('THERE IS AN EMPTY SECTION');
             }}>
-            로그인
+            LOGIN
           </div>
         </div>
       </div>

@@ -4,11 +4,12 @@ import { useMediaQuery } from "react-responsive";
 import axios from 'axios';
 import { useContext } from "react";
 import { LogContext } from "../contexts/LogContext";
+import {server} from '../lib/serverURL';
 
 const Header = () => {
   const isMobile = useMediaQuery({query: '(max-width: 765px)'});
   const navigate = useNavigate();
-  const {server} = useContext(LogContext);
+  const {setIsLoggedIn} = useContext(LogContext);
 
   return (
     <div 
@@ -23,7 +24,7 @@ const Header = () => {
         padding : isMobile ? '10px' : '20px',
         fontSize : '20px', 
         fontWeight : 'bold',}}>
-        KPASS 관리자 
+        KPASS MANAGER PAGE 
       </div>
       <div className="right"
         style={{
@@ -36,18 +37,21 @@ const Header = () => {
           cursor : 'pointer',
           padding : '10px',}}
           onClick={async () => {
-            if (window.confirm('정말로 로그아웃 하시겠습니까?')){
+            if (window.confirm('ARE YOU GOING TO LOGOUT?')){
               await axios.post(`${server}/auth/logout`)
                 .then(res => {
                   console.log(res.data);
-                  if (res.data.ok) navigate('/');
+                  if (res.data.ok) {
+                    navigate('/');
+                    setIsLoggedIn(false);
+                  }
                 })
                 .catch(error => {
                   console.error(error);
                 })
             }
           }}>
-            로그아웃
+            LOGOUT
         </div>
       </div>
     </div>

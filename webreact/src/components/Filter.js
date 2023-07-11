@@ -2,13 +2,11 @@ import React, { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import AddModal from "../components/AddModal";
 import { ManageContext } from "../contexts/ManageContext";
-import { useDispatch, useSelector } from "react-redux";
-import { useCallback } from "react";
-import { changeField, changeInput, changeSortBy, checkDelete, setIsUpdated } from "../modules/filter";
 
 const Filter = () => {
   const isMobile = useMediaQuery({query: '(max-width: 765px)'});
   const {
+    setPageNum,
     field, 
     setField, 
     inputText, 
@@ -18,6 +16,7 @@ const Filter = () => {
     sortBy, 
     setSortBy, 
     setAddModal, 
+    isUpdated,
     setIsUpdated,
   } = useContext(ManageContext);
 
@@ -42,14 +41,14 @@ const Filter = () => {
           cursor : 'pointer',
           width : isMobile ? '100px' : '150px',}}
           value={field}
-          onChange={e => {setField(e.target.value);setIsUpdated(true);}}>
-          {['전체', '요식업', '유통', '미용', '공공기관', '기타']
+          onChange={e => {setField(e.target.value);setPageNum(0);setIsUpdated(isUpdated + 1);}}>
+          {['ALL', 'FOOD', 'TRANSPORT', 'HEALTH', 'ETC']
             .map((element, index) => <option key={index} value={element}>{element}</option>)
           }
         </select>
         <input 
           type='text' 
-          placeholder='업체명으로 검색해주세요.'
+          placeholder='SEARCH BY NAME'
           value={inputText}
           onChange={e => setInputText(e.target.value)}
           style={{
@@ -62,7 +61,7 @@ const Filter = () => {
           }}
         />
         <button
-          onClick={() => setIsUpdated(true)}
+          onClick={() => {setPageNum(0);setIsUpdated(isUpdated + 1);}}
           style={{
             cursor : 'pointer',
             marginRight : isMobile ? 0 : 20,
@@ -71,16 +70,16 @@ const Filter = () => {
             whiteSpace : 'nowrap',
             marginLeft : isMobile ? 10 : 0,
           }}>
-          검색
+          SEARCH
         </button>
         {!isMobile && <div style={{display : 'flex', flexDirection : 'row', alignItems : 'center'}}>
           <input 
             type="checkbox"
             value={deletedData}
-            onChange={() => {setDeletedData(!deletedData);setIsUpdated(true);}}
+            onChange={() => {setDeletedData(!deletedData);setPageNum(0);setIsUpdated(isUpdated + 1);}}
             style={{width : 14, height : 14}}
           />
-          <div style={{fontSize : 14, color : 'gray'}}>삭제된 항목</div>
+          <div style={{fontSize : 14, color : 'gray'}}>DELETED DATA</div>
         </div>}
       </div>
       <div className="right" style={{display : 'flex', flexDirection : 'row', alignItems : 'center'}}>
@@ -88,10 +87,10 @@ const Filter = () => {
           <input 
             type="checkbox"
             value={deletedData}
-            onChange={() => {setDeletedData(!deletedData);setIsUpdated(true);}}
+            onChange={() => {setDeletedData(!deletedData);setPageNum(0);setIsUpdated(isUpdated + 1);}}
             style={{width : 14, height : 14}}
           />
-          <div style={{fontSize : 14, color : 'gray'}}>삭제된 항목</div>
+          <div style={{fontSize : 14, color : 'gray'}}>DELETED DATA</div>
         </div>}
         <select style={{
           padding : '10px',
@@ -99,8 +98,8 @@ const Filter = () => {
           marginRight : '10px',
           cursor : 'pointer',}}
           value={sortBy}
-          onChange={ e => {setSortBy(e.target.value);setIsUpdated(true)}}>
-          {['전체', 'kpass 순', 'travelwallet 순']
+          onChange={ e => {setSortBy(e.target.value);setPageNum(0);setIsUpdated(isUpdated + 1);}}>
+          {['ALL', 'KPASS', 'TRAVELWALLET']
             .map((element, index) => <option key={index} value={element}>{element}</option>)
           }
         </select>
@@ -114,7 +113,7 @@ const Filter = () => {
           cursor : 'pointer',
           marginRight : isMobile ? '0px' : '50px'}}
           onClick={() => setAddModal(true)}>
-          추가하기
+          ADD
         </div>
       </div>
 

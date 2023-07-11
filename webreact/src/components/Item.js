@@ -3,28 +3,28 @@ import EditModal from './EditModal';
 import axios from "axios";
 import {IoMdArrowDropdown, IoMdArrowDropup} from 'react-icons/io';
 import { useContext } from "react";
-import { LogContext } from "../contexts/LogContext";
 import { useMediaQuery } from "react-responsive";
 import { useCallback } from "react";
 import { ManageContext } from "../contexts/ManageContext";
-
+import {server} from '../lib/serverURL';
 
 const Item = ({data}) => {
   const isMobile = useMediaQuery({query: '(max-width: 765px)'});
-  const {server} = useContext(LogContext);
-  const {setIsUpdated} = useContext(ManageContext);
+  const {isUpdated, setIsUpdated, setPageNum} = useContext(ManageContext);
   const [editModal, setEditModal] = useState(false);
   const [hover, setHover] = useState();
   const [showDetail, setShowDetail] = useState(false);
 
   const deleteItem = useCallback(async () => {
-    if(window.confirm('정말 삭제하시겠습니까?')){
+    if(window.confirm('DO YOU WANT TO DELETE?')){
       /* if (data.logo){
         const result = await axios.delete(`${data.logo}`);
         console.log(result.data);
       } */
       const deleteResult = await axios.delete(`${server}/business/delete/${data.id}`);
       console.log(deleteResult.data);
+      setPageNum(0);
+      setIsUpdated(isUpdated+1);
     }
   }, [data.id]); 
 
@@ -43,14 +43,14 @@ const Item = ({data}) => {
       onMouseOver={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
         {!isMobile && <div>{data.id}</div>}
-        {data.logo ? <img src={data.logo} style={{width : '50px', height : '50px', objectFit : 'contain'}}></img> : <div>로고 없음</div>}
+        {data.logo ? <img src={data.logo} style={{width : '50px', height : '50px', objectFit : 'contain'}}></img> : <div>NO LOGO</div>}
         <div style={{
           textDecoration : (isMobile && !!!!data.deletedAt) ? 'line-through' : 'none',
         }}>{data.name}</div>
         {!isMobile && <div>{data.type}</div>}
         <div>{data.kpass}%</div>
         <div>{data.travelwallet}%</div>
-        {(!isMobile && !!data.deletedAt) && <div style={{fontSize : '14px', color : 'darkred', padding : 10}}>삭제됨</div>}
+        {(!isMobile && !!data.deletedAt) && <div style={{fontSize : '14px', color : 'darkred', padding : 10}}>DELETED</div>}
         {showDetail ? 
         <IoMdArrowDropup style={{width : '25px', height : '25px', cursor : 'pointer'}} onClick={() => setShowDetail(!showDetail)}/> : 
         <IoMdArrowDropdown style={{width : '25px', height : '25px', cursor : 'pointer'}} onClick={() => setShowDetail(!showDetail)}/>}
@@ -76,7 +76,7 @@ const Item = ({data}) => {
             borderRadius : '15px',
             background : '#f1f1f1',
             padding : isMobile ? '5px 10px' : '10px 15px',
-            display : 'flex',}}>업종</div>
+            display : 'flex',}}>TYPE</div>
           <div>{data.type}</div>
         </div>}
         <div className="phone" 
@@ -90,7 +90,7 @@ const Item = ({data}) => {
             borderRadius : '15px',
             background : '#f1f1f1',
             padding : isMobile ? '5px 10px' : '10px 15px',
-            display : 'flex',}}>전화번호</div>
+            display : 'flex',}}>PHONE</div>
           <div>{data.phone}</div>
         </div>
         <div className="address" 
@@ -105,7 +105,7 @@ const Item = ({data}) => {
             background : '#f1f1f1',
             padding : isMobile ? '5px 10px' : '10px 15px',
             whiteSpace : 'nowrap',
-            display : 'flex',}}>주소</div>
+            display : 'flex',}}>ADDRESS</div>
           <div>{data.address}</div>
         </div>
         <div className="latitude" 
@@ -119,7 +119,7 @@ const Item = ({data}) => {
             borderRadius : '15px',
             background : '#f1f1f1',
             padding : isMobile ? '5px 10px' : '10px 15px',
-            display : 'flex',}}>위도</div>
+            display : 'flex',}}>LATITUDE</div>
           <div>{data.latitude}</div>
         </div>
         <div className="longitude" 
@@ -133,7 +133,7 @@ const Item = ({data}) => {
             borderRadius : '15px',
             background : '#f1f1f1',
             padding : isMobile ? '5px 10px' : '10px 15px',
-            display : 'flex',}}>경도</div>
+            display : 'flex',}}>LONGITUDE</div>
           <div>{data.longitude}</div>
         </div>
         {!data.deletedAt && 
@@ -154,7 +154,7 @@ const Item = ({data}) => {
             border : '1px solid grey',
             marginRight : '10px'}}
             onClick={() => setEditModal(true)}>
-            수정하기
+            UPDATE
           </div>
           <div style={{
             display : 'flex',
@@ -164,8 +164,8 @@ const Item = ({data}) => {
             justifyContent : 'center',
             cursor : 'pointer',
             border : '1px solid grey',}}
-            onClick={() => {deleteItem();setIsUpdated(true);}}>
-            삭제하기
+            onClick={() => deleteItem()}>
+            DELETE
           </div>
         </div>}
       </div>}

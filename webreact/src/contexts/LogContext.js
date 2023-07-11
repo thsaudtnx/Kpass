@@ -1,24 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { createContext} from "react";
 import axios from 'axios';
-import { useMemo } from "react";
 import { useCallback } from "react";
+import {server} from '../lib/serverURL';
 
 export const LogContext = createContext();
 
 export function LogContextProvider({children}){
-  const server = useMemo(() => 'http://127.0.0.1:5000', []); //server value change
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   
   const checkAuth = useCallback(async () => {
     const result = await axios.get(`${server}/auth/authentication`,  { withCredentials: true });
+    setIsLoggedIn(result.data.authenticated);
     console.log(result.data);
-    return result.data;
   }, []);
 
   return (
     <LogContext.Provider value={{
       server,
-      checkAuth,}}>
+      checkAuth,
+      isLoggedIn,
+      setIsLoggedIn}}>
       {children}
     </LogContext.Provider>
   );

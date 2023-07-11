@@ -19,23 +19,24 @@ const ItemList = () => {
         margin : isMobile ? '0px' : '0px 20px',
         fontSize : '12px',}}>
         { isMobile ?
-          ['로고', '업체명', 'K.P', 'T.W'].map((element, index) => <div key={index}>{element}</div>)
+          ['LOGO', 'NAME', 'K.P', 'T.W'].map((element, index) => <div key={index}>{element}</div>)
           :
-          ['id', '로고', '업체명', '업종', 'KPASS', 'TRAVELWALLET'].map((element, index) => <div key={index}>{element}</div>)
+          ['ID', 'LOGO', 'NAME', 'TYPE', 'KPASS', 'TRAVELWALLET'].map((element, index) => <div key={index}>{element}</div>)
         }
       </div>
       <InfiniteScroll
         className="content"
         style={{padding : 10}}
-        dataLength={data?.length || 0}
+        dataLength={data ? data.length : 0}
         next={() => getData()}
         hasMore={hasMore}
-        loader={<div>Loading...</div>}
+        loader={<div style={{width : '100%', padding : 20, fontSize : 14, fontWeight : 'bold', color : 'gray'}}>Loading...</div>}
         endMessage={
-          <div style={{textAlign : 'center', paddingTop : '20px', fontSize : '14px', color : 'gray', fontWeight : 'bold'}}>
-            <div>더 이상 데이터가 없습니다.</div>
-          </div>
-        }>
+          <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
         {data?.map((element, index)=> <Item key={index} data={element}/>)}
       </InfiniteScroll>
     </div>

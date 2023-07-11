@@ -8,12 +8,10 @@ const router = express.Router();
  * @swagger
  *  /mobile:
  *    get:
- *      summary: "업체 데이터 전체조회"
- *      description: "서버에 데이터를 보내지 않고 Get방식으로 요청"
+ *      description: "GET all business data"
  *      tags: [mobile]
  *      responses:
  *        "200":
- *          description: 전체 유저 정보
  *          content:
  *            application/json:
  *              schema:

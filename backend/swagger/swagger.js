@@ -7,7 +7,7 @@ const options = {
     info : {
       version : "0.0.1",
       title : "KPASS",
-      description : "모바일, 관리자 웹을 위한 Kpass API"
+      description : "Kpass API for manager web and user mobile"
     },
     servers : [
       {

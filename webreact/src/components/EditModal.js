@@ -4,43 +4,27 @@ import {AiOutlineClose} from 'react-icons/ai';
 import axios from "axios";
 import GooglePlacesAutocomplete, {geocodeByAddress, getLatLng} from 'react-google-places-autocomplete';
 import { useContext } from "react";
-import { LogContext } from "../contexts/LogContext";
-import { useMemo } from "react";
 import { ManageContext } from "../contexts/ManageContext";
 import { useCallback } from "react";
+import {server} from '../lib/serverURL';
 
 const EditModal = ({editModal, setEditModal, data}) => {
-  const {server} = useContext(LogContext);
-  const {setIsUpdated} = useContext(ManageContext);
-  const initData = useMemo(() => {
-    return {
-      logo : null,
-      name : data.name,
-      type : data.type,
-      phone : data.phone,
-      address : data.address,
-      latitude : data.latitude,
-      longitude : data.longitude,
-      kpass : data.kpass,
-      travelwallet : data.travelwallet,
-    }
-  }, [data]);
+  const {isUpdated, setIsUpdated, setPageNum} = useContext(ManageContext);
   const [editedData, setEditedData] = useState({...data, logo : null});
   useEffect(() => {
-    // 모달 시 백그라운드 스크롤 불가
     if (editModal) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
   },[editModal]);
 
   const goBack = useCallback(async () => {
-    if (editedData===initData) setEditModal(false);
-    else if (window.confirm('해당 내용은 저장되지 않습니다. 그래도 나가시겠습니까?')) {
+    if (JSON.stringify(editedData)===JSON.stringify({...data, logo : null})) setEditModal(false);
+    else if (window.confirm('THE INFORMATION IS NOT SAVED. STILL WANT TO EXIT?')) {
       if (editedData.logo){
         const deleteResult = await axios.delete(`${editedData.logo}`);
         console.log(deleteResult.data);
       }
       setEditModal(false);
-      setEditedData(initData);
+      setEditedData({...data, logo : null});
     }
   }, [editedData]);
 
@@ -59,29 +43,31 @@ const EditModal = ({editModal, setEditModal, data}) => {
 
   const submitAll = useCallback(async () => {
     //빈칸이 있을때
-    if (!editedData.name || !editedData.type || !editedData.phone || !editedData.address || !editedData.kpass || !editedData.travelwallet){
-      window.alert('빈 칸이 있습니다.');
+    if (!editedData.name || !editedData.type || !editedData.phone || !editedData.address){
+      window.alert('THERE IS AN EMPTY SECTION');
     } 
     // 초기 상태와 똑같을때
-    else if (editedData===data) setEditModal(false);
+    else if (JSON.stringify({...editedData, logo : null})===JSON.stringify({...data, logo : null})) setEditModal(false);
     //무언가 바뀌었을때
-    else if(window.confirm('정말로 수정하시겠습니까?')){
-      //로고가 바뀌었을때 기존 로고 삭제
-      if (editedData.logo){
+    else if(window.confirm('DO YOU WANT TO EDIT?')){
+      if (editedData.logo){ //로고가 바뀌었을때 기존 로고 삭제
         const deleteResult = await axios.delete(`${data.logo}`);
         console.log(deleteResult.data);
-        setEditedData({...editedData, logo : data.logo});
-        const result =  await axios.patch(`${server}/business/edit/${data.id}`, editedData);
-        console.log(result.data);
       }
-      //로고는 바뀌지 않았을때
-      else {
-        const result =  await axios.patch(`${server}/business/edit/${data.id}`, {...editedData, logo : data.logo});
-        console.log(result.data);
+      let updateObject = {};
+      for (const key in editedData){
+        if (key==='logo') {
+          if (editedData[key]!==null)updateObject[key] = editedData[key]
+        }
+        else if (data[key]!==editedData[key]) updateObject[key] = editedData[key];
       }
-      setIsUpdated(true);
-      setEditedData(initData);
-      setEditModal(false);
+      console.log(updateObject);
+      const result =  await axios.patch(`${server}/business/edit/${data.id}`, updateObject);
+      console.log(result.data);
+      setPageNum(0);
+      setIsUpdated(isUpdated + 1);
+      setEditedData({...data, logo : null});
+      setEditModal(false); 
     }
   }, [editedData]);
 
@@ -124,7 +110,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
             alignItems : 'center',
             marginBottom : '30px',
           }}>
-            <div style={{fontSize : '20px', }}>업체 정보 수정</div>
+            <div style={{fontSize : '20px', }}>UPDATE BUSINESS</div>
             <div style={{cursor : 'pointer'}} onClick={() => goBack()}>
               <AiOutlineClose style={{width : '20px', height : '20px'}}/>
             </div>
@@ -137,7 +123,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
             {editedData.logo && <img src={editedData.logo} style={{width : '50px', height : '50px', objectFit : 'contain', marginRight : '30px'}}></img>}
             {!editedData.logo && data.logo && <img src={data.logo} style={{width : '50px', height : '50px', objectFit : 'contain', marginRight : '30px'}}></img>}
             <input type='file' name='file' style={{cursor : 'pointer'}}/>
-            <button type='submit' style={{cursor : 'pointer'}}>업로드</button>
+            <button type='submit' style={{cursor : 'pointer'}}>Upload</button>
           </form>
           <div 
             className="name" 
@@ -146,7 +132,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
               display : 'flex',
               alignItems : 'center',
               flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>업체명</div>
+            <div style={{width : '80px'}}>NAME</div>
             <input 
               value={editedData.name} 
               onChange={e => setEditedData({...editedData, name : e.target.value})} 
@@ -162,7 +148,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
               alignItems : 'center',
               flexDirection : 'row',
               }}>
-            <div style={{width : '80px'}}>업종</div>
+            <div style={{width : '80px'}}>TYPE</div>
             <select 
               value={editedData.type} 
               onChange={e => setEditedData({...editedData, type : e.target.value})} 
@@ -179,7 +165,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
             display : 'flex',
             alignItems : 'center',
             flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>휴대전화</div>
+            <div style={{width : '80px'}}>PHONE</div>
             <input 
               type="text"
               maxLength={20}
@@ -195,7 +181,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
             display : 'flex',
             alignItems : 'center',
             flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>주소</div>
+            <div style={{width : '80px'}}>ADDRESS</div>
             <GooglePlacesAutocomplete
               apiKey="AIzaSyCbw2mv0aLtttdNVl2hmkeZYVTo7nCHTZY"
               apiOptions={{ language: 'en', region: 'my' }}
@@ -287,7 +273,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
             padding : '10px',
             cursor : 'pointer',}}
             onClick={() => submitAll()}>
-            수정하기
+            CONFIRM
           </div>
           <div style={{
             position : 'absolute',
@@ -297,7 +283,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
             padding : '10px',
             cursor : 'pointer',}}
             onClick={() => goBack()}>
-            취소하기
+            CANCEL
           </div>
         </div>
       

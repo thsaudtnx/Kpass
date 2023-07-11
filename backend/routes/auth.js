@@ -11,12 +11,10 @@ const router = express.Router();
  * paths:
  *  /auth/authentication:
  *    get:
- *      summary: "관리자 인증"
- *      description: "서버에 데이터를 보내지 않고 GET요청"
+ *      description: "Check Authentication"
  *      tags: [auth]
  *      responses:
  *        "200":
- *          description: 인증 결과 확인
  *          content:
  *            application/json:
  *              schema:
@@ -36,11 +34,9 @@ router.get('/authentication', (req, res, next) => {
  *
  * /auth/login:
  *  post:
- *    summary: "관리자 로그인"
- *    description: "POST 방식으로 로그인 구현."
+ *    description: "Login using passport"
  *    tags: [auth]
  *    requestBody:
- *      description: username과 password
  *      required: true
  *      content:
  *        application/json:
@@ -49,13 +45,10 @@ router.get('/authentication', (req, res, next) => {
  *            properties:
  *              username:
  *                type: string
- *                description: "관리자 고유아이디"
  *              password:
  *                type: string
- *                description: "관리자 비밀번호"
  *    responses:
  *        "200":
- *          description: 로그인 결과 확인
  *          content:
  *            application/json:
  *              schema:
@@ -91,15 +84,12 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
  *
  * /auth/logout:
  *  post:
- *    summary: "관리자 로그아웃"
- *    description: "POST 방식으로 관리자 로그아웃"
+ *    description: "Logout using passport"
  *    tags: [auth]
  *    requestBody:
- *      description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. 
  *      required: false
  *    responses:
  *        "200":
- *          description: 로그아웃 결과 확인
  *          content:
  *            application/json:
  *              schema:
@@ -108,11 +98,11 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
  *                    logout:
  *                      type: boolean
  */
-router.post('/logout', isLoggedIn, (req, res, next) => {
+router.post('/logout', (req, res, next) => {
   req.logout(error => {
     if (error) next(error);
     req.session.destroy();
-    res.status(200).json({ok : 1, message : "로그아웃 성공"});
+    res.status(200).json({ok : 1, message : "LOGOUT SUCCESS"});
   });
 });
 

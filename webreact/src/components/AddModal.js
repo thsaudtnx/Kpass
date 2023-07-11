@@ -4,15 +4,13 @@ import {AiOutlineClose} from 'react-icons/ai';
 import axios from "axios";
 import GooglePlacesAutocomplete, {geocodeByAddress, getLatLng} from 'react-google-places-autocomplete';
 import { useContext } from "react";
-import { LogContext } from "../contexts/LogContext";
 import { ManageContext } from "../contexts/ManageContext";
 import { useCallback } from "react";
+import {server} from '../lib/serverURL';
 
 const AddModal = () => {
-  const {server} = useContext(LogContext);
-  const {setIsUpdated, addModal, setAddModal} = useContext(ManageContext);
+  const {setPageNum, isUpdated, setIsUpdated, addModal, setAddModal} = useContext(ManageContext);
   useEffect(() => {
-    // 모달 시 백그라운드 스크롤 불가
     if (addModal) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
   },[addModal]);
@@ -41,7 +39,7 @@ const AddModal = () => {
     }}, []);
   const goBack = useCallback(async () => {
     if (!newData.logo && !newData.name && !newData.type && !newData.phone && !newData.address && !newData.kpass && !newData.travelwallet) setAddModal(false);
-    else if (window.confirm('해당 내용은 저장되지 않습니다. 그래도 나가시겠습니까?')) {
+    else if (window.confirm('THE INFORMATION IS NOT SAVED. STILL WANT TO EXIT')) {
       if (!!newData.logo){
         const result = await axios.delete(`${newData.logo}`);
         console.log(result.data);
@@ -75,9 +73,9 @@ const AddModal = () => {
 
   const submitAll = useCallback(() => {
     if (!newData.name || !newData.type || !newData.phone || !newData.address) {
-      window.alert('빈 칸이 있으므로 추가 할 수 없습니다.');
+      window.alert('THERE IS AN EMPTY SECTION');
     }
-    else if (window.confirm('정말로 추가하시겠습니까?')){
+    else if (window.confirm('DO YOU WANT TO ADD?')){
       return axios.post(`${server}/business/add`, {
         logo : newData.logo,
         name : newData.name,
@@ -92,7 +90,8 @@ const AddModal = () => {
         .then(res => {
           console.log(newData);
           console.log(res.data.message);
-          setIsUpdated(true);
+          setPageNum(0);
+          setIsUpdated(isUpdated + 1);
           setNewData(initData);
           setAddModal(false);
         })
@@ -136,7 +135,7 @@ const AddModal = () => {
           justifyContent : 'space-between',
           alignItems : 'center',
           marginBottom : '30px',}}>
-          <div style={{fontSize : '20px', }}>업체 등록</div>
+          <div style={{fontSize : '20px', }}>REGISTER BUSINESS</div>
           <div style={{cursor : 'pointer'}} onClick={() => goBack()}>
             <AiOutlineClose />
           </div>
@@ -152,7 +151,7 @@ const AddModal = () => {
             {newData.logo ? <img src={newData.logo} style={{width : '50px', height : '50px', objectFit : 'contain', marginRight : '30px'}} /> : 
             <div style={{marginRight : '30px', width : '50px', height : '50px',}} />}
             <input type='file' name='file' style={{cursor : 'pointer'}}/>
-            <button type='submit' style={{cursor : 'pointer'}}>업로드</button>
+            <button type='submit' style={{cursor : 'pointer'}}>Upload</button>
           </form>
           <div 
             className="name" 
@@ -161,7 +160,7 @@ const AddModal = () => {
             display : 'flex',
             alignItems : 'center',
             flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>업체명</div>
+            <div style={{width : '80px'}}>NAME</div>
             <input 
               value={newData.name} 
               onChange={e => setNewData({...newData, name : e.target.value})} 
@@ -178,7 +177,7 @@ const AddModal = () => {
               alignItems : 'center',
               flexDirection : 'row',
               }}>
-            <div style={{width : '80px'}}>업종</div>
+            <div style={{width : '80px'}}>TYPE</div>
             <select 
               value={newData.type} 
               onChange={e => setNewData({...newData, type : e.target.value})} 
@@ -196,7 +195,7 @@ const AddModal = () => {
             display : 'flex',
             alignItems : 'center',
             flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>휴대전화</div>
+            <div style={{width : '80px'}}>PHONE</div>
             <input 
               type="text"
               maxLength={20}
@@ -213,7 +212,7 @@ const AddModal = () => {
             display : 'flex',
             alignItems : 'center',
             flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>주소</div>
+            <div style={{width : '80px'}}>ADDRESS</div>
             <GooglePlacesAutocomplete
               apiKey="AIzaSyCbw2mv0aLtttdNVl2hmkeZYVTo7nCHTZY"
               apiOptions={{ language: 'en', region: 'my' }}
@@ -307,7 +306,7 @@ const AddModal = () => {
             padding : '10px',
             cursor : 'pointer',}}
             onClick={() => submitAll()}>
-            추가하기
+            CONFIRM
           </div>
           <div style={{
             position : 'absolute',
@@ -317,7 +316,7 @@ const AddModal = () => {
             padding : '10px',
             cursor : 'pointer',}}
             onClick={() => goBack()}>
-            취소하기
+            CANCEL
           </div>
         </div>
     </Modal>

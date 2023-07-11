@@ -9,7 +9,7 @@ const router = express.Router();
  * @swagger
  * tags:
  *  name : business
- *  description : 관리자 업체 조회, 수정, 추가, 삭제
+ *  description : Fetch, Update, Insert, Delete business data
  */
 router.use('/business', businessRouter);
 
@@ -17,7 +17,7 @@ router.use('/business', businessRouter);
  * @swagger
  * tags:
  *  name : auth
- *  description : passport 이용한 로그인 인증
+ *  description : login authentication using passport
  */
 router.use('/auth', authRouter);
 
@@ -25,7 +25,7 @@ router.use('/auth', authRouter);
  * @swagger
  * tags:
  *  name : mobile
- *  description : 모바일 업체 조회
+ *  description : Retrieve business data for mobile environment
  */
 router.use('/mobile', mobileRouter);
 

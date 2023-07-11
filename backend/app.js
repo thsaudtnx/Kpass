@@ -49,6 +49,7 @@ const sessionOption = {
     httpOnly : true,
     secure : false,
     maxAge : 60 * 60 * 1000,
+    //sameSite: 'none',
   },
 };
 if (process.env.NODE_ENV === 'production'){
@@ -58,6 +59,7 @@ if (process.env.NODE_ENV === 'production'){
 app.use(session(sessionOption));
 app.use(cors({ 
   origin: 'http://localhost:3000',
+  methods: ["POST", "PUT", "GET", "DELETE", "PATCH", "OPTIONS", "HEAD"],
   credentials: true,
 }));
 app.use(passport.initialize()); //req 객체에 passport 설정을 심음
