@@ -36,18 +36,22 @@ const router = express.Router();
  *                  travelwallet:
  *                    type: integer
  */
+const { Op } = Sequelize;
 router.get('/', async (req, res, next) => {
-  console.log(req.query.updatedAt);
+  console.log(req.query);
   if (req.query.updatedAt){
     const result = await Business.findAll({
-      where : Sequelize.or({
-        //createdAt : {[Sequelize.Op.gt] : req.query.updatedAt},
-        updatedAt : {[Sequelize.Op.gt] : req.query.updatedAt},
-        deletedAt : {[Sequelize.Op.gt] : req.query.updatedAt},
-      })
+      paranoid : false,
+      where: {
+        [Op.or]: [
+          { createdAt: { [Op.gt]: req.query.updatedAt } },
+          { updatedAt: { [Op.gt]: req.query.updatedAt } },
+          { deletedAt: { [Op.gt]: req.query.updatedAt } }
+        ]
+      }
     });
-    console.log(result.data || 'no data');
-    res.send(result.data);
+    console.log(result);
+    res.send(result);
   } else {
     const result = await Business.findAll({});
     console.log(result);

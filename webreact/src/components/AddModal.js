@@ -186,7 +186,16 @@ const AddModal = () => {
               width : '150px',
               border : '1px solid lightGray',}}>
               <option value={null} defaultChecked>---</option>
-              {['food', 'finance', 'health'].map((element, index) => <option key={index} value={element}>{element}</option>)}
+              {[{label: 'RESTURANT', value: 'RESTURANT'},
+                {label: 'CAFE/BAKERY', value: 'CAFE/BAKERY'},
+                {label: 'MART/TRANSPORT', value: 'MART/TRANSPORT'},
+                {label: 'EDUCATION/CONSULTING', value: 'EDUCATION/CONSULTING'},
+                {label: 'HEALTH/HOSPITAL', value: 'HEALTH/HOSPITAL'},
+                {label: 'TRAVEL/FACILITY', value: 'TRAVEL/FACILITY'},
+                {label: 'HAIR SALON', value: 'HAIR SALON'},
+                {label: 'FITNESS', value: 'FITNESS'},
+                {label: 'FASHION/SPORT', value: 'FASHION/SPORT'},
+                {label: 'ETC', value: 'ETC', },].map((element, index) => <option key={index} value={element.value}>{element.label}</option>)}
             </select>
           </div>
           <div className="phone" 

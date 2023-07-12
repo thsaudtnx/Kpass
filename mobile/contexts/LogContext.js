@@ -4,6 +4,7 @@ import axios from 'axios';
 import logsStorage from "../storages/logsStorage";
 import { useEffect } from "react";
 import * as Location from "expo-location";
+import { ServerContainer } from "@react-navigation/native";
 
 export const LogContext = createContext();
 const server = 'http://192.168.0.105:5000'; //이 값은 맨날 바뀌니깐 확인 필요
@@ -12,46 +13,62 @@ export function LogContextProvider({children}){
   const [position, setPosition] = useState({latitude : null, longitude : null,});
   const [locationPermission, setLocationPermission] = useState(true);
   const [inputText, setInputText] = useState('');
-  const [field, setField] = useState('전체');
-  const [sortBy, setSortBy] = useState('전체');
+  const [field, setField] = useState('ALL');
+  const [sortBy, setSortBy] = useState('ALL');
   const [data, setData] = useState();
   const [showData, setShowData] = useState();
   const [loadingGetData, setLoadingGetData] = useState(true);
   const [loadingGetLocation, setLoadingGetLocation] = useState(true);
-
+  const dateFormatter = (date) => {
+    return date.getFullYear() + "-" +
+    ("00" + (date.getMonth() + 1)).slice(-2) + "-" +
+    ("00" + date.getDate()).slice(-2) + " " +
+    ("00" + date.getHours()).slice(-2) + ":" +
+    ("00" + date.getMinutes()).slice(-2) + ":" +
+    ("00" + date.getSeconds()).slice(-2);
+  }
 
   useEffect(() => {
+    //logsStorage.clearAll();
     (async () => {
       const updatedAt = await logsStorage.getUpdatedAt();
       if (updatedAt) {
         console.log(`The device is last updated at ${updatedAt}`);
+        let storageData = await logsStorage.getData();
         const serverData = await axios.get(`${server}/mobile`, {
           params : {
             updatedAt : updatedAt
           }
         });
-        const storageData = await logsStorage.getData();
-        console.log('업데이트된 서버 데이터 : ', serverData.data);
-        console.log('로컬 데이터 : ', storageData);
-        setData(storageData);
-        if (serverData.data){
-          for (let servd in serverData.data){
-            const found = storageData.find(stord => servd.id===stord.id);
-            if (found){
-              if (servd.deletedAt!==null) setData(data.filter(d => d.id!==found.id));
-              else setData(data.map(d => d.id===servd.id ? servd : d));
-            } else setData(data.concat(found));
-          }
-          logsStorage.setData(data);
-          logsStorage.setUpdatedAt(new Date());
-        } else {}
+        console.log('Updated server data : ', serverData.data);
+        if (serverData.data.length!==0){
+          let newData = [...storageData];
+          serverData.data.forEach(servd => {
+            flag = false;
+            storageData.forEach(stord => {
+              if (servd.id===stord.id){
+                flag = true;
+                if (servd.deletedAt) newData = newData.filter(d => d.id!==servd.id);
+                else if (servd.createdAt !== servd.updatedAt) newData = newData.map(d => d.id===servd.id ? servd : d);
+              }
+            });
+            if (!flag) newData = [...newData, servd];
+          })
+          setData(newData);
+          logsStorage.setData(newData);
+          logsStorage.setUpdatedAt(dateFormatter(new Date()));
+          console.log({updatedAt : dateFormatter(new Date()), data : newData});
+        } else {
+          setData(storageData);
+        }
       } else {
         console.log(`The device is new`);
         const serverData = await axios.get(`${server}/mobile`);
         console.log('서버 데이터 : ', serverData.data);
-        setData(serverData);
-        logsStorage.setData(serverData);
-        logsStorage.setUpdatedAt();
+        setData(serverData.data);
+        logsStorage.setData(serverData.data);
+        logsStorage.setUpdatedAt(dateFormatter(new Date()));
+        console.log({updatedAt : dateFormatter(new Date()), data : serverData.data});
       }
       setLoadingGetData(false);
     })();
@@ -79,17 +96,18 @@ export function LogContextProvider({children}){
 
   useEffect(() => {
     setShowData(
-      data?.filter(d => d.name.includes(inputText) && (field==='전체' ? true : d.field===field))
-        .sort((a, b) => {
-          if (sortBy==='전체') return 1;
-          else if (sortBy==='거리 순'){
+      data
+        ?.filter(d => d.name.includes(inputText) && (field==='ALL' ? true : d.field===field))
+        ?.sort((a, b) => {
+          if (sortBy==='ALL') return 1;
+          else if (sortBy==='DISTANCE'){
             const dis_a = (a.latitude - position.latitude)**2 + (a.longitude - position.longitude)**2;
             const dis_b = (b.latitude - position.latitude)**2 + (b.longitude - position.longitude)**2;
-            if (dis_a < dis_b) return 1;
+            if (dis_a > dis_b) return 1;
             else return -1;
           }
-          else if (sortBy==='kpass 순') return a.kpass - b.kpass;
-          else if (sortBy==='travelwallet 순') return a.travelwallet - b.travelwallet;
+          else if (sortBy==='KPASS') return b.kpass - a.kpass;
+          else if (sortBy==='TRAVELWALLET') return b.travelwallet - a.travelwallet;
         })
     )
   }, [inputText, sortBy, field, data]);

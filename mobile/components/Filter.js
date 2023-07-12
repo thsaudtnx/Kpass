@@ -10,24 +10,29 @@ export default function Filter() {
   const {sortBy, setSortBy, field, setField, locationPermission} = useContext(LogContext);
   const [openField, setOpenField] = useState(false);
   const [itemsField, setItemsField] = useState([
-    {label: '전체', value: '전체',},
-    {label: '요식업', value: '요식업'},
-    {label: '식품/유통', value: '식품/유통'},
-    {label: '미용', value: '미용'},
-    {label: '공공기관', value: '공공기관'},
-    {label: '기타', value: '기타', },
+    {label: 'ALL', value: 'ALL',},
+    {label: 'RESTURANT', value: 'RESTURANT'},
+    {label: 'CAFE/BAKERY', value: 'CAFE/BAKERY'},
+    {label: 'MART/TRANSPORT', value: 'MART/TRANSPORT'},
+    {label: 'EDUCATION/CONSULTING', value: 'EDUCATION/CONSULTING'},
+    {label: 'HEALTH/HOSPITAL', value: 'HEALTH/HOSPITAL'},
+    {label: 'TRAVEL/FACILITY', value: 'TRAVEL/FACILITY'},
+    {label: 'HAIR SALON', value: 'HAIR SALON'},
+    {label: 'FITNESS', value: 'FITNESS'},
+    {label: 'FASHION/SPORT', value: 'FASHION/SPORT'},
+    {label: 'ETC', value: 'ETC', },
   ]);
   const [openSort, setOpenSort] = useState(false);
   const [itemsSort, setItemsSort] = useState(
     locationPermission ? [
-      {label : '전체', value : '전체'},
-      {label : '거리 순', value : '거리 순'},
-      {label : 'KPASS 순', value : 'kpass 순'},
-      {label : 'TRAVELWALLET 순', value : 'travelwallet 순'},
+      {label : 'ALL', value : 'ALL'},
+      {label : 'DISTANCE', value : 'DISTANCE'},
+      {label : 'KPASS', value : 'KPASS'},
+      {label : 'TRAVELWALLET', value : 'TRAVELWALLET'},
     ] : [
-      {label : '전체', value : '전체'},
-      {label : 'KPASS 순', value : 'kpass 순'},
-      {label : 'TRAVELWALLET 순', value : 'travelwallet 순'},
+      {label : 'ALL', value : 'ALL'},
+      {label : 'KPASS', value : 'KPASS'},
+      {label : 'TRAVELWALLET', value : 'TRAVELWALLET'},
     ]
   );
 

@@ -47,7 +47,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
       window.alert('THERE IS AN EMPTY SECTION');
     } 
     // 초기 상태와 똑같을때
-    else if (JSON.stringify({...editedData, logo : null})===JSON.stringify({...data, logo : null})) setEditModal(false);
+    else if (JSON.stringify(editedData)===JSON.stringify({...data, logo : null})) setEditModal(false);
     //무언가 바뀌었을때
     else if(window.confirm('DO YOU WANT TO EDIT?')){
       if (editedData.logo){ //로고가 바뀌었을때 기존 로고 삭제
@@ -156,7 +156,16 @@ const EditModal = ({editModal, setEditModal, data}) => {
               padding : '10px 20px',
               border : '1px solid lightGray',}}>
               <option value={null} defaultChecked>---</option>
-              {['food', 'finance', 'health'].map((element, index) => <option key={index} value={element}>{element}</option>)}
+              {[{label: 'RESTURANT', value: 'RESTURANT'},
+                {label: 'CAFE/BAKERY', value: 'CAFE/BAKERY'},
+                {label: 'MART/TRANSPORT', value: 'MART/TRANSPORT'},
+                {label: 'EDUCATION/CONSULTING', value: 'EDUCATION/CONSULTING'},
+                {label: 'HEALTH/HOSPITAL', value: 'HEALTH/HOSPITAL'},
+                {label: 'TRAVEL/FACILITY', value: 'TRAVEL/FACILITY'},
+                {label: 'HAIR SALON', value: 'HAIR SALON'},
+                {label: 'FITNESS', value: 'FITNESS'},
+                {label: 'FASHION/SPORT', value: 'FASHION/SPORT'},
+                {label: 'ETC', value: 'ETC', },].map((element, index) => <option key={index} value={element.value}>{element.label}</option>)}
             </select>
           </div>
           <div className="phone" 
@@ -291,4 +300,4 @@ const EditModal = ({editModal, setEditModal, data}) => {
   );
 };
 
-export default React.memo(EditModal);
+export default EditModal;

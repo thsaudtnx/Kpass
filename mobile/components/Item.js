@@ -28,7 +28,7 @@ export default function Item({item}){
               marginRight : 20}}/>
           <View>
             <Text style={{marginBottom : 5, fontSize : 20, fontWeight : 'bold'}}>{item.name}</Text>
-            <Text style={{fontSize : 12}}>{item.address.split(',')[0]}</Text>
+            <Text style={{fontSize : 12}}>{item.address?.split(',')[0]}</Text>
           </View>
         </View>
         <View 

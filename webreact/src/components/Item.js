@@ -25,8 +25,9 @@ const Item = ({data}) => {
       console.log(deleteResult.data);
       setPageNum(0);
       setIsUpdated(isUpdated+1);
+      setShowDetail(false);
     }
-  }, [data.id]); 
+  }, []); 
 
   return(
     <>

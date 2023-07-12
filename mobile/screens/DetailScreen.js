@@ -6,6 +6,7 @@ import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useContext } from "react";
 import { LogContext } from "../contexts/LogContext";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 export default function DetailScreen() {
   const navigation = useNavigation();
@@ -45,16 +46,16 @@ export default function DetailScreen() {
         <View style={{
           flexDirection : 'row', 
           alignItems : 'center',
-          marginBottom : 20,}}
-          onPress={()=>Linking.openURL(`tel:${route.params.item.phone}`)}>
+          marginBottom : 20,}}>
           <Icon name="call" size={25} style={{marginRight : 20, color : PALETTE.WHATSAPP_GREEN}}/>
-          <Text style={{fontSize : 15,}}>{route.params.item.phone}</Text>
+          <TouchableWithoutFeedback onPress={()=>Linking.openURL(`tel:${route.params.item.phone}`)}>
+            <Text style={{fontSize : 15,}}>{route.params.item.phone}</Text>
+          </TouchableWithoutFeedback>
         </View>
         <View style={{
           flexDirection : 'row', 
           alignItems : 'center',
-          marginBottom : 20,}}
-          onPress={() => Clipboard.setString(route.params.item.address)}>
+          marginBottom : 20,}}>
           <Icon name="location-sharp" size={25} style={{marginRight : 20, color : PALETTE.LOCATION_RED}}/>
           <Text style={{fontSize : 15,}}>{route.params.item.address}</Text>
         </View>

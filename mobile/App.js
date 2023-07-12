@@ -5,11 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PALETTE from './styles/PALETTE';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import TravelWalletScreen from './screens/TravelWalletScreen';
-import { useState } from 'react';
-import { useEffect } from 'react';
 import { LogContextProvider } from './contexts/LogContext';
-import ManageScreen from './screens/ManageScreen';
 import SplashScreen from './screens/SplashScreen';
 
 const Drawer = createDrawerNavigator();
@@ -29,14 +25,6 @@ function RootDrawer(){
         name="About" 
         component={AboutScreen} 
         options={{drawerLabel : 'ABOUT'}} />
-      <Drawer.Screen 
-        name="TravelWallet" 
-        component={TravelWalletScreen} 
-        options={{drawerLabel : 'TRAVELWALLET'}} />
-      <Drawer.Screen 
-        name="Manage" 
-        component={ManageScreen} 
-        options={{drawerLabel : 'MANAGE'}} />
     </Drawer.Navigator>
   )
 };

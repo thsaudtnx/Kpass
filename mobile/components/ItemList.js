@@ -16,7 +16,7 @@ export default function ItemList(){
         data={showData}
         ListFooterComponent={
           <View style={{padding : 20}}>
-            <Text>더 이상 데이터가 없습니다.</Text>
+            <Text>NO MORE DATA</Text>
           </View>
         }
         ItemSeparatorComponent={() => <View style={{height: 20}} />}
