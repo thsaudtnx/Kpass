@@ -30,7 +30,7 @@ const information = [
   {id : 7, title : '트래블월렛카드 캐쉬백', content : `K-Pass 가맹점은 동시에 트래블월렛의 캐쉬백 가맹점이 됩니다. 결제금액의 1%가 트래블월렛 사용자 카드계정에 자동 캐쉬백 처리되고 캐쉬백 % 는 카드 가맹점 별로 상이할수 있으니 트래블월렛 가맹점 List 상의 캐쉬백 %를  참고하세요`}
 ]
 
-export default function AboutScreen(){
+export default function KpassScreen2(){
 
   const navigation = useNavigation();
   useEffect(() => {
@@ -42,25 +42,18 @@ export default function AboutScreen(){
 
   return (
     <View style={{backgroundColor : PALETTE.BACKGROUND}}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{margin : 10, padding : 10, width : "100%"}}>
-          <Image 
-            source={require('../assets/kpassCard.jpg')} 
-            resizeMode='contain'
-            style={{
-              width : 400,
-              height : 300,
-            }}
-          />
-        </View>
-        {information.map(i => (
-          <View style={styles.container} key={i.id}>
-            <Text style={styles.title}>{i.id}. {i.title}</Text>
-            <Text style={styles.content}>{i.content}</Text>
-          </View>
-        ))}
-      </ScrollView>  
+      <View style={styles.container}>
+        <Text style={styles.title}>K-Pass 카드 등록 및 프리미엄 계정 전환</Text>
+        <Text style={styles.content}>{`안드로이드나 아이폰 앱 스토어에서 GoPayz 를 내려받고 안내에 따라 사용자및 카드등록후 프리미엄 계정으로 전환. 프리미엄 계정은 RM5,000 의 일일 한도내에서 자유롭게 충전및 사용이 가능합니다`}</Text>
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.title}>K-Pass 카드 구매 및 가맹점 문의</Text>
+        <Text style={styles.content}>{`말레이시아 한인회 : +60 3 6203 2834 / +60 14 830 7914\nOXPAY : +60 3 6205 3015 / +60 16 811 9534`}</Text>
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.title}>K-Pass 충전</Text>
+        <Text style={styles.content}>{`7 Eleven 을 통한 현금 충전\nInternet Banking 을 이용한 GoPayz 앱 내에서의 충전\nOXPAY 를 통한 개별및 Bulk 충전`}</Text>
+      </View>
     </View>
-    
   );
 };

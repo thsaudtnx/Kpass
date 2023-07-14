@@ -1,6 +1,5 @@
 import HomeScreen from './screens/HomeScreen';
 import DetailScreen from './screens/DetailScreen';
-import AboutScreen from './screens/AboutScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PALETTE from './styles/PALETTE';
@@ -8,6 +7,9 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { LogContextProvider } from './contexts/LogContext';
 import SplashScreen from './screens/SplashScreen';
 import { Image, View } from 'react-native';
+import KpassScreen1 from './screens/KpassScreen1';
+import KpassScreen2 from './screens/KpassScreen2';
+import KpassScreen3 from './screens/KpassScreen3';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -23,7 +25,7 @@ function RootDrawer(){
         component={HomeScreen} 
         options={{
           drawerLabel : 'HOME',
-          headerTitleAlign: 'left',
+          headerTitleAlign: 'center',
           headerTitle : () => 
             <View style={{marginBottom : 10}}>
               <Image 
@@ -32,15 +34,22 @@ function RootDrawer(){
                 style={{
                   width : 80,
                   height : '100%',
-                  color : PALETTE.WHITE,
                 }}
               />
             </View>
         }}/>
       <Drawer.Screen 
-        name="About" 
-        component={AboutScreen} 
-        options={{drawerLabel : 'ABOUT'}} />
+        name="Kpass 카드란?" 
+        component={KpassScreen1} 
+        options={{drawerLabel : '1. K-pass 카드란?'}} />
+      <Drawer.Screen 
+        name="Kpass 카드 사용방법" 
+        component={KpassScreen2} 
+        options={{drawerLabel : '2. K-pass 카드 사용방법'}} />
+      <Drawer.Screen 
+        name="Kpass 카드 혜택" 
+        component={KpassScreen3} 
+        options={{drawerLabel : '3. K-pass 카드 혜택'}} />
     </Drawer.Navigator>
   )
 };

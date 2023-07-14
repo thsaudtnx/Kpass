@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text, Image, Linking } from "react-native";
+import { View, Text, Image, Linking, ScrollView } from "react-native";
 import PALETTE from "../styles/PALETTE";
 import Icon from 'react-native-vector-icons/Ionicons';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
@@ -18,7 +18,7 @@ export default function DetailScreen() {
   }, [navigation]);
 
   return (
-    <View style={{backgroundColor : PALETTE.BACKGROUND}}>
+    <ScrollView style={{backgroundColor : PALETTE.BACKGROUND}}>
       <View style={{
         flexDirection : 'row',
         alignItems : 'center',
@@ -105,17 +105,18 @@ export default function DetailScreen() {
           pitchEnabled={true}
           rotateEnabled={true}
           initialRegion={{
-            ...route.params.position,
+            latitude : parseFloat(route.params.position.latitude),
+            longitude : parseFloat(route.params.position.longitude),
             latitudeDelta : 0.5,
             longitudeDelta : 0.5, //나의 위치와 업체의 위치를 한눈에 들어오게 하는 델타 값구하기
           }}>
           <Marker
-            coordinate={{latitude: route.params.item.latitude, longitude: route.params.item.longitude}}
+            coordinate={{latitude: parseFloat(route.params.item.latitude), longitude: parseFloat(route.params.item.longitude)}}
             title={route.params.item.name}
             description={route.params.item.address.split(',')[0]}
           />
         </ MapView>
       </View>
-    </View>
+    </ScrollView>
   );
 };

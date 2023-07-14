@@ -30,7 +30,7 @@ export default function SearchBar() {
           paddingLeft : 40,
           paddingTop : 15,
           paddingBottom : 15,
-          paddingRight : 130,
+          paddingRight : 120,
           backgroundColor : PALETTE.WHITE,
           color : PALETTE.BLACK}}
           onChangeText={text => setInputText(text)}

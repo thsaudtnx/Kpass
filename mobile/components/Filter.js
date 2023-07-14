@@ -15,7 +15,7 @@ const { SlideInMenu } = renderers;
 
 const options = [
   {label: 'ALL', value: 'ALL',},
-  {label: 'RESTURANT', value: 'RESTURANT'},
+  {label: 'RESTAURANT', value: 'RESTURANT'},
   {label: 'CAFE/BAKERY', value: 'CAFE/BAKERY'},
   {label: 'MART/TRANSPORT', value: 'MART/TRANSPORT'},
   {label: 'EDUCATION/CONSULTING', value: 'EDUCATION/CONSULTING'},
@@ -57,7 +57,7 @@ export default function Filter() {
                 onSelect={() => setField(o.value)} 
                 text={(field===o.value ? '\u2713  ' : '') + o.label}
                 disabled={field===o.value}
-                style={{padding : 20}} />
+                style={{padding : 15}} />
             ))}
           </ScrollView>
         </MenuOptions>

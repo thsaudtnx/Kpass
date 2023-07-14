@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { ActivityIndicator, View, Text, ImageBackground } from "react-native";
+import { ActivityIndicator, View, Text, ImageBackground, Image } from "react-native";
 import { LogContext } from "../contexts/LogContext";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native";
@@ -13,7 +13,7 @@ export default function SplashScreen(){
   }, [loadingGetData, loadingGetLocation]);
   return(
       <ImageBackground 
-        source={require('../assets/oxpay-background.jpg')} 
+        source={require('../assets/oxpay-splash.jpg')} 
         resizeMode="cover" 
         style={{
           width : '100%',
@@ -27,7 +27,7 @@ export default function SplashScreen(){
           height : '100%',
           width : '100%',}}>
           <View style={{
-            marginTop : 350,
+            marginTop : 200,
             width : '100%', 
             height : '40%',
             display : 'flex',
@@ -36,19 +36,27 @@ export default function SplashScreen(){
             <Text style={{
               fontSize : 20, 
               fontWeight : 'bold',
-              color : PALETTE.WHITE}}>
+              color : PALETTE.WHITE,
+              padding : 30,}}>
               Welcome to Kpass & TravelWallet!
             </Text>
           </View>
-          <ActivityIndicator 
-            size="large" 
-            color={PALETTE.WHITE}
-            style={{
-              position : 'absolute',
-              bottom : '50%', 
-              left : '45%'
-            }}
-          />
+          <View style={{display : 'flex', flexDirection : 'row', justifyContent : 'center', marginBottom : 20}}>
+            <ActivityIndicator 
+              size="large" 
+              color={PALETTE.WHITE}
+            />
+          </View>
+          <View style={{display : 'flex', flexDirection : 'row', justifyContent : 'center'}}>
+            <Image 
+              source={require('../assets/oxpay-logo-white.png')} 
+              resizeMode='contain'
+              style={{
+                width : 100,
+                height : 50,
+              }}
+            />
+          </View>
         </View>
       </ImageBackground>
   );
