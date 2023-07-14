@@ -9,7 +9,7 @@ import { useCallback } from "react";
 import {server} from '../lib/serverURL';
 
 const AddModal = () => {
-  const {setPageNum, isUpdated, setIsUpdated, addModal, setAddModal} = useContext(ManageContext);
+  const {setPageNum, isUpdated, setIsUpdated, addModal, setAddModal, setHasMore, setData} = useContext(ManageContext);
   useEffect(() => {
     if (addModal) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
@@ -91,6 +91,8 @@ const AddModal = () => {
           console.log(newData);
           console.log(res.data.message);
           setPageNum(0);
+          setData([]);
+          setHasMore(true);
           setIsUpdated(isUpdated + 1);
           setNewData(initData);
           setAddModal(false);

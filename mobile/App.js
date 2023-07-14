@@ -7,6 +7,7 @@ import PALETTE from './styles/PALETTE';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { LogContextProvider } from './contexts/LogContext';
 import SplashScreen from './screens/SplashScreen';
+import { Image, View } from 'react-native';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -20,7 +21,22 @@ function RootDrawer(){
       <Drawer.Screen 
         name="Home" 
         component={HomeScreen} 
-        options={{drawerLabel : 'HOME'}}/>
+        options={{
+          drawerLabel : 'HOME',
+          headerTitleAlign: 'left',
+          headerTitle : () => 
+            <View style={{marginBottom : 10}}>
+              <Image 
+                source={require('./assets/oxpay-logo-white.png')} 
+                resizeMode='contain'
+                style={{
+                  width : 80,
+                  height : '100%',
+                  color : PALETTE.WHITE,
+                }}
+              />
+            </View>
+        }}/>
       <Drawer.Screen 
         name="About" 
         component={AboutScreen} 

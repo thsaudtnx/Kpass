@@ -1,15 +1,18 @@
 import React from "react";
 import PALETTE from "../styles/PALETTE";
-import { View, Text, StyleSheet, FlatList } from "react-native";
-
+import { View, Text, StyleSheet, FlatList, Image, ScrollView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { useEffect } from "react";
 const styles = StyleSheet.create({
   container: {
-    padding : 16,
+    margin : 10,
+    padding : 20,
+    borderRadius : 10,
     backgroundColor : PALETTE.WHITE,
   },
   title: {
-    marginBottom : 15,
-    fontSize : 20,
+    marginBottom : 20,
+    fontSize : 18,
     fontWeight : 'bold',
   },
   content : {
@@ -29,20 +32,34 @@ const information = [
 
 export default function AboutScreen(){
 
+  const navigation = useNavigation();
+  useEffect(() => {
+    navigation.setOptions({
+      headerTintColor : PALETTE.WHITE, 
+      headerStyle: {backgroundColor: PALETTE.PURPLE,},
+    });
+  }, [navigation]);
+
   return (
-    <View>
-      <FlatList
-        data={information}
-        keyExtractor={item => item.id}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        renderItem={({item}) => (
-          <View style={styles.container}>
-            <Text style={styles.title}>{item.id}. {item.title}</Text>
-            <Text style={styles.content}>{item.content}</Text>
+    <View style={{backgroundColor : PALETTE.BACKGROUND}}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{margin : 10, padding : 10, width : "100%"}}>
+          <Image 
+            source={require('../assets/kpassCard.jpg')} 
+            resizeMode='contain'
+            style={{
+              width : 400,
+              height : 300,
+            }}
+          />
+        </View>
+        {information.map(i => (
+          <View style={styles.container} key={i.id}>
+            <Text style={styles.title}>{i.id}. {i.title}</Text>
+            <Text style={styles.content}>{i.content}</Text>
           </View>
-        )}
-      />
+        ))}
+      </ScrollView>  
     </View>
     
   );

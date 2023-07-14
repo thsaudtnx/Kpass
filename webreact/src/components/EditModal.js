@@ -9,7 +9,7 @@ import { useCallback } from "react";
 import {server} from '../lib/serverURL';
 
 const EditModal = ({editModal, setEditModal, data}) => {
-  const {isUpdated, setIsUpdated, setPageNum} = useContext(ManageContext);
+  const {isUpdated, setIsUpdated, setPageNum, setHasMore, setData} = useContext(ManageContext);
   const [editedData, setEditedData] = useState({...data, logo : null});
   useEffect(() => {
     if (editModal) document.body.style.overflow = 'hidden';
@@ -65,6 +65,8 @@ const EditModal = ({editModal, setEditModal, data}) => {
       const result =  await axios.patch(`${server}/business/edit/${data.id}`, updateObject);
       console.log(result.data);
       setPageNum(0);
+      setData([]);
+      setHasMore(true);
       setIsUpdated(isUpdated + 1);
       setEditedData({...data, logo : null});
       setEditModal(false); 

@@ -33,7 +33,10 @@ export default function DetailScreen() {
             marginRight : 20,
           }}
         />
-        <Text style={{fontSize : 16, fontWeight : 'bold'}}>{route.params.item.name}</Text> 
+        <View>
+          <Text style={{fontSize : 16, fontWeight : 'bold', marginBottom : 5}}>{route.params.item.name}</Text> 
+          <Text>{route.params.item.type}</Text>
+        </View>
       </View>
 
       <View style={{
@@ -42,7 +45,7 @@ export default function DetailScreen() {
         marginRight : 10,
         marginBottom : 30,
         borderRadius : 10,
-        backgroundColor : PALETTE.LIGHT_PURPLE,}}>
+        backgroundColor : PALETTE.WHITE,}}>
         <View style={{
           flexDirection : 'row', 
           alignItems : 'center',
@@ -57,48 +60,40 @@ export default function DetailScreen() {
           alignItems : 'center',
           marginBottom : 20,}}>
           <Icon name="location-sharp" size={25} style={{marginRight : 20, color : PALETTE.LOCATION_RED}}/>
-          <Text style={{fontSize : 15,}}>{route.params.item.address}</Text>
+          <Text style={{fontSize : 15, flex : 1, flexWrap : 'wrap'}}>{route.params.item.address}</Text>
         </View>
-        <View style={{flexDirection : 'row', alignItems : 'center', marginBottom : 20}}>
+
+        <View style={{flexDirection : 'row', alignItems : 'center', marginBottom : 10}}>
+          <Image 
+            source={require('../assets/icon_k_pass.png')} 
+            resizeMode='contain'
+            style={{
+              width : 30,
+              height : 30,
+            }}
+          />
           <Text style={{
-            fontWeight : 'bold',
-            color : PALETTE.WHITE,
-            backgroundColor : PALETTE.RED,
-            borderRadius : 10,
-            paddingTop : 2,
-            paddingBottom : 2,
-            paddingLeft : 10,
-            paddingRight : 10,}}>
-            KPASS
+            fontSize : 14,
+            marginLeft : 20,}}>
+            {route.params.item.kpass}%
           </Text>
-          <Text style={{
-            fontWeight : 'bold',
-            color : PALETTE.WHITE,
-            marginLeft : 10,
-          }}>{route.params.item.kpass}%</Text>
         </View>
         
         <View style={{flexDirection : 'row', alignItems : 'center'}}>
+          <Image 
+            source={require('../assets/icon_travel.png')} 
+            resizeMode='contain'
+            style={{
+              width : 30,
+              height : 30,}}/>
           <Text style={{
-            fontWeight : 'bold',
-            color : PALETTE.WHITE,
-            backgroundColor : PALETTE.BLUE,
-            borderRadius : 10,
-            paddingTop : 2,
-            paddingBottom : 2,
-            paddingLeft : 10,
-            paddingRight : 10,}}>
-            TRAVELWALLET
-          </Text>
-          <Text style={{
-            fontWeight : 'bold',
-            color : PALETTE.WHITE,
-            marginLeft : 10,
+            fontSize : 14,
+            marginLeft : 20,
           }}>{route.params.item.travelwallet}%</Text>
         </View>
       </View>
 
-      <View>
+      <View style={{marginBottom : 40}}>
         <MapView
           style={{height : 350, width : '90%', marginLeft : '5%'}}
           provider={PROVIDER_GOOGLE}

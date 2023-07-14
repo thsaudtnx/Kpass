@@ -27,7 +27,7 @@ const ItemList = () => {
       <InfiniteScroll
         className="content"
         style={{padding : 10}}
-        dataLength={data ? data.length : 0}
+        dataLength={() => {return data.length}}
         next={() => getData()}
         hasMore={hasMore}
         loader={<div style={{width : '100%', padding : 20, fontSize : 14, fontWeight : 'bold', color : 'gray'}}>Loading...</div>}

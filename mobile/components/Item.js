@@ -12,22 +12,22 @@ export default function Item({item}){
     <TouchableOpacity 
       onPress={() => navigation.push('Detail', {item, position})}
       style={{
-        padding : 20,
-        backgroundColor : PALETTE.LIGHT_PURPLE,
+        padding : 10,
+        backgroundColor : PALETTE.WHITE,
         flexDirection : 'row',
         justifyContent : 'space-between',
         alignItems : 'center',
         borderRadius : 10,}}>
-        <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center'}}>
+        <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', padding : 10}}>
           <Image 
             source={item.logo && {uri : server + item.logo.split('5000')[1]}} 
             resizeMode='contain'
             style={{
-              width : 80,
-              height : 80,
-              marginRight : 20}}/>
+              width : 70,
+              height : 70,
+              marginRight : 15}}/>
           <View>
-            <Text style={{marginBottom : 5, fontSize : 20, fontWeight : 'bold'}}>{item.name}</Text>
+            <Text style={{marginBottom : 5, fontSize : 17, fontWeight : 'bold'}}>{item.name}</Text>
             <Text style={{fontSize : 12}}>{item.address?.split(',')[0]}</Text>
           </View>
         </View>
@@ -35,20 +35,19 @@ export default function Item({item}){
           style={{
             flexDirection : 'column', 
             justifyContent : 'space-around', 
+            padding : 10,
           }}>
-          <View style={{flexDirection : 'row', alignItems : 'center'}}>
+          <View style={{flexDirection : 'row', alignItems : 'center', marginBottom : 10}}>
             <Image 
               source={require('../assets/icon_k_pass.png')} 
               resizeMode='contain'
               style={{
-                width : 40,
-                height : 40,
-                marginBottom : 5}}/>
+                width : 30,
+                height : 30,}}/>
             <Text style={{
               fontWeight : 'bold',
-              fontSize : 17,
-              color : PALETTE.WHITE,
-              marginLeft : 20,}}>
+              fontSize : 14,
+              marginLeft : 10,}}>
               {item.kpass}%
             </Text>
           </View>
@@ -58,14 +57,12 @@ export default function Item({item}){
               source={require('../assets/icon_travel.png')} 
               resizeMode='contain'
               style={{
-                width : 40,
-                height : 40,
-                marginBottom : 5}}/>
+                width : 30,
+                height : 30,}}/>
             <Text style={{
               fontWeight : 'bold',
-              fontSize : 17,
-              color : PALETTE.WHITE,
-              marginLeft : 20,
+              fontSize : 14,
+              marginLeft : 10,
             }}>{item.travelwallet}%</Text>
           </View>
         </View>

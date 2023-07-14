@@ -30,8 +30,8 @@ export default function SearchBar() {
           paddingLeft : 40,
           paddingTop : 15,
           paddingBottom : 15,
+          paddingRight : 130,
           backgroundColor : PALETTE.WHITE,
-          width : '100%',
           color : PALETTE.BLACK}}
           onChangeText={text => setInputText(text)}
           placeholder="SEARCH BY NAME"
