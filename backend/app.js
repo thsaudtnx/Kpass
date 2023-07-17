@@ -57,7 +57,7 @@ if (process.env.NODE_ENV === 'production'){
 }
 app.use(session(sessionOption));
 app.use(cors({ 
-  origin: 'http://localhost:5000',
+  origin: 'http://13.215.32.109',
   methods: ["POST", "PUT", "GET", "DELETE", "PATCH", "OPTIONS", "HEAD"],
   credentials: true,
 }));
