@@ -35,7 +35,7 @@ if (process.env.NODE_ENV==='production'){
 } else {
   app.use(morgan('dev'));
 }
-//app.use(express.static(path.join(__dirname, '../webreact/build')));
+app.use(express.static(path.join(__dirname, '../webreact/build')));
 app.use(express.json());
 app.use(express.urlencoded({extended : false}));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -57,7 +57,7 @@ if (process.env.NODE_ENV === 'production'){
 }
 app.use(session(sessionOption));
 app.use(cors({ 
-  origin: 'http://13.215.32.109',
+  origin: 'http://13.215.32.109:80',
   methods: ["POST", "PUT", "GET", "DELETE", "PATCH", "OPTIONS", "HEAD"],
   credentials: true,
 }));

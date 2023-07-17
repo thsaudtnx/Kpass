@@ -4,7 +4,7 @@ const path = require('path');
 
 
 router.get('/', async (req, res, next) => {
-  res.send(express.static(path.join(__dirname, '../../webreact/build/index.html')));
+  res.send(express.static(path.join(__dirname, '../../webreact/build')));
 });
 
 

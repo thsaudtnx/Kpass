@@ -11,7 +11,7 @@ const options = {
     },
     servers : [
       {
-        url : "http://localhost:3000", //요청 URL
+        url : "http://13.215.32.109", //요청 URL
       },
     ],
   },
