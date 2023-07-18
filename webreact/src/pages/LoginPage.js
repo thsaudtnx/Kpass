@@ -9,14 +9,6 @@ const LoginPage = () => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
-  useEffect(() => {
-    (async () => {
-      const result = await axios.get(`${server}/auth/authentication`,  { withCredentials: true });
-      console.log(result.data);
-      if (result.data.authenticated) navigate('/manage');
-    })()
-  }, []);
-
   return (
     <div style={{background : '#e1e1e1', width : '100vw', height : '100vh'}}>
       <div style={{background : '#e1e1e1', width : '100vw', height : '15vh'}}/>

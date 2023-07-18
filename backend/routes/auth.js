@@ -9,28 +9,6 @@ const router = express.Router();
 /**
  * @swagger
  * paths:
- *  /auth/authentication:
- *    get:
- *      description: "Check Authentication"
- *      tags: [auth]
- *      responses:
- *        "200":
- *          content:
- *            application/json:
- *              schema:
- *                type: object
- *                properties:
- *                    authenticated:
- *                      type: boolean
- */
-router.get('/authentication', isLoggedIn, (req, res, next) => {
-  res.send({authenticated : !!req.user});
-});
-
-
-/**
- * @swagger
- * paths:
  *  /auth/changePassword:
  *    post:
  *      description: "Change Password"
@@ -48,7 +26,7 @@ router.get('/authentication', isLoggedIn, (req, res, next) => {
  *                      type: string
  * 
  */
-router.post('/changePassword', async (req, res, next) => {
+router.post('/changePassword', isLoggedIn, async (req, res, next) => {
   console.log(req.body);
   const {username, password} = req.body;
   const hash = await bcrypt.hash(password, 12);
