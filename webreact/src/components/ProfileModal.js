@@ -138,16 +138,19 @@ const ProfileModal = ({profileModal, setProfileModal}) => {
             padding : '10px',
             cursor : 'pointer',}}
             onClick={async () => {
-              if (passwordConfirm===password){
-                await axios.post(`${server}/auth/changePassword`, {
-                  username : username, 
-                  password : password
-                }).then(res => {
-                  console.log(res.data);
-                  if (res.data.ok){
-                    window.alert('Password Changed Successful');
-                  }
-                })
+              if (window.confirm('DO YOU REALLY WANT TO CHANGE THE PASSWORD?')){
+               if (passwordConfirm===password){
+                  await axios.post(`${server}/auth/changePassword`, {
+                    username : username, 
+                    password : password
+                  }).then(res => {
+                    console.log(res.data);
+                    if (res.data.ok){
+                      window.alert('Password Changed Successful');
+                    }
+                    setProfileModal(false);
+                  })
+                }
               }
             }}>
             CONFIRM
