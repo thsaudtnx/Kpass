@@ -52,7 +52,7 @@ const sessionOption = {
     credentials : true,
     httpOnly : true,
     secure : false,
-    maxAge : 1 * 1000,
+    maxAge : 60 * 1000,
     //sameSite: 'none',
   },
 };
