@@ -23,9 +23,7 @@ const router = express.Router();
  *                    authenticated:
  *                      type: boolean
  */
-router.get('/authentication', (req, res, next) => {
-  console.log('isAuthenticated : ', req.isAuthenticated());
-  console.log('user : ', req.user);
+router.get('/authentication', isLoggedIn, (req, res, next) => {
   res.send({authenticated : !!req.user});
 });
 
