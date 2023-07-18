@@ -26,7 +26,7 @@ const router = express.Router();
  *                      type: string
  * 
  */
-router.post('/changePassword', isLoggedIn, async (req, res, next) => {
+router.post('/changePassword', async (req, res, next) => {
   console.log(req.body);
   const {username, password} = req.body;
   const hash = await bcrypt.hash(password, 12);
