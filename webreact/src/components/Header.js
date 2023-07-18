@@ -35,7 +35,7 @@ const Header = () => {
           color : 'gray',
           cursor : 'pointer',
           padding : '10px',}}
-          onClick={() => profileModal(true)}>
+          onClick={() => setProfileModal(true)}>
           CHANGE PASSWORD
         </div>
         <div style={{

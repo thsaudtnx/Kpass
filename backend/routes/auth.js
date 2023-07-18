@@ -88,8 +88,6 @@ router.post('/changePassword', async (req, res, next) => {
  *                      type: boolean
  */
 router.post('/login', isNotLoggedIn, (req, res, next) => {
-  console.log(req.body);
-  console.log(req);
   passport.authenticate('local', (authError, user, info) => {
     if (authError) {
       console.error(authError);
