@@ -1,6 +1,5 @@
 const express = require('express');
 const passport = require('passport');
-const bcypt = require('bcrypt');
 const {isLoggedIn, isNotLoggedIn} = require('./middlewares');
 const User = require('../models/user');
 
@@ -24,6 +23,7 @@ const router = express.Router();
  *                      type: boolean
  */
 router.get('/authentication', (req, res, next) => {
+  console.log('isAuthenticated : ', req.isAuthenticated());
   console.log('user : ', req.user);
   res.send({authenticated : !!req.user});
 });
@@ -98,9 +98,8 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
  *                    logout:
  *                      type: boolean
  */
-router.post('/logout', (req, res, next) => {
-  req.logout(error => {
-    if (error) next(error);
+router.post('/logout', isLoggedIn, (req, res, next) => {
+  req.logout(() => {
     req.session.destroy();
     res.status(200).json({ok : 1, message : "LOGOUT SUCCESS"});
   });

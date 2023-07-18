@@ -1,18 +1,22 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useMediaQuery } from 'react-responsive'
 import Header from "../components/Header";
 import Filter from "../components/Filter";
 import ItemList from "../components/ItemList";
 import { useNavigate } from "react-router";
 import { ManageContextProvider } from "../contexts/ManageContext";
-import { LogContext } from "../contexts/LogContext";
+import axios from "axios";
+import { server } from "../lib/serverURL";
 
 const ManagePage = () => {
   const isMobile = useMediaQuery({query: '(max-width: 765px)'});
-  const {isLoggedIn} = useContext(LogContext);
   const navigate = useNavigate();
   useEffect(() => {
-    if (!isLoggedIn) navigate('/');
+    (async () => {
+      const result = await axios.get(`${server}/auth/authentication`,  { withCredentials: true });
+      console.log(result.data);
+      if (!result.data.authenticated) navigate('/');
+    })()
   }, []);
 
   return (

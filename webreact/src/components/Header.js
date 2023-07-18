@@ -1,15 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router";
+import { redirect, useNavigate } from "react-router";
 import { useMediaQuery } from "react-responsive";
 import axios from 'axios';
-import { useContext } from "react";
-import { LogContext } from "../contexts/LogContext";
 import {server} from '../lib/serverURL';
 
 const Header = () => {
   const isMobile = useMediaQuery({query: '(max-width: 765px)'});
   const navigate = useNavigate();
-  const {setIsLoggedIn} = useContext(LogContext);
 
   return (
     <div 
@@ -40,11 +37,8 @@ const Header = () => {
             if (window.confirm('ARE YOU GOING TO LOGOUT?')){
               await axios.post(`${server}/auth/logout`)
                 .then(res => {
+                  navigate('/');
                   console.log(res.data);
-                  if (res.data.ok) {
-                    navigate('/');
-                    setIsLoggedIn(false);
-                  }
                 })
                 .catch(error => {
                   console.error(error);

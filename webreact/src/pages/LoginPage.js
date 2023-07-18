@@ -1,19 +1,20 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useContext } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
-import { LogContext } from "../contexts/LogContext";
 import {server} from '../lib/serverURL';
 
 const LoginPage = () => {
-  const {isLoggedIn, setIsLoggedIn} = useContext(LogContext);
   const navigate = useNavigate();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
   useEffect(() => {
-    if (isLoggedIn) navigate('/manage');
+    (async () => {
+      const result = await axios.get(`${server}/auth/authentication`,  { withCredentials: true });
+      console.log(result.data);
+      if (result.data.authenticated) navigate('/manage');
+    })()
   }, []);
 
   return (
@@ -83,7 +84,6 @@ const LoginPage = () => {
                 if (result.data.login){
                   console.log(result.data);
                   window.alert('LOGIN SUCCESS');
-                  setIsLoggedIn(true);
                   navigate('/manage');
                 } else {
                   window.alert('NOT REGISTERED');
