@@ -15,7 +15,7 @@ module.exports = () => {
       const exUser = await User.findOne({where : {username}});
       if (exUser){
         const result = await bcrypt.compare(password, exUser.password);
-        if (password===exUser.password) {
+        if (result) {
           done(null, exUser); //user 객체 전송 또는 에러 리턴
         } else {
           done(null, false, {message : '비밀번호가 일치하지 않습니다.'});

@@ -81,6 +81,7 @@ const LoginPage = () => {
                   username : username,
                   password : password,
                 }, { withCredentials: true});
+                //return navigate('/manage');
                 console.log(result.data);
                 if (result.data.login){
                   window.alert('LOGIN SUCCESS');

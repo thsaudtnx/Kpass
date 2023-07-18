@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const bcrypt = require('bcrypt');
 const {isLoggedIn, isNotLoggedIn} = require('./middlewares');
 const User = require('../models/user');
 
@@ -26,6 +27,35 @@ router.get('/authentication', (req, res, next) => {
   console.log('isAuthenticated : ', req.isAuthenticated());
   console.log('user : ', req.user);
   res.send({authenticated : !!req.user});
+});
+
+
+/**
+ * @swagger
+ * paths:
+ *  /auth/changePassword:
+ *    post:
+ *      description: "Change Password"
+ *      tags: [auth]
+ *      responses:
+ *        "200":
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    ok:
+ *                      type: number
+ *                    message:
+ *                      type: string
+ * 
+ */
+router.post('/changePassword', async (req, res, next) => {
+  console.log(req.body);
+  const {username, password} = req.body;
+  const hash = await bcrypt.hash(password, 12);
+  const UpdatedInfo = await User.update({password : hash}, { where: { username : username } });
+  res.send({ok : 1, message : 'password change success!'});
 });
 
 
