@@ -29,7 +29,7 @@ export default function Item({item}){
               marginRight : 15}}/>
           <View>
             <Text style={{marginBottom : 5, fontSize : 17, fontWeight : 'bold'}}>{item.name}</Text>
-            <Text style={{fontSize : 12}}>{item.address?.split(',')[0]}</Text>
+            <Text style={{fontSize : 12}}>{item.type}</Text>
           </View>
         </View>
         <View 
