@@ -1,7 +1,6 @@
 const express = require('express');
 const Business = require('../models/business');
 const Sequelize = require('sequelize');
-import server from '../lib/server';
 
 const router = express.Router();
 
@@ -333,12 +332,11 @@ router.use('/upload', express.static('upload')); //set directory path to access 
  */
 router.post('/upload', upload.single('file'), (req, res, next) => {
   if(req.file){
-    const filePath = `${server}/business/upload/` + req.file.filename;
+    const filePath = `http://13.215.32.109/business/upload/` + req.file.filename;
     console.log(req.file);
     res.send(filePath);
   }
 });
-
 
 /**
  * @swagger
