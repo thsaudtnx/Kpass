@@ -41,7 +41,7 @@ router.get('/', async (req, res, next) => {
   console.log(req.query);
   if (req.query.updatedAt){
     const result = await Business.findAll({
-      paranoid : false,
+      paranoid : true,
       where: {
         [Op.or]: [
           { createdAt: { [Op.gt]: req.query.updatedAt } },
