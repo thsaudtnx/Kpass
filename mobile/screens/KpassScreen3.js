@@ -41,7 +41,7 @@ export default function KpassScreen3(){
   }, [navigation]);
 
   return (
-    <View style={{backgroundColor : PALETTE.BACKGROUND}}>
+    <View style={{backgroundColor : PALETTE.BACKGROUND, height : '100%', width : '100%'}}>
       <View style={styles.container}>
         <Text style={styles.title}>K-Pass 카드 사용자 캐쉬백 혜택</Text>
         <Text style={styles.content}>{`결제금액의 2%를 사용자의 카드계정에 자동 캐쉬백 처리. 가맹점에 따라 캐쉬백 % 는 상이할수있으니 K-Pass 가맹점 List 상의 캐쉬백 % 를 참고하세요`}</Text>

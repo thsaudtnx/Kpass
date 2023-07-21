@@ -4,14 +4,12 @@ import PALETTE from "../styles/PALETTE";
 import Icon from 'react-native-vector-icons/Ionicons';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useContext } from "react";
-import { LogContext } from "../contexts/LogContext";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import server from "../lib/server";
 
 export default function DetailScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const {server} = useContext(LogContext);
 
   useEffect(() => {
     navigation.setOptions({headerTitle : route.params.name});

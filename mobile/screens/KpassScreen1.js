@@ -41,7 +41,7 @@ export default function KpassScreen1(){
   }, [navigation]);
 
   return (
-    <View style={{backgroundColor : PALETTE.BACKGROUND}}>
+    <View style={{backgroundColor : PALETTE.BACKGROUND, height : '100%', width : '100%'}}>
       <ScrollView>
         <View style={{
           display : 'flex', 

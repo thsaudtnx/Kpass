@@ -41,7 +41,7 @@ export default function KpassScreen2(){
   }, [navigation]);
 
   return (
-    <View style={{backgroundColor : PALETTE.BACKGROUND}}>
+    <View style={{backgroundColor : PALETTE.BACKGROUND, height : '100%', width : '100%'}}>
       <View style={styles.container}>
         <Text style={styles.title}>K-Pass 카드 등록 및 프리미엄 계정 전환</Text>
         <Text style={styles.content}>{`안드로이드나 아이폰 앱 스토어에서 GoPayz 를 내려받고 안내에 따라 사용자및 카드등록후 프리미엄 계정으로 전환. 프리미엄 계정은 RM5,000 의 일일 한도내에서 자유롭게 충전및 사용이 가능합니다`}</Text>

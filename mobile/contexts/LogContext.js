@@ -4,10 +4,9 @@ import axios from 'axios';
 import logsStorage from "../storages/logsStorage";
 import { useEffect } from "react";
 import * as Location from "expo-location";
-import { ServerContainer } from "@react-navigation/native";
+import server from "../lib/server";
 
 export const LogContext = createContext();
-const server = 'http://13.215.32.109'; //이 값은 맨날 바뀌니깐 확인 필요
 
 export function LogContextProvider({children}){
   const [position, setPosition] = useState({latitude : null, longitude : null,});
@@ -115,7 +114,6 @@ export function LogContextProvider({children}){
   return (
     <LogContext.Provider 
       value={{
-        server,
         position, 
         setPosition, 
         locationPermission,

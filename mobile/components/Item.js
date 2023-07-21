@@ -4,10 +4,11 @@ import PALETTE from "../styles/PALETTE";
 import { useContext } from "react";
 import { LogContext } from "../contexts/LogContext";
 import { useNavigation } from "@react-navigation/native";
+import server from "../lib/server";
 
 export default function Item({item}){
   const navigation = useNavigation();
-  const {position, server} = useContext(LogContext);
+  const {position} = useContext(LogContext);
   return (
     <TouchableOpacity 
       onPress={() => navigation.push('Detail', {item, position})}
