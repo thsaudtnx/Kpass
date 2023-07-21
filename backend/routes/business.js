@@ -1,7 +1,7 @@
 const express = require('express');
 const Business = require('../models/business');
 const Sequelize = require('sequelize');
-const server = require('../lib/server');
+import server from '../lib/server';
 
 const router = express.Router();
 
