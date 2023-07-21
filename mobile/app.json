@@ -18,16 +18,23 @@
       "supportsTablet": true,
       "config": {
         "googleMapsApiKey": "AIzaSyDrGXx7xRTChSkb3q1NwT6oHkt-4uukBqA"
-      }
+      },
+      "bundleIdentifier": "com.gg1985.kpass"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.gg1985.kpass"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6ee3dd41-64b2-46fe-bba3-37bcc7a403d3"
+      }
     }
   }
 }

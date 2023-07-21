@@ -13,7 +13,7 @@ export default function SplashScreen(){
   }, [loadingGetData, loadingGetLocation]);
   return(
       <ImageBackground 
-        source={require('../assets/oxpay-splash.jpg')} 
+        source={require('../assets/splash.png')} 
         resizeMode="cover" 
         style={{
           width : '100%',
