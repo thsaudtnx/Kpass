@@ -5,15 +5,32 @@ oxpay_internship_project
 An App displaying business list and discount rate according to Oxpay K-pass & Travel Wallet project
 with a Manage Page on a web
 
-1. Mobile App
+##### 1. Mobile App
   <img src="https://github.com/messidona3589/Kpass/assets/79046791/aaad2e6a-82dc-4d99-be59-43c5edc6fcdc" width="200" height="400" />
   <img src="https://github.com/messidona3589/Kpass/assets/79046791/85be36af-745f-4bcb-93fc-b3349c7fbca9" width="200" height="400" />
   <img src="https://github.com/messidona3589/Kpass/assets/79046791/5adef116-6ebe-4666-afc0-7bfe0e294aea" width="200" height="400" />
   <img src="https://github.com/messidona3589/Kpass/assets/79046791/2a60e0cc-922a-43c1-bf00-dd6a8f84d481" width="200" height="400" />
+  </br></br>
+  
+Features
+  - Location access using googleMapAPI
+  - Manage state with contextAPI
+</br></br>
 
-2. Web
-  <img src="https://github.com/messidona3589/Kpass/assets/79046791/aaad2e6a-82dc-4d99-be59-43c5edc6fcdc" width="400" />
-  <img src="https://github.com/messidona3589/Kpass/assets/79046791/34543989-4715-4043-9380-1c51186d5a04" width="500" />
+###### 2. Web
+1. Manage Page </br></br>
+    <img src="https://github.com/messidona3589/Kpass/assets/79046791/4863e900-99dc-49d2-b7ab-27955ed1713d" width="400" />
+    <img src="https://github.com/messidona3589/Kpass/assets/79046791/6ea9a527-c8ab-4195-b483-fc33f855bb40" width="400" />
+    </br></br>
+2. API </br></br>
+    <img src="https://github.com/messidona3589/Kpass/assets/79046791/34543989-4715-4043-9380-1c51186d5a04" width="400" />
+    </br></br>
+   
+Features
+- User Authentication with Passport.js
+- Connect MySql with sequelize.js
+- Display API UI using swagger.js 
+</br>
 
 ## 🕰️ Duration
 * 29/05/23 ~ 31/07/23
@@ -22,9 +39,6 @@ with a Manage Page on a web
 * Front-end ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 * Back-end ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white) ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
 * Mobile ![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![Expo](https://img.shields.io/badge/expo-1C1E24?style=for-the-badge&logo=expo&logoColor=#D04A37)
-
-  
-Details - contextAPI, sequelize, passport, googleMapAPI...
 
 ## 📚 Reference
 * Node.js 교과서 개정 2판
