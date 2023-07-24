@@ -7,9 +7,13 @@ with a Manage Page on a web
 
 1. Mobile App
   <img src="https://github.com/messidona3589/Kpass/assets/79046791/aaad2e6a-82dc-4d99-be59-43c5edc6fcdc" width="200" height="400" />
-  
+  <img src="https://github.com/messidona3589/Kpass/assets/79046791/85be36af-745f-4bcb-93fc-b3349c7fbca9" width="200" height="400" />
+  <img src="https://github.com/messidona3589/Kpass/assets/79046791/5adef116-6ebe-4666-afc0-7bfe0e294aea" width="200" height="400" />
+  <img src="https://github.com/messidona3589/Kpass/assets/79046791/aaad2e6a-82dc-4d99-be59-43c5edc6fcdc" width="200" height="400" />
 
 2. Web
+  <img src="https://github.com/messidona3589/Kpass/assets/79046791/aaad2e6a-82dc-4d99-be59-43c5edc6fcdc" width="200" />
+  <img src="https://github.com/messidona3589/Kpass/assets/79046791/7fd874c1-a7c5-40af-8df2-87b7ea8c8453" width="500" />
 
 ## 🕰️ Duration
 * 29/05/23 ~ 31/07/23
