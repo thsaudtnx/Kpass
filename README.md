@@ -6,6 +6,8 @@ An App displaying business list and discount rate according to Oxpay K-pass & Tr
 with a Manage Page on a web
 
 1. Mobile App
+  <img src="https://github.com/messidona3589/Kpass/assets/79046791/aaad2e6a-82dc-4d99-be59-43c5edc6fcdc" width="200" height="400" />
+  
 
 2. Web
 
