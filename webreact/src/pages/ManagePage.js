@@ -1,28 +1,39 @@
 import React from "react";
-import { useMediaQuery } from 'react-responsive'
 import Header from "../components/Header";
 import Filter from "../components/Filter";
 import ItemList from "../components/ItemList";
 import { ManageContextProvider } from "../contexts/ManageContext";
+import { styled } from "styled-components";
+
+const PageWrapper = styled.div`
+  background : lightGray;
+  display : flex;
+  width : 100vw;
+
+  div.screen {
+    width : 1080px;
+    background : white;
+    padding : 20px;
+    border-radius : 5px;
+    border : 1px solid lightGray;
+    margin : auto;
+  }
+  
+`;
+
 
 const ManagePage = () => {
-  const isMobile = useMediaQuery({query: '(max-width: 765px)'});
 
   return (
-    <div style={{background : '#e1e1e1'}}>
-      <div style={{
-        width : isMobile ? 'calc(100vw - 20px)' : '1080px',
-        margin : 'auto',
-        background : 'white',
-        border : isMobile ? 'none' : '1px solid lightGray',
-        padding : isMobile ? '10px' : '30px',}}>
+    <PageWrapper>
+      <div className="screen">
         <Header />
         <ManageContextProvider>
           <Filter />
           <ItemList />
         </ManageContextProvider>
       </div>
-    </div>
+    </PageWrapper>
   );
 };
 

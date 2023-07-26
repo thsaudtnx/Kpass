@@ -2,27 +2,30 @@ import React from "react";
 import { useContext } from "react";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Item from "../components/Item";
-import { useMediaQuery } from "react-responsive";
 import { ManageContext } from "../contexts/ManageContext";
+import { styled } from "styled-components";
+
+const ItemListWrapper = styled.div`
+  color : gray;
+
+  .item-list-header {
+    display : grid;
+    grid-template-columns : 100px 150px 150px 150px 100px 100px;
+    border-bottom : 1px solid lightGray;
+    padding : 10px;
+    margin : 0px 20px;
+    font-size : 12px;
+  }
+`;
+
+const category = ['ID', 'LOGO', 'NAME', 'TYPE', 'KPASS', 'TRAVELWALLET'];
 
 const ItemList = () => {
   const {data, hasMore, getData} = useContext(ManageContext);
-  const isMobile = useMediaQuery({query: '(max-width: 765px)'});
   return (
-    <div>
-      <div className='header'
-        style={{
-        display : 'grid',
-        gridTemplateColumns : isMobile ? '1fr 1fr 1fr 1fr 0.2fr' : '100px 150px 150px 150px 100px 100px',
-        borderBottom : '1px solid lightGray',
-        padding : '10px',
-        margin : isMobile ? '0px' : '0px 20px',
-        fontSize : '12px',}}>
-        { isMobile ?
-          ['LOGO', 'NAME', 'K.P', 'T.W'].map((element, index) => <div key={index}>{element}</div>)
-          :
-          ['ID', 'LOGO', 'NAME', 'TYPE', 'KPASS', 'TRAVELWALLET'].map((element, index) => <div key={index}>{element}</div>)
-        }
+    <ItemListWrapper>
+      <div className='item-list-header'>
+        {category.map((element, index) => <div key={index}>{element}</div>)}
       </div>
       <InfiniteScroll
         className="content"
@@ -33,13 +36,13 @@ const ItemList = () => {
         loader={<div style={{width : '100%', padding : 20, fontSize : 14, fontWeight : 'bold', color : 'gray'}}>Loading...</div>}
         endMessage={
           <p style={{ textAlign: 'center' }}>
-            <b>Yay! You have seen it all</b>
+            <b>NO MORE DATA</b>
           </p>
         }
       >
         {data?.map((element, index)=> <Item key={index} data={element}/>)}
       </InfiniteScroll>
-    </div>
+    </ItemListWrapper>
   );
 };
 

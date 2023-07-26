@@ -1,5 +1,6 @@
 const express = require('express');
 const businessRouter = require('./business');
+const fieldRouter = require('./field');
 const authRouter = require('./auth');
 const mobileRouter = require('./mobile');
 const webRouter = require('./web');
@@ -13,6 +14,14 @@ const router = express.Router();
  *  description : Fetch, Update, Insert, Delete business data
  */
 router.use('/business', businessRouter);
+
+/**
+ * @swagger
+ * tags:
+ *  name : field
+ *  description : Fetch, Update, Insert, Delete field data
+ */
+router.use('/field', fieldRouter);
 
 /**
  * @swagger

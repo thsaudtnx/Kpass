@@ -7,6 +7,94 @@ import { useContext } from "react";
 import { ManageContext } from "../contexts/ManageContext";
 import { useCallback } from "react";
 import {server} from '../lib/serverURL';
+import { styled } from "styled-components";
+
+const modalStyle = {
+  overlay: {
+    position: 'fixed',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    width: "100%",
+    height: "100%",
+    zIndex: "1000000",
+    top: "0",
+    left: "0",
+  },
+  content: {
+    width: "450px",
+    height: "550px",
+    zIndex: "150",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    borderRadius: "10px",
+    backgroundColor: "white",
+    justifyContent: "center",
+  }
+};
+
+const fieldList = [
+  {label: 'RESTURANT', value: 'RESTURANT'},
+  {label: 'CAFE/BAKERY', value: 'CAFE/BAKERY'},
+  {label: 'MART/TRANSPORT', value: 'MART/TRANSPORT'},
+  {label: 'EDUCATION/CONSULTING', value: 'EDUCATION/CONSULTING'},
+  {label: 'HEALTH/HOSPITAL', value: 'HEALTH/HOSPITAL'},
+  {label: 'TRAVEL/FACILITY', value: 'TRAVEL/FACILITY'},
+  {label: 'HAIR SALON', value: 'HAIR SALON'},
+  {label: 'FITNESS', value: 'FITNESS'},
+  {label: 'FASHION/SPORT', value: 'FASHION/SPORT'},
+  {label: 'ETC', value: 'ETC', },
+]
+
+const ModalWrapper = styled.div`
+  div.modal-header {
+    display : flex;
+    flex-direction : row;
+    justify-content : space-between;
+    align-items : center;
+    margin-bottom : 30px;
+  }
+
+  div.modal-content-section {
+    margin-bottom : 15px;
+    display : flex;
+    align-items : center;
+    flex-direction : row;
+  }
+
+  div.modal-content-section-left {
+    width : 80px;
+  }
+
+  .modal-content-section-right {
+    outline : none;
+    width : 250px;
+    padding : 10px 20px;
+    border : 1px solid lightGray;
+  }
+
+  div.buttons {
+    position : relative;
+    width : 100%;
+    font-size : 14px;
+    color : gray;
+  }
+
+  div.buttons > div.button {
+    position : absolute;
+    border : 1px solid lightgray;
+    bottom : -50px;
+    margin-right : 30px;
+    padding : 10px;
+    cursor : pointer;
+    &:hover {
+      border : 1px solid white;
+      background : lightGray;
+      color : white;
+    }
+  }
+
+`;
 
 const EditModal = ({editModal, setEditModal, data}) => {
   const {isUpdated, setIsUpdated, setPageNum, setHasMore, setData} = useContext(ManageContext);
@@ -79,45 +167,15 @@ const EditModal = ({editModal, setEditModal, data}) => {
       shouldCloseOnOverlayClick={false} 
       onRequestClose={() => setEditModal(false)} 
       ariaHideApp={false} 
-      style={{
-        overlay: {
-          position: 'fixed',
-          backgroundColor: 'rgba(0, 0, 0, 0.4)',
-          width: "100%",
-          height: "100%",
-          zIndex: "1000000",
-          top: "0",
-          left: "0",
-        },
-        content: {
-          width: "450px",
-          height: "550px",
-          zIndex: "150",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          borderRadius: "10px",
-          backgroundColor: "white",
-          justifyContent: "center",
-        }
-      }}
-    >
-        <div
-          className="header" 
-          style={{
-            display : 'flex',
-            flexDirection : 'row',
-            justifyContent : 'space-between',
-            alignItems : 'center',
-            marginBottom : '30px',
-          }}>
+      style={modalStyle}>
+        <ModalWrapper>
+          <div className="modal-header">
             <div style={{fontSize : '20px', }}>UPDATE BUSINESS</div>
             <div style={{cursor : 'pointer'}} onClick={() => goBack()}>
               <AiOutlineClose style={{width : '20px', height : '20px'}}/>
             </div>
-        </div>
-        <div className="content" style={{marginBottom : '20px', fontSize : '14px'}}>
+          </div>
+        <div className="modal-content" style={{marginBottom : '20px', fontSize : '14px'}}>
           <form className="logo" encType='multipart/form-data'
             style={{marginBottom : '20px', display : 'flex', flexDirection : 'row', alignItems : 'center'}}
             onSubmit={ async e => uploadLogo(e)}>
@@ -127,72 +185,36 @@ const EditModal = ({editModal, setEditModal, data}) => {
             <input type='file' name='file' style={{cursor : 'pointer'}}/>
             <button type='submit' style={{cursor : 'pointer'}}>Upload</button>
           </form>
-          <div 
-            className="name" 
-            style={{
-              marginBottom : '20px', 
-              display : 'flex',
-              alignItems : 'center',
-              flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>NAME</div>
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">NAME</div>
             <input 
+              className="modal-content-section-right"
               value={editedData.name} 
               onChange={e => setEditedData({...editedData, name : e.target.value})} 
-              style={{
-                padding : '10px 20px',
-                border : '1px solid lightGray',}}
             />
           </div>
-          <div className="type" 
-            style={{
-              marginBottom : '20px', 
-              display : 'flex',
-              alignItems : 'center',
-              flexDirection : 'row',
-              }}>
-            <div style={{width : '80px'}}>TYPE</div>
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">TYPE</div>
             <select 
+              className="modal-content-section-right"
               value={editedData.type} 
-              onChange={e => setEditedData({...editedData, type : e.target.value})} 
-              style={{
-              padding : '10px 20px',
-              border : '1px solid lightGray',}}>
+              onChange={e => setEditedData({...editedData, type : e.target.value})}>
               <option value={null} defaultChecked>---</option>
-              {[{label: 'RESTURANT', value: 'RESTURANT'},
-                {label: 'CAFE/BAKERY', value: 'CAFE/BAKERY'},
-                {label: 'MART/TRANSPORT', value: 'MART/TRANSPORT'},
-                {label: 'EDUCATION/CONSULTING', value: 'EDUCATION/CONSULTING'},
-                {label: 'HEALTH/HOSPITAL', value: 'HEALTH/HOSPITAL'},
-                {label: 'TRAVEL/FACILITY', value: 'TRAVEL/FACILITY'},
-                {label: 'HAIR SALON', value: 'HAIR SALON'},
-                {label: 'FITNESS', value: 'FITNESS'},
-                {label: 'FASHION/SPORT', value: 'FASHION/SPORT'},
-                {label: 'ETC', value: 'ETC', },].map((element, index) => <option key={index} value={element.value}>{element.label}</option>)}
+              {fieldList.map((element, index) => <option key={index} value={element.value}>{element.label}</option>)}
             </select>
           </div>
-          <div className="phone" 
-            style={{
-            marginBottom : '20px', 
-            display : 'flex',
-            alignItems : 'center',
-            flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>PHONE</div>
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">PHONE</div>
             <input 
+              className="modal-content-section-right"
               type="text"
               maxLength={20}
               value={editedData.phone} 
               onChange={e => setEditedData({...editedData, phone : e.target.value})} 
-              style={{
-              padding : '10px 20px',
-              border : '1px solid lightGray',}}/>
+            />
           </div>
-          <div className="address" 
-            style={{
-            marginBottom : '20px', 
-            display : 'flex',
-            alignItems : 'center',
-            flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>ADDRESS</div>
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">ADDRESS</div>
             <GooglePlacesAutocomplete
               apiKey="AIzaSyCbw2mv0aLtttdNVl2hmkeZYVTo7nCHTZY"
               apiOptions={{ language: 'en', region: 'my' }}
@@ -211,7 +233,8 @@ const EditModal = ({editModal, setEditModal, data}) => {
                 styles : {
                   input : (provided) => ({
                     ...provided,
-                    color : "#222222"
+                    color : "#222222",
+                    minWidth : '250px',
                   }),
                   option : (provided) => ({
                     ...provided,
@@ -233,71 +256,43 @@ const EditModal = ({editModal, setEditModal, data}) => {
               )}
             />
           </div>
-          <div className="kpass" 
-            style={{
-            marginBottom : '20px', 
-            display : 'flex',
-            alignItems : 'center',
-            flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>KPASS</div>
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">ADDRESS DETAIL</div>
             <input 
+              className="modal-content-section-right"
+              type="text" 
+              value={editedData.addressdetail} 
+              onChange={e => setEditedData({...editedData, addressdetail : e.target.value})}
+            />
+          </div>
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">KPASS</div>
+            <input 
+              className="modal-content-section-right"
               type="number"
               min={0}
               max={100}
               value={editedData.kpass}
               onChange={e => setEditedData({...editedData, kpass : parseInt(e.target.value, 10)})} 
-              style={{
-              padding : '10px 20px',
-              border : '1px solid lightGray',}}/>
+            />
           </div>
-          <div className="travelwallet" 
-            style={{
-            marginBottom : '20px', 
-            display : 'flex',
-            alignItems : 'center',
-            flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>TRAVEL WALLET</div>
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">TRAVEL WALLET</div>
             <input 
+              className="modal-content-section-right"
               type="number"
               min={0}
               max={100}
               value={editedData.travelwallet} 
               onChange={e => setEditedData({...editedData, travelwallet : parseInt(e.target.value, 10)})} 
-              style={{
-              padding : '10px 20px',
-              border : '1px solid lightGray',
-            }}/>
+            />
           </div>
         </div>
-        <div className="buttons"
-          style={{
-          position : 'relative',
-          width : '100%',
-          fontSize : '14px',
-          color : 'gray',}}>
-          <div style={{
-            position : 'absolute',
-            border : '1px solid lightgray',
-            right : '80px',
-            bottom : '-50px',
-            marginRight : '30px',
-            padding : '10px',
-            cursor : 'pointer',}}
-            onClick={() => submitAll()}>
-            CONFIRM
-          </div>
-          <div style={{
-            position : 'absolute',
-            right : '0',
-            border : '1px solid lightgray',
-            bottom : '-50px',
-            padding : '10px',
-            cursor : 'pointer',}}
-            onClick={() => goBack()}>
-            CANCEL
-          </div>
+        <div className="buttons">
+          <div className="button" style={{right : '100px'}} onClick={() => submitAll()}>CONFIRM</div>
+          <div className="button" style={{right : '0px'}} onClick={() => goBack()}>CANCEL</div>
         </div>
-      
+        </ModalWrapper>
     </Modal>
   );
 };

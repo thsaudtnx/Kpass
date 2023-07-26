@@ -23,6 +23,10 @@ module.exports = class Business extends Sequelize.Model {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      addressdetail : {
+        type : Sequelize.STRING,
+        allowNull : true,
+      },
       latitude: {
         type: Sequelize.DECIMAL,
         allowNull: false,

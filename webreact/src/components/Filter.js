@@ -1,10 +1,108 @@
 import React, { useContext } from "react";
-import { useMediaQuery } from "react-responsive";
 import AddModal from "../components/AddModal";
 import { ManageContext } from "../contexts/ManageContext";
+import { styled } from "styled-components";
+
+const FilterWrapper = styled.div`
+  position : sticky;
+  background : white;
+  top : 0px;
+  display : flex;
+  flex-direction : row;
+  justify-content : space-between;
+  padding : 20px;
+
+  div.filter-left {
+    display : flex;
+    flex-direction : row;
+    align-items : center;
+    margin-bottom : 0px;
+  }
+
+  div.filter-left > select {
+    padding : 10px;
+    border : 1px solid lightGray;
+    cursor : pointer;
+    width : 150px;
+    outline : none;
+  }
+
+  div.filter-left > input.inputText {
+    padding : 10px 20px;
+    width : 200px;
+    border : 1px solid lightGray;
+    margin-left : 10px;
+    cursor : pointer;
+    margin-right : 10px;
+    outline : none;
+  }
+
+  div.filter-left > div.button {
+    padding : 8px 15px;
+    border : 1px solid lightGray;
+    color : gray;
+    cursor : pointer;
+    margin-right : 10px;
+    font-size : 14px;
+    white-space : nowrap;
+    &:hover {
+      background : lightGray;
+      color : white;
+      border : 1px solid white;
+    }
+  }
+
+  div.filter-left > input[type="checkbox"] {
+    width : 14px;
+    height : 14px;
+    cursor : pointer;
+  }
+
+  div.filter-right {
+    display : flex; 
+    flex-direction : row; 
+    align-items : center;
+  }
+
+  div.filter-right > select {
+    padding : 10px;
+    border : 1px solid lightGray;
+    margin-right : 10px;
+    cursor : pointer;
+  }
+
+  div.filter-right > div.button {
+    display : flex;
+    padding : 10px;
+    align-items : center;
+    justify-content : center;
+    border : 1px solid lightGray;
+    background : white;
+    font-size : 12px;
+    cursor : pointer;
+    &:hover {
+      border : 1px solid white;
+      background : lightGray;
+      color : white;
+    }
+  }
+`;
+
+const fieldList = [
+  {label: 'ALL', value: 'ALL',},
+  {label: 'RESTURANT', value: 'RESTURANT'},
+  {label: 'CAFE/BAKERY', value: 'CAFE/BAKERY'},
+  {label: 'MART/TRANSPORT', value: 'MART/TRANSPORT'},
+  {label: 'EDUCATION/CONSULTING', value: 'EDUCATION/CONSULTING'},
+  {label: 'HEALTH/HOSPITAL', value: 'HEALTH/HOSPITAL'},
+  {label: 'TRAVEL/FACILITY', value: 'TRAVEL/FACILITY'},
+  {label: 'HAIR SALON', value: 'HAIR SALON'},
+  {label: 'FITNESS', value: 'FITNESS'},
+  {label: 'FASHION/SPORT', value: 'FASHION/SPORT'},
+  {label: 'ETC', value: 'ETC', }
+];
 
 const Filter = () => {
-  const isMobile = useMediaQuery({query: '(max-width: 765px)'});
   const {
     setPageNum,
     field, 
@@ -21,113 +119,57 @@ const Filter = () => {
   } = useContext(ManageContext);
 
   return (
-    <div style={{
-      position : 'sticky',
-      background : 'white',
-      top : '0px',
-      display : 'flex',
-      flexDirection : isMobile ? 'column' : 'row',
-      justifyContent : 'space-between',
-      padding : isMobile ? '10px' : '20px'}}>
-      <div className='left'
-        style={{
-        display : 'flex',
-        flexDirection : 'row',
-        alignItems : 'center',
-        marginBottom : isMobile ? '10px' : '0px'}}>
-        <select style={{
-          padding : '10px',
-          border : '1px solid lightGray',
-          cursor : 'pointer',
-          width : isMobile ? '100px' : '150px',}}
+    <FilterWrapper>
+      <div className='filter-left'>
+        <select
           value={field}
-          onChange={e => {setField(e.target.value);setPageNum(0);setIsUpdated(isUpdated + 1);}}>
-          {[{label: 'ALL', value: 'ALL',},
-            {label: 'RESTURANT', value: 'RESTURANT'},
-            {label: 'CAFE/BAKERY', value: 'CAFE/BAKERY'},
-            {label: 'MART/TRANSPORT', value: 'MART/TRANSPORT'},
-            {label: 'EDUCATION/CONSULTING', value: 'EDUCATION/CONSULTING'},
-            {label: 'HEALTH/HOSPITAL', value: 'HEALTH/HOSPITAL'},
-            {label: 'TRAVEL/FACILITY', value: 'TRAVEL/FACILITY'},
-            {label: 'HAIR SALON', value: 'HAIR SALON'},
-            {label: 'FITNESS', value: 'FITNESS'},
-            {label: 'FASHION/SPORT', value: 'FASHION/SPORT'},
-            {label: 'ETC', value: 'ETC', }].map((element, index) => <option key={index} value={element.value}>{element.label}</option>)
-          }
+          onChange={e => {
+            setField(e.target.value);
+            setPageNum(0);
+            setIsUpdated(isUpdated + 1);
+          }}>
+          {fieldList.map((element, index) => <option key={index} value={element.value}>{element.label}</option>)}
         </select>
         <input 
+          className="inputText"
           type='text' 
           placeholder='SEARCH BY NAME'
           value={inputText}
           onChange={e => setInputText(e.target.value)}
-          style={{
-            padding : isMobile ? '10px' : '10px 20px',
-            width : isMobile ? '150px' : '200px',
-            border : '1px solid lightGray',
-            marginLeft : '10px',
-            cursor : 'pointer',
-            marginRight : isMobile ? '0px' : '10px',
+        />
+        <div className="button" onClick={() => {
+          setPageNum(0);
+          setIsUpdated(isUpdated + 1);}}>
+          SEARCH
+        </div> 
+        <input 
+          type="checkbox"
+          value={deletedData}
+          onChange={() => {
+            setDeletedData(!deletedData);
+            setPageNum(0);
+            setIsUpdated(isUpdated + 1);
           }}
         />
-        <button
-          onClick={() => {setPageNum(0);setIsUpdated(isUpdated + 1);}}
-          style={{
-            cursor : 'pointer',
-            marginRight : isMobile ? 0 : 20,
-            fontSize : isMobile ? 12 : 14,
-            padding : '3px',
-            whiteSpace : 'nowrap',
-            marginLeft : isMobile ? 10 : 0,
-          }}>
-          SEARCH
-        </button>
-        {!isMobile && <div style={{display : 'flex', flexDirection : 'row', alignItems : 'center'}}>
-          <input 
-            type="checkbox"
-            value={deletedData}
-            onChange={() => {setDeletedData(!deletedData);setPageNum(0);setIsUpdated(isUpdated + 1);}}
-            style={{width : 14, height : 14}}
-          />
-          <div style={{fontSize : 14, color : 'gray'}}>DELETED DATA</div>
-        </div>}
+        <div style={{fontSize : 14, color : 'gray'}}>DELETED DATA</div>
       </div>
-      <div className="right" style={{display : 'flex', flexDirection : 'row', alignItems : 'center'}}>
-        {isMobile && <div style={{display : 'flex', flexDirection : 'row', alignItems : 'center', marginRight : 10,}}>
-          <input 
-            type="checkbox"
-            value={deletedData}
-            onChange={() => {setDeletedData(!deletedData);setPageNum(0);setIsUpdated(isUpdated + 1);}}
-            style={{width : 14, height : 14}}
-          />
-          <div style={{fontSize : 14, color : 'gray'}}>DELETED DATA</div>
-        </div>}
-        <select style={{
-          padding : '10px',
-          border : '1px solid lightGray',
-          marginRight : '10px',
-          cursor : 'pointer',}}
+
+      <div className="filter-right">
+        <select
           value={sortBy}
-          onChange={ e => {setSortBy(e.target.value);setPageNum(0);setIsUpdated(isUpdated + 1);}}>
-          {['ALL', 'KPASS', 'TRAVELWALLET']
-            .map((element, index) => <option key={index} value={element}>{element}</option>)
-          }
+          onChange={ e => {
+            setSortBy(e.target.value);
+            setPageNum(0);
+            setIsUpdated(isUpdated + 1);
+          }}>
+          {['ALL', 'KPASS', 'TRAVELWALLET'].map((element, index) => <option key={index} value={element}>{element}</option>)}
         </select>
-        <div style={{
-          display : 'flex',
-          padding : '10px',
-          alignItems : 'center',
-          justifyContent : 'center',
-          border : '1px solid lightGray',
-          fontSize : '12px',
-          cursor : 'pointer',
-          marginRight : isMobile ? '0px' : '50px'}}
-          onClick={() => setAddModal(true)}>
+        <div className="button" onClick={() => setAddModal(true)}>
           ADD
         </div>
       </div>
-
       <AddModal />
-    </div>
+    </FilterWrapper>
   );
 };
 

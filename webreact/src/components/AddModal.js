@@ -7,19 +7,118 @@ import { useContext } from "react";
 import { ManageContext } from "../contexts/ManageContext";
 import { useCallback } from "react";
 import {server} from '../lib/serverURL';
+import { styled } from "styled-components";
+
+const fieldCategory = [
+  {label: 'RESTAURANT', value: 'RESTAURANT'},
+  {label: 'CAFE/BAKERY', value: 'CAFE/BAKERY'},
+  {label: 'MART/TRANSPORT', value: 'MART/TRANSPORT'},
+  {label: 'EDUCATION/CONSULTING', value: 'EDUCATION/CONSULTING'},
+  {label: 'HEALTH/HOSPITAL', value: 'HEALTH/HOSPITAL'},
+  {label: 'TRAVEL/FACILITY', value: 'TRAVEL/FACILITY'},
+  {label: 'HAIR SALON', value: 'HAIR SALON'},
+  {label: 'FITNESS', value: 'FITNESS'},
+  {label: 'FASHION/SPORT', value: 'FASHION/SPORT'},
+  {label: 'ETC', value: 'ETC', },
+]
+
+const modalStyle = {
+  overlay: {
+    position: 'fixed',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    width: "100%",
+    height: "100%",
+    zIndex: "1000000",
+    top: "0",
+    left: "0",
+  },
+  content: {
+    width: "450px",
+    height: "550px",
+    zIndex: "10",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    borderRadius: "10px",
+    backgroundColor: "white",
+    justifyContent: "center",
+  }
+};
+
+const ModalWrapper = styled.div`
+  div.modal-header {
+    display : flex;
+    flex-direction : row;
+    justify-content : space-between;
+    align-items : center;
+    margin-bottom : 30px;
+  }
+
+  div.modal-content > div.modal-content-section {
+    margin-bottom : 15px;
+    display : flex;
+    align-items : center;
+    flex-direction : row;
+  }
+
+  div.modal-content-section-left {
+    width : 80px;
+  }
+
+  .modal-content-section-right {
+    outline : none;
+    width : 250px;
+    padding : 10px 20px;
+    border : 1px solid lightGray;
+  }
+
+  div.buttons {
+    position : relative;
+    width : 100%;
+    font-size : 14px;
+    color : gray;
+  }
+
+  div.buttons > div.button {
+    position : absolute;
+    border : 1px solid lightgray;
+    bottom : -50px;
+    margin-right : 30px;
+    padding : 10px;
+    cursor : pointer;
+    &:hover {
+      border : 1px solid white;
+      background : lightGray;
+      color : white;
+    }
+  }
+
+`;
 
 const AddModal = () => {
-  const {setPageNum, isUpdated, setIsUpdated, addModal, setAddModal, setHasMore, setData} = useContext(ManageContext);
+  const {
+    setPageNum, 
+    isUpdated, 
+    setIsUpdated, 
+    addModal, 
+    setAddModal, 
+    setHasMore, 
+    setData
+  } = useContext(ManageContext);
+
   useEffect(() => {
     if (addModal) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
   },[addModal]);
+
   const [newData, setNewData] = useState({
     logo : null,
     name : null,
     type : null,
     phone : null,
     address : null,
+    addressdetail : null,
     latitude : null,
     longitude : null,
     kpass : 0,
@@ -32,13 +131,24 @@ const AddModal = () => {
       type : null,
       phone : null,
       address : null,
+      addressdetail : null,
       latitude : null,
       longitude : null,
       kpass : 0,
       travelwallet : 0,
-    }}, []);
-  const goBack = useCallback(async () => {
-    if (!newData.logo && !newData.name && !newData.type && !newData.phone && !newData.address && !newData.kpass && !newData.travelwallet) setAddModal(false);
+  }}, []);
+
+  const goBack = useCallback(
+    async () => {
+    if (!newData.logo && 
+      !newData.name && 
+      !newData.type && 
+      !newData.phone && 
+      !newData.address && 
+      !newData.addressdetail && 
+      !newData.kpass && 
+      !newData.travelwallet
+      ) setAddModal(false);
     else if (window.confirm('THE INFORMATION IS NOT SAVED. STILL WANT TO EXIT')) {
       if (!!newData.logo){
         const result = await axios.delete(`${newData.logo}`);
@@ -72,21 +182,11 @@ const AddModal = () => {
   }, [newData]);
 
   const submitAll = useCallback(() => {
-    if (!newData.name || !newData.type || !newData.phone || !newData.address) {
+    if (!newData.name || !newData.type || !newData.address) {
       window.alert('THERE IS AN EMPTY SECTION');
     }
     else if (window.confirm('DO YOU WANT TO ADD?')){
-      return axios.post(`${server}/business/add`, {
-        logo : newData.logo,
-        name : newData.name,
-        type : newData.type,
-        phone : newData.phone,
-        address : newData.address,
-        latitude : newData.latitude,
-        longitude : newData.longitude,
-        kpass : newData.kpass,
-        travelwallet : newData.travelwallet, 
-      })
+      return axios.post(`${server}/business/add`, newData)
         .then(res => {
           console.log(newData);
           console.log(res.data.message);
@@ -107,46 +207,16 @@ const AddModal = () => {
       shouldCloseOnOverlayClick={false} 
       onRequestClose={() => setAddModal(false)} 
       ariaHideApp={false} 
-      style={{
-        overlay: {
-          position: 'fixed',
-          backgroundColor: 'rgba(0, 0, 0, 0.4)',
-          width: "100%",
-          height: "100%",
-          zIndex: "1000000",
-          top: "0",
-          left: "0",
-        },
-        content: {
-          width: "450px",
-          height: "550px",
-          zIndex: "10",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          borderRadius: "10px",
-          backgroundColor: "white",
-          justifyContent: "center",
-        }
-      }}
-    >
-        <div style={{
-          display : 'flex',
-          flexDirection : 'row',
-          justifyContent : 'space-between',
-          alignItems : 'center',
-          marginBottom : '30px',}}>
+      style={modalStyle}>
+      <ModalWrapper>
+        <div className="modal-header">
           <div style={{fontSize : '20px', }}>REGISTER BUSINESS</div>
           <div style={{cursor : 'pointer'}} onClick={() => goBack()}>
             <AiOutlineClose />
           </div>
         </div>
-        <div 
-          className="content" 
-          style={{marginBottom : '20px', fontSize : '14px'}}>
-          <form 
-            className="logo" 
+        <div className="modal-content" style={{marginBottom : '20px', fontSize : '14px'}}>
+          <form className="logo" 
             encType='multipart/form-data'
             style={{marginBottom : '20px', display : 'flex', flexDirection : 'row', alignItems : 'center',}}
             onSubmit={e => submitLogo(e)}>
@@ -155,76 +225,38 @@ const AddModal = () => {
             <input type='file' name='file' style={{cursor : 'pointer'}}/>
             <button type='submit' style={{cursor : 'pointer'}}>Upload</button>
           </form>
-          <div 
-            className="name" 
-            style={{
-            marginBottom : '20px', 
-            display : 'flex',
-            alignItems : 'center',
-            flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>NAME</div>
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">NAME</div>
             <input 
+              className="modal-content-section-right"
               value={newData.name} 
               onChange={e => setNewData({...newData, name : e.target.value})} 
-              style={{
-                width : '250px',
-              padding : '10px 20px',
-              border : '1px solid lightGray',
-            }}/>
+            />
           </div>
-          <div className="type" 
-            style={{
-              marginBottom : '20px', 
-              display : 'flex',
-              alignItems : 'center',
-              flexDirection : 'row',
-              }}>
-            <div style={{width : '80px'}}>TYPE</div>
-            <select 
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">TYPE</div>
+            <select
+              className="modal-content-section-right" 
               value={newData.type} 
-              onChange={e => setNewData({...newData, type : e.target.value})} 
-              style={{
-              padding : '10px 20px',
-              width : '150px',
-              border : '1px solid lightGray',}}>
+              onChange={e => setNewData({...newData, type : e.target.value})}>
               <option value={null} defaultChecked>---</option>
-              {[{label: 'RESTURANT', value: 'RESTURANT'},
-                {label: 'CAFE/BAKERY', value: 'CAFE/BAKERY'},
-                {label: 'MART/TRANSPORT', value: 'MART/TRANSPORT'},
-                {label: 'EDUCATION/CONSULTING', value: 'EDUCATION/CONSULTING'},
-                {label: 'HEALTH/HOSPITAL', value: 'HEALTH/HOSPITAL'},
-                {label: 'TRAVEL/FACILITY', value: 'TRAVEL/FACILITY'},
-                {label: 'HAIR SALON', value: 'HAIR SALON'},
-                {label: 'FITNESS', value: 'FITNESS'},
-                {label: 'FASHION/SPORT', value: 'FASHION/SPORT'},
-                {label: 'ETC', value: 'ETC', },].map((element, index) => <option key={index} value={element.value}>{element.label}</option>)}
+              {fieldCategory.map((element, index) => <option key={index} value={element.value}>{element.label}</option>)}
             </select>
           </div>
-          <div className="phone" 
-            style={{
-            marginBottom : '20px', 
-            display : 'flex',
-            alignItems : 'center',
-            flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>PHONE</div>
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">PHONE</div>
             <input 
+              className="modal-content-section-right"
               type="text"
               maxLength={20}
               value={newData.phone} 
               onChange={e => setNewData({...newData, phone : e.target.value})} 
-              style={{
-                width : '200px',
-              padding : '10px 20px',
-              border : '1px solid lightGray',}}/>
+            />
           </div>
-          <div className="address" 
-            style={{
-            marginBottom : '20px', 
-            display : 'flex',
-            alignItems : 'center',
-            flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>ADDRESS</div>
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">ADDRESS</div>
             <GooglePlacesAutocomplete
+              className="modal-content-section-right"
               apiKey="AIzaSyCbw2mv0aLtttdNVl2hmkeZYVTo7nCHTZY"
               apiOptions={{ language: 'en', region: 'my' }}
               selectProps={{
@@ -242,7 +274,8 @@ const AddModal = () => {
                 styles : {
                   input : (provided) => ({
                     ...provided,
-                    color : "#222222"
+                    color : "#222222",
+                    minWidth : '250px',
                   }),
                   option : (provided) => ({
                     ...provided,
@@ -264,72 +297,43 @@ const AddModal = () => {
               )}
             />
           </div>
-          <div className="kpass" 
-            style={{
-            marginBottom : '20px', 
-            display : 'flex',
-            alignItems : 'center',
-            flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>KPASS</div>
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">ADDRESS DETAIL</div>
             <input 
+              className="modal-content-section-right"
+              type="text" 
+              value={newData.addressdetail} 
+              onChange={e => setNewData({...newData, addressdetail : e.target.value})}
+            />
+          </div>
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">KPASS</div>
+            <input 
+              className="modal-content-section-right"
               type="number"
               min={0}
               max={100}
               value={newData.kpass}
               onChange={e => setNewData({...newData, kpass : parseInt(e.target.value, 10)})} 
-              style={{
-                width : '80px',
-              padding : '10px 20px',
-              border : '1px solid lightGray',}}/>
+            />
           </div>
-          <div className="travelwallet" 
-            style={{
-            marginBottom : '20px', 
-            display : 'flex',
-            alignItems : 'center',
-            flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>TRAVEL WALLET</div>
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">TRAVEL WALLET</div>
             <input 
+              className="modal-content-section-right"
               type="number"
               min={0}
               max={100}
               value={newData.travelwallet} 
               onChange={e => setNewData({...newData, travelwallet : parseInt(e.target.value, 10)})} 
-              style={{
-                width : '80px',
-              padding : '10px 20px',
-              border : '1px solid lightGray',
-            }}/>
+            />
           </div>
         </div>
-        <div className="buttons"
-          style={{
-          position : 'relative',
-          width : '100%',
-          fontSize : '14px',
-          color : 'gray',}}>
-          <div style={{
-            position : 'absolute',
-            border : '1px solid lightgray',
-            right : '80px',
-            bottom : '-50px',
-            marginRight : '30px',
-            padding : '10px',
-            cursor : 'pointer',}}
-            onClick={() => submitAll()}>
-            CONFIRM
-          </div>
-          <div style={{
-            position : 'absolute',
-            right : '0',
-            border : '1px solid lightgray',
-            bottom : '-50px',
-            padding : '10px',
-            cursor : 'pointer',}}
-            onClick={() => goBack()}>
-            CANCEL
-          </div>
+        <div className="buttons">
+          <div className="button" style={{right : '100px'}} onClick={() => submitAll()}>CONFIRM</div>
+          <div className="button" style={{right : '0px'}} onClick={() => goBack()}>CANCEL</div>
         </div>
+      </ModalWrapper>
     </Modal>
   );
 };

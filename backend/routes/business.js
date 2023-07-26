@@ -63,6 +63,8 @@ const router = express.Router();
  *                      type: string
  *                    address:
  *                      type: string
+ *                    addressdetail:
+ *                      type: string
  *                    latitude:
  *                      type: number
  *                    longitude:
@@ -159,17 +161,7 @@ router.get('/list', async (req, res, next) => {
  */
 router.post('/add', async (req, res, next) => {
   try {
-     const result = await Business.create({
-        logo : req.body.logo,
-        name : req.body.name,
-        type : req.body.type,
-        phone : req.body.phone,
-        address : req.body.address,
-        latitude : req.body.latitude,
-        longitude : req.body.longitude,
-        kpass : req.body.kpass,
-        travelwallet : req.body.travelwallet,
-      });
+     const result = await Business.create(req.body);
       res.status(200).json({ok : 1, message : 'INSERT SUCCESS'})
     } catch(err) {
     console.error(err);
@@ -205,7 +197,13 @@ router.post('/add', async (req, res, next) => {
 router.delete('/delete/:id', async (req, res, next) => {
   console.log(req.params);
   try {
+      const temp = await Business.findOne({
+        where : {
+          id : req.params.id,
+        }
+      });
       const result = await Business.destroy({
+        paranoid : !!temp.deletedAt,
         where : {
           id : req.params.id
         }
