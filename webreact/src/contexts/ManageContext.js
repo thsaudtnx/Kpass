@@ -50,7 +50,7 @@ export function ManageContextProvider({children}){
 
   useEffect(() => {
     getData();
-  }, [isUpdated])
+  }, [isUpdated]);
 
   return (
     <ManageContext.Provider value={{
@@ -74,7 +74,8 @@ export function ManageContextProvider({children}){
       deletedData,
       setDeletedData,
       isUpdated,
-      setIsUpdated,}}>
+      setIsUpdated,
+      }}>
       {children}
     </ManageContext.Provider>
   );

@@ -1,12 +1,9 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useContext } from "react";
 import Modal from 'react-modal';
 import {AiOutlineClose} from 'react-icons/ai';
-import axios from "axios";
-import { useContext } from "react";
-import { ManageContext } from "../contexts/ManageContext";
-import { useCallback } from "react";
-import {server} from '../lib/serverURL';
 import { styled } from "styled-components";
+import { onInsert, onRemove, onEdit } from "../lib/api";
+import { FieldContext } from "../contexts/FieldContext";
 
 const modalStyle = {
   overlay: {
@@ -33,42 +30,146 @@ const modalStyle = {
 };
 
 const ModalWrapper = styled.div`
-  .modal-header {
+
+  div.modal-header {
     display : flex;
     flex-direction : row;
     justify-content : space-between;
     align-items : center;
-    margin-bottom : 30px;
+    margin-bottom : 20px;
   }
 
+  div.modal-filter {
+    display : flex;
+    flex-direction : row;
+    align-items : center;
+    margin-bottom : 10px;
+    position : sticky;
+  }
+
+  div.modal-filter > input {
+    margin-right : 5px;
+    padding : 10px 20px;
+    border : 1px solid lightGray;
+    outline : none;
+  }
+
+  div.modal-filter > div.modal-filter-button {
+    padding : 7px 15px;
+    border : 1px solid lightGray;
+    color : gray;
+    background : white;
+    &:hover {
+      border : 1px solid white;
+      color : white;
+      background : lightGray;
+      cursor : pointer;
+    }
+  }
+
+  div.modal-content-header {
+    display : grid;
+    grid-template-columns : 70px 1fr;
+    border-bottom : 1px solid lightGray;
+    padding : 10px;
+    margin-bottom : 10px;
+    font-size : 12px;
+    color : gray;
+  }
 `;
+
+const FieldItemWrapper = styled.div`
+  display : grid;
+  grid-template-columns : 70px 2fr 1fr;
+  padding : 10px;
+  font-size : 12px;
+  color : gray;
+
+  div.item-buttons {
+    display : flex;
+    flex-direction : row;
+    align-items : center;
+    font-size : 10px;
+  }
+
+  div.item-button {
+    cursor : pointer;
+    margin-left : 5px;
+  }
+
+  input {
+    width : 100px;
+    outline : none;
+    border : 1px solid lightGray;
+    padding : 5px 10px;
+  }
+`;
+
+
+const FieldItem = ({field, onRemove, onEdit}) => {
+
+  const [edit, setEdit] = useState(false);
+  const [editedData, setEditedData] = useState(field.name);
+  const {isUpdated, setIsUpdated} = useContext(FieldContext);
+  
+  return (
+    <FieldItemWrapper>
+      <div>{field.id}</div>
+      {!edit && <div>{field.name}</div>}
+      {edit && <input 
+        type="text" 
+        placeholder={editedData} 
+        value={editedData} 
+        onChange={e => setEditedData(e.target.value)}
+      />}
+      <div className="item-buttons">
+        <button 
+          className="item-button" 
+          onClick={() => {
+            if (edit){
+              if (editedData === field.name) {
+                window.alert('Looks the same...');
+              } else if (!editedData){
+                window.alert('Section Empty!');
+              } else if (window.confirm('Do you want to edit the field?')){
+                onEdit(editedData);
+                setIsUpdated(isUpdated + 1);
+              }
+            }
+            setEdit(!edit);
+          }}>
+            {edit ? 'apply' : 'edit'}
+        </button>
+        <button 
+          className="item-button" 
+          style={{marginLeft : 5}}
+          onClick={() => {
+            if (edit){
+              setEdit(false);
+              setEditedData(field.name);
+            } else {
+              onRemove(field.id);
+              setIsUpdated(isUpdated + 1);
+            }
+          }}>
+            {edit ? 'cancel' : 'delete'}
+        </button>
+      </div>
+    </FieldItemWrapper>
+  );
+};
 
 
 const FieldListModal = ({fieldListModal, setFieldListModal}) => {
 
-  const [fieldList, setFieldList] = useState();
-  
+  const {fieldList, isUpdated, setIsUpdated} = useContext(FieldContext);
+  console.log(fieldList);
+  const [inputText, setInputText] = useState();
+
   useEffect(() => {
     if (fieldListModal) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
   },[fieldListModal]);
-
-  const onSubmit = useCallback(async() => {
-    if (window.confirm('DO YOU REALLY WANT TO CHANGE THE FIELD LIST?')){
-      if (passwordConfirm===password){
-         await axios.post(`${server}/field`, {
-           username : username, 
-           password : password
-         }).then(res => {
-           console.log(res.data);
-           if (res.data.ok){
-             window.alert('Password Changed Successful');
-           }
-           setFieldListModal(false);
-         })
-       }
-     }
-  }, []);
   
   return (
     <Modal 
@@ -87,95 +188,40 @@ const FieldListModal = ({fieldListModal, setFieldListModal}) => {
             <AiOutlineClose />
           </div>
         </div>
-
-
-
-        
-        <div className="modal-content" style={{marginBottom : '20px', fontSize : '14px'}}>
-          <div 
-            className="username" 
-            style={{
-            marginBottom : '20px', 
-            display : 'flex',
-            alignItems : 'center',
-            flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>USERNAME</div>
-            <input 
-              value={username} 
-              onChange={e => setUsername(e.target.value)} 
-              style={{
-                width : '250px',
-              padding : '10px 20px',
-              border : '1px solid lightGray',
-            }}/>
-          </div>
-          <div 
-            className="new_password" 
-            style={{
-            marginBottom : '20px', 
-            display : 'flex',
-            alignItems : 'center',
-            flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>NEW PASSWORD</div>
-            <input 
-              value={password} 
-              onChange={e => setPassword(e.target.value)} 
-              style={{
-                width : '250px',
-              padding : '10px 20px',
-              border : '1px solid lightGray',
-            }}/>
-          </div>
-          <div 
-            className="password_confirm" 
-            style={{
-            marginBottom : '20px', 
-            display : 'flex',
-            alignItems : 'center',
-            flexDirection : 'row',}}>
-            <div style={{width : '80px'}}>PASSWORD CONFIRM</div>
-            <input 
-              value={passwordConfirm} 
-              onChange={e => setPasswordConfirm(e.target.value)} 
-              style={{
-                width : '250px',
-              padding : '10px 20px',
-              border : '1px solid lightGray',
-            }}/>
-            {passwordConfirm!==password && <div style={{color : 'darkRed', fontSize : 12}}>please confirm your password</div>}
-          </div>
+        <div className="modal-filter">
+          <input 
+            type="text" 
+            value={inputText} 
+            onChange={e => setInputText(e.target.value)}
+            placeholder="new field"
+          />
+          <div className="modal-filter-button" onClick={() => {
+            if (!inputText){
+              window.alert('Section is empty!');
+            }
+            else if (fieldList?.map(f => f.name).includes(inputText)){
+              window.alert('Already exist!');
+            }
+            else if (window.confirm('DO YOU WANT TO ADD NEW FIELD?')){
+              onInsert(inputText);
+              setIsUpdated(isUpdated + 1);
+              setInputText();
+            }
+          }}>ADD</div>
         </div>
-        <div className="buttons"
-          style={{
-          position : 'relative',
-          width : '100%',
-          fontSize : '14px',
-          color : 'gray',}}>
-          <div style={{
-            position : 'absolute',
-            border : '1px solid lightgray',
-            right : '80px',
-            bottom : '-50px',
-            marginRight : '30px',
-            padding : '10px',
-            cursor : 'pointer',}}
-            onClick={async () => {}}>
-            CONFIRM
+        <div className="modal-content">
+          <div className="modal-content-header">
+            <div>ID</div>
+            <div>NAME</div>
           </div>
-          <div style={{
-            position : 'absolute',
-            right : '0',
-            border : '1px solid lightgray',
-            bottom : '-50px',
-            padding : '10px',
-            cursor : 'pointer',}}
-            onClick={() => {
-              setUsername();
-              setPassword();
-              setPasswordConfirm();
-              setProfileModal(false);
-            }}>
-            CANCEL
+          <div className="field-list-wrapper">
+            {fieldList?.map(item => (
+              <FieldItem 
+                field={item}
+                onEdit={onEdit}
+                onRemove={onRemove}
+              />
+            ))}
           </div>
         </div>
         </ModalWrapper>

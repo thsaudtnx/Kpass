@@ -10,7 +10,7 @@ const ItemListWrapper = styled.div`
 
   .item-list-header {
     display : grid;
-    grid-template-columns : 100px 150px 150px 150px 100px 100px;
+    grid-template-columns : 100px 150px 200px 200px 100px 100px;
     border-bottom : 1px solid lightGray;
     padding : 10px;
     margin : 0px 20px;

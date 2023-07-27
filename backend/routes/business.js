@@ -76,12 +76,18 @@ const router = express.Router();
  */
 router.get('/list', async (req, res, next) => {
   const {pageNum, pageSize, field, inputText, sortBy, deletedData} = req.query;
-  console.log(req.query);
   const Op = Sequelize.Op;
   let where = {};
   let order = [];
-  if (field!=='ALL') where['type'] = field;
-  if (inputText) where['name'] = {[Op.like]: `%${inputText}%`};
+  if (deletedData==='true'){
+    where['deletedAt'] = {[Op.not]: null}
+  };
+  if (field!=='ALL') {
+    where['type'] = field;
+  }
+  if (inputText) {
+    where['name'] = {[Op.like]: `%${inputText}%`};
+  }
   switch(sortBy){
     case 'ALL':
       order = ['id', 'ASC'];

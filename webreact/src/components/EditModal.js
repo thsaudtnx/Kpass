@@ -8,6 +8,7 @@ import { ManageContext } from "../contexts/ManageContext";
 import { useCallback } from "react";
 import {server} from '../lib/serverURL';
 import { styled } from "styled-components";
+import { FieldContext } from "../contexts/FieldContext";
 
 const modalStyle = {
   overlay: {
@@ -32,19 +33,6 @@ const modalStyle = {
     justifyContent: "center",
   }
 };
-
-const fieldList = [
-  {label: 'RESTURANT', value: 'RESTURANT'},
-  {label: 'CAFE/BAKERY', value: 'CAFE/BAKERY'},
-  {label: 'MART/TRANSPORT', value: 'MART/TRANSPORT'},
-  {label: 'EDUCATION/CONSULTING', value: 'EDUCATION/CONSULTING'},
-  {label: 'HEALTH/HOSPITAL', value: 'HEALTH/HOSPITAL'},
-  {label: 'TRAVEL/FACILITY', value: 'TRAVEL/FACILITY'},
-  {label: 'HAIR SALON', value: 'HAIR SALON'},
-  {label: 'FITNESS', value: 'FITNESS'},
-  {label: 'FASHION/SPORT', value: 'FASHION/SPORT'},
-  {label: 'ETC', value: 'ETC', },
-]
 
 const ModalWrapper = styled.div`
   div.modal-header {
@@ -98,6 +86,8 @@ const ModalWrapper = styled.div`
 
 const EditModal = ({editModal, setEditModal, data}) => {
   const {isUpdated, setIsUpdated, setPageNum, setHasMore, setData} = useContext(ManageContext);
+  const {fieldList} = useContext(FieldContext);
+
   const [editedData, setEditedData] = useState({...data, logo : null});
   useEffect(() => {
     if (editModal) document.body.style.overflow = 'hidden';
@@ -200,7 +190,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
               value={editedData.type} 
               onChange={e => setEditedData({...editedData, type : e.target.value})}>
               <option value={null} defaultChecked>---</option>
-              {fieldList.map((element, index) => <option key={index} value={element.value}>{element.label}</option>)}
+              {fieldList?.map(f => <option key={f.id} value={f.name}>{f.name}</option>)}
             </select>
           </div>
           <div className="modal-content-section">

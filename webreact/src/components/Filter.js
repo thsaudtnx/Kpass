@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import AddModal from "../components/AddModal";
 import { ManageContext } from "../contexts/ManageContext";
 import { styled } from "styled-components";
+import { FieldContext } from "../contexts/FieldContext";
 
 const FilterWrapper = styled.div`
   position : sticky;
@@ -88,20 +89,6 @@ const FilterWrapper = styled.div`
   }
 `;
 
-const fieldList = [
-  {label: 'ALL', value: 'ALL',},
-  {label: 'RESTURANT', value: 'RESTURANT'},
-  {label: 'CAFE/BAKERY', value: 'CAFE/BAKERY'},
-  {label: 'MART/TRANSPORT', value: 'MART/TRANSPORT'},
-  {label: 'EDUCATION/CONSULTING', value: 'EDUCATION/CONSULTING'},
-  {label: 'HEALTH/HOSPITAL', value: 'HEALTH/HOSPITAL'},
-  {label: 'TRAVEL/FACILITY', value: 'TRAVEL/FACILITY'},
-  {label: 'HAIR SALON', value: 'HAIR SALON'},
-  {label: 'FITNESS', value: 'FITNESS'},
-  {label: 'FASHION/SPORT', value: 'FASHION/SPORT'},
-  {label: 'ETC', value: 'ETC', }
-];
-
 const Filter = () => {
   const {
     setPageNum,
@@ -117,6 +104,7 @@ const Filter = () => {
     isUpdated,
     setIsUpdated,
   } = useContext(ManageContext);
+  const {fieldList} = useContext(FieldContext);
 
   return (
     <FilterWrapper>
@@ -128,7 +116,7 @@ const Filter = () => {
             setPageNum(0);
             setIsUpdated(isUpdated + 1);
           }}>
-          {fieldList.map((element, index) => <option key={index} value={element.value}>{element.label}</option>)}
+          {fieldList.map(f => <option key={f.id} value={f.name}>{f.name}</option>)}
         </select>
         <input 
           className="inputText"

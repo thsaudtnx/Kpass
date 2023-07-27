@@ -4,6 +4,7 @@ import axios from 'axios';
 import {server} from '../lib/serverURL';
 import ProfileModal from './ProfileModal';
 import { styled } from "styled-components";
+import FieldListModal from "./FieldListModal";
 
 const HeaderWrapper = styled.div`
   display : flex;
@@ -71,10 +72,8 @@ const Header = () => {
           LOGOUT
         </div>
       </div>
-      <ProfileModal 
-        profileModal={profileModal} 
-        setProfileModal={setProfileModal} 
-      />
+      <ProfileModal profileModal={profileModal} setProfileModal={setProfileModal}/>
+      <FieldListModal fieldListModal={fieldListModal} setFieldListModal={setFieldListModal}/>
     </HeaderWrapper>
   );
 };

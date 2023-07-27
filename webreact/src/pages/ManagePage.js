@@ -4,6 +4,7 @@ import Filter from "../components/Filter";
 import ItemList from "../components/ItemList";
 import { ManageContextProvider } from "../contexts/ManageContext";
 import { styled } from "styled-components";
+import { FieldContextProvider } from "../contexts/FieldContext";
 
 const PageWrapper = styled.div`
   background : lightGray;
@@ -27,11 +28,13 @@ const ManagePage = () => {
   return (
     <PageWrapper>
       <div className="screen">
+      <FieldContextProvider>
         <Header />
         <ManageContextProvider>
           <Filter />
           <ItemList />
         </ManageContextProvider>
+      </FieldContextProvider>
       </div>
     </PageWrapper>
   );
