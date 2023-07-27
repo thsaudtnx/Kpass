@@ -73,6 +73,7 @@ const Item = ({data, deleteItem, restoreItem}) => {
       </div>
       {showDetail && <ItemDetail 
         data={data} 
+        setShowDetail={setShowDetail}
         deleteItem={deleteItem} 
         restoreItem={restoreItem}
       />}

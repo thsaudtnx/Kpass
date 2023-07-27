@@ -16,7 +16,7 @@ const modalStyle = {
     left: "0",
   },
   content: {
-    width: "350px",
+    width: "450px",
     height: "450px",
     zIndex: "10",
     position: "absolute",
@@ -51,6 +51,7 @@ const ModalWrapper = styled.div`
     margin-right : 5px;
     padding : 10px 20px;
     border : 1px solid lightGray;
+    width : 130px;
     outline : none;
   }
 
@@ -69,7 +70,7 @@ const ModalWrapper = styled.div`
 
   div.modal-content-header {
     display : grid;
-    grid-template-columns : 70px 1fr;
+    grid-template-columns : 70px 1fr 1fr;
     border-bottom : 1px solid lightGray;
     padding : 10px;
     margin-bottom : 10px;
@@ -80,7 +81,7 @@ const ModalWrapper = styled.div`
 
 const FieldItemWrapper = styled.div`
   display : grid;
-  grid-template-columns : 70px 2fr 1fr;
+  grid-template-columns : 70px 1fr 1fr 1fr;
   padding : 10px;
   font-size : 12px;
   color : gray;
@@ -98,7 +99,6 @@ const FieldItemWrapper = styled.div`
   }
 
   input {
-    width : 100px;
     outline : none;
     border : 1px solid lightGray;
     padding : 5px 10px;
@@ -109,27 +109,32 @@ const FieldItemWrapper = styled.div`
 const FieldItem = ({field, onRemove, onEdit}) => {
 
   const [edit, setEdit] = useState(false);
-  const [editedData, setEditedData] = useState(field.name);
+  const [editedData, setEditedData] = useState(field);
   const {isUpdated, setIsUpdated} = useContext(FieldContext);
   
   return (
     <FieldItemWrapper>
       <div>{field.id}</div>
-      {!edit && <div>{field.name}</div>}
-      {edit && <input 
+      {edit ? <input 
         type="text" 
-        placeholder={editedData} 
-        value={editedData} 
-        onChange={e => setEditedData(e.target.value)}
-      />}
+        placeholder={editedData.english} 
+        value={editedData.english} 
+        onChange={e => setEditedData({...editedData, english : e.target.value})}
+      /> : <div>{field.english}</div>}
+      {edit ? <input 
+        type="text" 
+        placeholder={editedData.korean} 
+        value={editedData.korean} 
+        onChange={e => setEditedData({...editedData, korean : e.target.value})}
+      /> : <div>{field.korean}</div>}
       <div className="item-buttons">
         <button 
           className="item-button" 
           onClick={() => {
             if (edit){
-              if (editedData === field.name) {
+              if (editedData.english===field.english && editedData.korea===field.korean) {
                 window.alert('Looks the same...');
-              } else if (!editedData){
+              } else if (!editedData.korean || !editedData.english){
                 window.alert('Section Empty!');
               } else if (window.confirm('Do you want to edit the field?')){
                 onEdit(editedData);
@@ -146,7 +151,7 @@ const FieldItem = ({field, onRemove, onEdit}) => {
           onClick={() => {
             if (edit){
               setEdit(false);
-              setEditedData(field.name);
+              setEditedData(field);
             } else {
               onRemove(field.id);
               setIsUpdated(isUpdated + 1);
@@ -163,7 +168,8 @@ const FieldItem = ({field, onRemove, onEdit}) => {
 const FieldListModal = ({fieldListModal, setFieldListModal}) => {
 
   const {fieldList, isUpdated, setIsUpdated} = useContext(FieldContext);
-  const [inputText, setInputText] = useState();
+  const [inputTextEnglish, setInputTextEnglish] = useState();
+  const [inputTextKorean, setInputTextKorean] = useState();
 
   useEffect(() => {
     if (fieldListModal) document.body.style.overflow = 'hidden';
@@ -179,7 +185,7 @@ const FieldListModal = ({fieldListModal, setFieldListModal}) => {
       style={modalStyle}>
         <ModalWrapper>
         <div className="modal-header">
-          <div style={{fontSize : '20px', }}>FIELD LIST</div>
+          <div>FIELD LIST</div>
           <div style={{cursor : 'pointer'}} 
             onClick={() => {
               setFieldListModal(false);
@@ -190,28 +196,33 @@ const FieldListModal = ({fieldListModal, setFieldListModal}) => {
         <div className="modal-filter">
           <input 
             type="text" 
-            value={inputText} 
-            onChange={e => setInputText(e.target.value)}
-            placeholder="new field"
+            value={inputTextEnglish} 
+            onChange={e => setInputTextEnglish(e.target.value)}
+            placeholder="new field in English"
+          />
+          <input 
+            type="text" 
+            value={inputTextKorean} 
+            onChange={e => setInputTextKorean(e.target.value)}
+            placeholder="new field in Korean"
           />
           <div className="modal-filter-button" onClick={() => {
-            if (!inputText){
+            if (!inputTextKorean || !inputTextEnglish){
               window.alert('Section is empty!');
             }
-            else if (fieldList?.map(f => f.name).includes(inputText)){
-              window.alert('Already exist!');
-            }
             else if (window.confirm('DO YOU WANT TO ADD NEW FIELD?')){
-              onInsert(inputText);
+              onInsert(inputTextEnglish, inputTextKorean);
               setIsUpdated(isUpdated + 1);
-              setInputText();
+              setInputTextEnglish();
+              setInputTextKorean();
             }
           }}>ADD</div>
         </div>
         <div className="modal-content">
           <div className="modal-content-header">
-            <div>ID</div>
-            <div>NAME</div>
+            <div>id</div>
+            <div>English</div>
+            <div>Korean</div>
           </div>
           <div className="field-list-wrapper">
             {fieldList?.map(item => (

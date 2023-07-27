@@ -3,10 +3,14 @@ const Sequelize = require('sequelize');
 module.exports = class Field extends Sequelize.Model {
   static initiate(sequelize) {
     Field.init({
-      name: {
+      english: {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      korean : {
+        type : Sequelize.STRING,
+        allowNull : false,
+      }
     }, {
       sequelize,
       timestamps: false,

@@ -83,7 +83,7 @@ const LoginPage = () => {
       console.log(result.data);
       if (result.data.login){
         window.alert('LOGIN SUCCESS');
-        navigate('/manage');
+        navigate(`/manage/${username}`);
       } else {
         window.alert('NOT REGISTERED');
       }

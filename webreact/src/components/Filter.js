@@ -116,7 +116,7 @@ const Filter = () => {
             setPageNum(0);
             setIsUpdated(isUpdated + 1);
           }}>
-          {fieldList?.map(f => <option key={f.id} value={f.name}>{f.name}</option>)}
+          {fieldList?.map(f => <option key={f.id} value={f.english}>{f.english}</option>)}
         </select>
         <input 
           className="inputText"
