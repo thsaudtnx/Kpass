@@ -17,7 +17,6 @@ export function ManageContextProvider({children}){
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [hasMore, setHasMore] = useState(true);
-  const [addModal, setAddModal] = useState(false);
 
   const getData = useCallback(async () => {
     /* console.log(`data : ${data.length} \nhasMore : ${hasMore}
@@ -66,8 +65,6 @@ export function ManageContextProvider({children}){
       setField,
       sortBy,
       setSortBy,
-      addModal,
-      setAddModal,
       data,
       setData,
       getData,

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import AddModal from "../components/AddModal";
+import AddModal from "../modals/AddModal";
 import { ManageContext } from "../contexts/ManageContext";
 import { styled } from "styled-components";
 import { FieldContext } from "../contexts/FieldContext";

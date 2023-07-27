@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import Header from "../components/Header";
 import Filter from "../components/Filter";
 import ItemList from "../components/ItemList";
@@ -22,15 +22,14 @@ const PageWrapper = styled.div`
   
 `;
 
-
 const ManagePage = () => {
 
   return (
     <PageWrapper>
       <div className="screen">
       <FieldContextProvider>
-        <Header />
         <ManageContextProvider>
+          <Header/>
           <Filter />
           <ItemList />
         </ManageContextProvider>

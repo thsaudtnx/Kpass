@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from 'react-modal';
 import {AiOutlineClose} from 'react-icons/ai';
 import axios from "axios";
@@ -23,7 +23,7 @@ const modalStyle = {
   content: {
     width: "450px",
     height: "550px",
-    zIndex: "10",
+    zIndex: "150",
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -43,7 +43,7 @@ const ModalWrapper = styled.div`
     margin-bottom : 30px;
   }
 
-  div.modal-content > div.modal-content-section {
+  div.modal-content-section {
     margin-bottom : 15px;
     display : flex;
     align-items : center;
@@ -84,150 +84,91 @@ const ModalWrapper = styled.div`
 
 `;
 
-const AddModal = () => {
-  const {
-    setPageNum, 
-    isUpdated, 
-    setIsUpdated, 
-    addModal, 
-    setAddModal, 
-    setHasMore, 
-    setData
-  } = useContext(ManageContext);
+const EditModal = ({editModal, setEditModal, data}) => {
+  const {isUpdated, setIsUpdated, setPageNum, setHasMore, setData} = useContext(ManageContext);
   const {fieldList} = useContext(FieldContext);
+  const [editedData, setEditedData] = useState({...data, logo : null});
 
   useEffect(() => {
-    if (addModal) document.body.style.overflow = 'hidden';
+    if (editModal) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
-  },[addModal]);
-
-  const [newData, setNewData] = useState({
-    logo : null,
-    name : null,
-    type : null,
-    phone : null,
-    address : null,
-    addressdetail : null,
-    latitude : null,
-    longitude : null,
-    kpass : 0,
-    travelwallet : 0,
-  });
-  const initData = useMemo(() => {
-    return {
-      logo : null,
-      name : null,
-      type : null,
-      phone : null,
-      address : null,
-      addressdetail : null,
-      latitude : null,
-      longitude : null,
-      kpass : 0,
-      travelwallet : 0,
-  }}, []);
+  },[editModal]);
 
   const goBack = useCallback(
     async () => {
-    if (!newData.logo && 
-      !newData.name && 
-      !newData.type && 
-      !newData.phone && 
-      !newData.address && 
-      !newData.addressdetail && 
-      !newData.kpass && 
-      !newData.travelwallet
-      ) setAddModal(false);
-    else if (window.confirm('THE INFORMATION IS NOT SAVED. STILL WANT TO EXIT')) {
-      if (!!newData.logo){
-        const result = await axios.delete(`${newData.logo}`);
-        console.log(result.data);
+      if (JSON.stringify(editedData)===JSON.stringify({...data, logo : null})) setEditModal(false);
+      else if (window.confirm('THE INFORMATION IS NOT SAVED. STILL WANT TO EXIT?')) {
+        if (editedData.logo){
+          const deleteResult = await axios.delete(`${editedData.logo}`);
+          console.log(deleteResult.data);
+        }
+        setEditModal(false);
+        setEditedData({...data, logo : null});
       }
-      setAddModal(false);
-      setNewData(initData);
-    }
-  }, [newData]);
+    }, [editedData]);
 
-  const submitLogo = useCallback(async e => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('file', e.target.file.files[0]);
-    if (newData.logo) axios.delete(`${newData.logo}`)
-      .then(res => {
-        console.log(res.data);
-      })
-      .then(() => {
-        axios.post(`${server}/business/upload`, formData)
-          .then(res => {
-            console.log(res.data);
-            setNewData({...newData, logo : res.data});
-          });
-      })
-    else axios.post(`${server}/business/upload`, formData)
-      .then(res => {
-        console.log(res.data);
-        setNewData({...newData, logo : res.data});
-      });
-  }, [newData]);
-
-  const submitAll = useCallback(() => {
-    if (!newData.name || !newData.type || !newData.address) {
-      window.alert('THERE IS AN EMPTY SECTION');
-    }
-    else if (window.confirm('DO YOU WANT TO ADD?')){
-      return axios.post(`${server}/business/add`, newData)
-        .then(res => {
-          console.log(newData);
-          console.log(res.data.message);
-          setPageNum(0);
-          setData([]);
-          setHasMore(true);
-          setIsUpdated(isUpdated + 1);
-          setNewData(initData);
-          setAddModal(false);
-        })
-    }
-  }, [newData]);
-
+  const uploadLogo = useCallback(
+    async e => {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append('file', e.target.file.files[0]);
+      if (editedData.logo) {
+        const deleteResult = await axios.delete(`${editedData.logo}`);
+        console.log(deleteResult.data);
+      } 
+      const postResult = await axios.post(`${server}/business/upload`, formData);
+      console.log(postResult.data);
+      setEditedData({...editedData, logo : postResult.data});
+  }, [editedData]);
 
   return (
     <Modal 
-      isOpen={addModal} 
+      isOpen={editModal} 
       shouldCloseOnOverlayClick={false} 
-      onRequestClose={() => setAddModal(false)} 
+      onRequestClose={() => setEditModal(false)} 
       ariaHideApp={false} 
       style={modalStyle}>
-      <ModalWrapper>
-        <div className="modal-header">
-          <div style={{fontSize : '20px', }}>REGISTER BUSINESS</div>
-          <div style={{cursor : 'pointer'}} onClick={() => goBack()}>
-            <AiOutlineClose />
+        <ModalWrapper>
+          <div className="modal-header">
+            <div style={{fontSize : '20px', }}>UPDATE BUSINESS</div>
+            <div style={{cursor : 'pointer'}} onClick={() => goBack()}>
+              <AiOutlineClose style={{width : '20px', height : '20px'}}/>
+            </div>
           </div>
-        </div>
         <div className="modal-content" style={{marginBottom : '20px', fontSize : '14px'}}>
-          <form className="logo" 
+          
+          <form 
+            className="logo" 
             encType='multipart/form-data'
-            style={{marginBottom : '20px', display : 'flex', flexDirection : 'row', alignItems : 'center',}}
-            onSubmit={e => submitLogo(e)}>
-            {newData.logo ? <img src={newData.logo} style={{width : '50px', height : '50px', objectFit : 'contain', marginRight : '30px'}} /> : 
-            <div style={{marginRight : '30px', width : '50px', height : '50px',}} />}
+            style={{
+              marginBottom : '20px', 
+              display : 'flex', 
+              flexDirection : 'row', 
+              alignItems : 'center'
+            }}
+            onSubmit={ e => uploadLogo(e)}>
+            {!editedData.logo && !data.logo && <div style={{width : '50px', height : '50px', marginRight : '30px'}}></div>}
+            {editedData.logo && <img src={editedData.logo} style={{width : '50px', height : '50px', objectFit : 'contain', marginRight : '30px'}}></img>}
+            {!editedData.logo && data.logo && <img src={data.logo} style={{width : '50px', height : '50px', objectFit : 'contain', marginRight : '30px'}}></img>}
             <input type='file' name='file' style={{cursor : 'pointer'}}/>
             <button type='submit' style={{cursor : 'pointer'}}>Upload</button>
           </form>
+          
+          
           <div className="modal-content-section">
             <div className="modal-content-section-left">NAME</div>
             <input 
               className="modal-content-section-right"
-              value={newData.name} 
-              onChange={e => setNewData({...newData, name : e.target.value})} 
+              value={editedData.name} 
+              onChange={e => setEditedData({...editedData, name : e.target.value})} 
             />
           </div>
           <div className="modal-content-section">
             <div className="modal-content-section-left">TYPE</div>
-            <select
-              className="modal-content-section-right" 
-              value={newData.type} 
-              onChange={e => setNewData({...newData, type : e.target.value})}>
+            <select 
+              className="modal-content-section-right"
+              value={editedData.type} 
+              onChange={e => setEditedData({...editedData, type : e.target.value})}>
               <option value={null} defaultChecked>---</option>
               {fieldList?.map(f => <option key={f.id} value={f.name}>{f.name}</option>)}
             </select>
@@ -238,24 +179,23 @@ const AddModal = () => {
               className="modal-content-section-right"
               type="text"
               maxLength={20}
-              value={newData.phone} 
-              onChange={e => setNewData({...newData, phone : e.target.value})} 
+              value={editedData.phone} 
+              onChange={e => setEditedData({...editedData, phone : e.target.value})} 
             />
           </div>
           <div className="modal-content-section">
             <div className="modal-content-section-left">ADDRESS</div>
             <GooglePlacesAutocomplete
-              className="modal-content-section-right"
               apiKey="AIzaSyCbw2mv0aLtttdNVl2hmkeZYVTo7nCHTZY"
               apiOptions={{ language: 'en', region: 'my' }}
               selectProps={{
-                defaultInputValue : newData.address,
+                defaultInputValue : editedData.address,
                 onChange : (place) => {
                   console.log(place.label);
                   geocodeByAddress(place.label)
                     .then(results => getLatLng(results[0]))
                     .then(({ lat, lng }) => {
-                      setNewData({...newData, latitude : lat, longitude : lng, address : place.label});
+                      setEditedData({...editedData, latitude : lat, longitude : lng, address : place.label});
                       console.log('Successfully got latitude and longitude', { lat, lng });
                     });
                 },  
@@ -291,8 +231,8 @@ const AddModal = () => {
             <input 
               className="modal-content-section-right"
               type="text" 
-              value={newData.addressdetail} 
-              onChange={e => setNewData({...newData, addressdetail : e.target.value})}
+              value={editedData.addressdetail} 
+              onChange={e => setEditedData({...editedData, addressdetail : e.target.value})}
             />
           </div>
           <div className="modal-content-section">
@@ -302,8 +242,8 @@ const AddModal = () => {
               type="number"
               min={0}
               max={100}
-              value={newData.kpass}
-              onChange={e => setNewData({...newData, kpass : parseInt(e.target.value, 10)})} 
+              value={editedData.kpass}
+              onChange={e => setEditedData({...editedData, kpass : parseInt(e.target.value, 10)})} 
             />
           </div>
           <div className="modal-content-section">
@@ -313,18 +253,53 @@ const AddModal = () => {
               type="number"
               min={0}
               max={100}
-              value={newData.travelwallet} 
-              onChange={e => setNewData({...newData, travelwallet : parseInt(e.target.value, 10)})} 
+              value={editedData.travelwallet} 
+              onChange={e => setEditedData({...editedData, travelwallet : parseInt(e.target.value, 10)})} 
             />
           </div>
         </div>
         <div className="buttons">
-          <div className="button" style={{right : '100px'}} onClick={() => submitAll()}>CONFIRM</div>
+          <div 
+            className="button" 
+            style={{right : '100px'}} 
+            onClick={async () => {
+              //빈칸이 있을때
+              if (!editedData.name || !editedData.type || !editedData.phone || !editedData.address){
+                window.alert('THERE IS AN EMPTY SECTION');
+              } 
+              // 초기 상태와 똑같을때
+              else if (JSON.stringify(editedData)===JSON.stringify({...data, logo : null})) setEditModal(false);
+              //무언가 바뀌었을때
+              else if(window.confirm('DO YOU WANT TO EDIT?')){
+                if (editedData.logo){ //로고가 바뀌었을때 기존 로고 삭제
+                  const deleteResult = await axios.delete(`${data.logo}`);
+                  console.log(deleteResult.data);
+                }
+                let updateObject = {};
+                for (const key in editedData){
+                  if (key==='logo') {
+                    if (editedData[key]!==null)updateObject[key] = editedData[key]
+                  }
+                  else if (data[key]!==editedData[key]) updateObject[key] = editedData[key];
+                }
+                console.log(updateObject);
+                const result =  await axios.patch(`${server}/business/edit/${data.id}`, updateObject);
+                console.log(result.data);
+                setPageNum(0);
+                setData([]);
+                setHasMore(true);
+                setIsUpdated(isUpdated + 1);
+                setEditedData({...data, logo : null});
+                setEditModal(false); 
+              }
+          }}>
+            CONFIRM
+          </div>
           <div className="button" style={{right : '0px'}} onClick={() => goBack()}>CANCEL</div>
         </div>
-      </ModalWrapper>
+        </ModalWrapper>
     </Modal>
   );
 };
 
-export default React.memo(AddModal);
+export default EditModal;

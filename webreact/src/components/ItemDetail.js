@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import EditModal from './EditModal';
+import EditModal from '../modals/EditModal';
 import { styled } from "styled-components";
 
 const ItemDetailWrapper = styled.div`
@@ -77,16 +77,28 @@ const ItemDetail = ({data, deleteItem}) => {
         <div className="item-detail-section-right">{data.longitude}</div>
       </div>
 
-      <div className='item-detail-buttons'>
-        {!data.deletedAt && <div 
+      {data.deletedAt && <div className='item-detail-buttons'>
+        <div 
+          className="item-detail-button" 
+          onClick={() => setEditModal(true)}>
+          RESTORE
+        </div>
+        <div className="item-detail-button" onClick={() => deleteItem(data)}>
+          DELETE FOREVER
+        </div>
+      </div>}
+
+      {!data.deletedAt && <div className='item-detail-buttons'>
+        <div 
           className="item-detail-button" 
           onClick={() => setEditModal(true)}>
           UPDATE
-        </div>}
-        <div className="item-detail-button" onClick={() => deleteItem()}>
-          {!data.deletedAt ? 'DELETE' : 'DELETE FOREVER'}
         </div>
-      </div>
+        <div className="item-detail-button" onClick={() => deleteItem()}>
+          DELETE
+        </div>
+      </div>}
+
       <EditModal editModal={editModal} setEditModal={setEditModal} data={data}/>
     </ItemDetailWrapper>
   );

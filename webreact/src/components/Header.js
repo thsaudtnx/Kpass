@@ -2,9 +2,9 @@ import React, { useCallback, useState } from "react";
 import { useNavigate } from "react-router";
 import axios from 'axios';
 import {server} from '../lib/serverURL';
-import ProfileModal from './ProfileModal';
 import { styled } from "styled-components";
-import FieldListModal from "./FieldListModal";
+import ProfileModal from "../modals/ProfileModal";
+import FieldListModal from "../modals/FieldListModal";
 
 const HeaderWrapper = styled.div`
   display : flex;
@@ -36,11 +36,10 @@ const HeaderWrapper = styled.div`
   }
 
 `;
-
 const Header = () => {
   const navigate = useNavigate();
-  const [profileModal, setProfileModal] = useState(false);
   const [fieldListModal, setFieldListModal] = useState(false);
+  const [profileModal, setProfileModal] = useState(false);
 
   const logout = useCallback(
     async () => {

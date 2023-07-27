@@ -217,6 +217,7 @@ const FieldListModal = ({fieldListModal, setFieldListModal}) => {
           <div className="field-list-wrapper">
             {fieldList?.map(item => (
               <FieldItem 
+                key={item.id}
                 field={item}
                 onEdit={onEdit}
                 onRemove={onRemove}

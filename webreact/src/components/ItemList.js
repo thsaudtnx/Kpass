@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useContext } from "react";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Item from "../components/Item";
 import { ManageContext } from "../contexts/ManageContext";
 import { styled } from "styled-components";
+import axios from "axios";
+import { server } from "../lib/serverURL";
+
 
 const ItemListWrapper = styled.div`
   color : gray;
@@ -21,12 +24,36 @@ const ItemListWrapper = styled.div`
 const category = ['ID', 'LOGO', 'NAME', 'TYPE', 'KPASS', 'TRAVELWALLET'];
 
 const ItemList = () => {
-  const {data, hasMore, getData} = useContext(ManageContext);
+  const {
+    data, 
+    hasMore, 
+    getData,
+    setPageNum,
+    isUpdated,
+    setIsUpdated,
+    setShowDetail,
+  } = useContext(ManageContext);
+
+  const deleteItem = useCallback(async (data) => {
+    if(window.confirm('DO YOU WANT TO DELETE?')){
+      if (data.logo){
+        const result = await axios.delete(`${data.logo}`);
+        console.log(result.data);
+      }
+      const deleteResult = await axios.delete(`${server}/business/delete/${data.id}`);
+      console.log(deleteResult.data);
+      setPageNum(0);
+      setIsUpdated(isUpdated+1);
+      setShowDetail(false);
+    }
+  }, []); 
+
   return (
     <ItemListWrapper>
       <div className='item-list-header'>
         {category.map((element, index) => <div key={index}>{element}</div>)}
       </div>
+
       <InfiniteScroll
         className="content"
         style={{padding : 10}}
@@ -40,7 +67,13 @@ const ItemList = () => {
           </p>
         }
       >
-        {data?.map((element, index)=> <Item key={index} data={element}/>)}
+        {data?.map((element, index)=> (
+          <Item 
+            key={index} 
+            data={element} 
+            deleteItem={deleteItem}
+          />
+        ))}
       </InfiniteScroll>
     </ItemListWrapper>
   );
