@@ -101,7 +101,7 @@ router.delete('/:id', async (req, res, next) => {
   try {
     const result = await Field.destroy({
       where : {
-        id : req.params,
+        id : req.params.id,
       }
     });
     res.status(200).json({ok : 1, message : `ID :${req.params.id} DELETED SUCCESS`});
@@ -147,7 +147,9 @@ router.delete('/:id', async (req, res, next) => {
 router.patch ('/edit/:id', async (req, res, next) => {
   try {
       const result = await Field.update(req.body, {
-        where : {id : req.params.id}
+        where : {
+          id : req.params.id
+        }
       });
       console.log(result.data);
       res.status(200).json({ok : 1, message : `ID ${req.params.id} UPDATED SUCCESS`});

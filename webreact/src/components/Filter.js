@@ -116,6 +116,7 @@ const Filter = () => {
             setPageNum(0);
             setIsUpdated(isUpdated + 1);
           }}>
+            <option value="ALL">ALL</option>
           {fieldList?.map(f => <option key={f.id} value={f.english}>{f.english}</option>)}
         </select>
         <input 

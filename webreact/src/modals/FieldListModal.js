@@ -153,8 +153,10 @@ const FieldItem = ({field, onRemove, onEdit}) => {
               setEdit(false);
               setEditedData(field);
             } else {
-              onRemove(field.id);
-              setIsUpdated(isUpdated + 1);
+              if (window.confirm("Do you want to delete the field?")){
+                onRemove(field.id);
+                setIsUpdated(isUpdated + 1);
+              }
             }
           }}>
             {edit ? 'cancel' : 'delete'}
