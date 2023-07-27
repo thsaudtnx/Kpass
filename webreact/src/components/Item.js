@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {IoMdArrowDropdown, IoMdArrowDropup} from 'react-icons/io';
 import { styled } from "styled-components";
 import ItemDetail from "./ItemDetail";
-import EditModal from "../modals/EditModal";
 
 
 const ItemWrapper = styled.div`
