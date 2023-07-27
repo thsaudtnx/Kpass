@@ -106,7 +106,7 @@ const FieldItemWrapper = styled.div`
 `;
 
 
-const FieldItem = ({field, onRemove, onEdit}) => {
+const FieldItem = ({field, onRemove, onEdit, setFieldListModal}) => {
 
   const [edit, setEdit] = useState(false);
   const [editedData, setEditedData] = useState(field);
@@ -139,6 +139,7 @@ const FieldItem = ({field, onRemove, onEdit}) => {
               } else if (window.confirm('Do you want to edit the field?')){
                 onEdit(editedData);
                 setIsUpdated(isUpdated + 1);
+                setFieldListModal(false);
               }
             }
             setEdit(!edit);
@@ -156,6 +157,7 @@ const FieldItem = ({field, onRemove, onEdit}) => {
               if (window.confirm("Do you want to delete the field?")){
                 onRemove(field.id);
                 setIsUpdated(isUpdated + 1);
+                setFieldListModal(false);
               }
             }
           }}>
@@ -213,10 +215,14 @@ const FieldListModal = ({fieldListModal, setFieldListModal}) => {
               window.alert('Section is empty!');
             }
             else if (window.confirm('DO YOU WANT TO ADD NEW FIELD?')){
-              onInsert(inputTextEnglish, inputTextKorean);
+              onInsert({
+                english : inputTextEnglish, 
+                korean : inputTextKorean
+              });
               setIsUpdated(isUpdated + 1);
               setInputTextEnglish();
               setInputTextKorean();
+              setFieldListModal(false);
             }
           }}>ADD</div>
         </div>
@@ -233,6 +239,7 @@ const FieldListModal = ({fieldListModal, setFieldListModal}) => {
                 field={item}
                 onEdit={onEdit}
                 onRemove={onRemove}
+                setFieldListModal={setFieldListModal}
               />
             ))}
           </div>
@@ -242,4 +249,4 @@ const FieldListModal = ({fieldListModal, setFieldListModal}) => {
   );
 };
 
-export default React.memo(FieldListModal);
+export default FieldListModal;

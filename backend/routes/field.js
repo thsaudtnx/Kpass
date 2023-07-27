@@ -144,7 +144,7 @@ router.delete('/:id', async (req, res, next) => {
  *                message:
  *                  type: string
  */
-router.patch ('/edit/:id', async (req, res, next) => {
+router.patch ('/:id', async (req, res, next) => {
   try {
       const result = await Field.update(req.body, {
         where : {
