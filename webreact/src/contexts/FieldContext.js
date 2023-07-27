@@ -7,22 +7,10 @@ import {server} from '../lib/serverURL';
 export const FieldContext = createContext();
 
 export function FieldContextProvider ({children}) {
-  const [fieldList, setFieldList] = useState([
-    {id: 1, name: 'ALL',},
-    {id : 2, name: 'RESTURANT'},
-    {id: 3, name: 'CAFE/BAKERY'},
-    {id: 4, name: 'MART/TRANSPORT'},
-    {id: 5, name: 'EDUCATION/CONSULTING'},
-    {id: 6, name: 'HEALTH/HOSPITAL'},
-    {id: 7, name: 'TRAVEL/FACILITY'},
-    {id: 8, name: 'HAIR SALON'},
-    {id: 9, name: 'FITNESS'},
-    {id: 10, name: 'FASHION/SPORT'},
-    {id: 11, name: 'ETC', },
-  ]);
+  const [fieldList, setFieldList] = useState();
   const [isUpdated, setIsUpdated] = useState(0);
 
-  /* useEffect(() => {
+  useEffect(() => {
     (async () => {
       await axios.get(`${server}/field`)
         .then(res => {
@@ -33,7 +21,7 @@ export function FieldContextProvider ({children}) {
           console.error(err);
         })
     })();
-  }, [isUpdated]); */
+  }, [isUpdated]);
 
   return (
     <FieldContext.Provider value={{

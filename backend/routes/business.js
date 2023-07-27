@@ -203,18 +203,59 @@ router.post('/add', async (req, res, next) => {
 router.delete('/delete/:id', async (req, res, next) => {
   console.log(req.params);
   try {
-      const temp = await Business.findOne({
+      const data = await Business.findOne({
+        paranoid : false,
         where : {
           id : req.params.id,
         }
       });
       const result = await Business.destroy({
-        paranoid : !!temp.deletedAt,
         where : {
           id : req.params.id
-        }
+        },
+        force : !!data.deletedAt
       });
       res.status(200).json({ok : 1, message : `ID :${req.params.id} DELETED SUCCESS`});
+    } catch(err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+/**
+ * @swagger
+ * /business/restore/:id:
+ *   put:
+ *    description: "Restore business data"
+ *    tags: [business]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      "200":
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                ok:
+ *                  type: integer
+ *                  example : 1
+ *                message:
+ *                  type: string
+ */
+router.put('/restore/:id', async (req, res, next) => {
+  console.log(req.params);
+  try {
+    const result = await Business.restore({
+      where: {
+        id : req.params.id,
+      }
+    });
+      res.status(200).json({ok : 1, message : `ID :${req.params.id} restore sucess`});
     } catch(err) {
     console.error(err);
     next(err);

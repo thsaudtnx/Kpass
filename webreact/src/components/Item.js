@@ -55,7 +55,7 @@ const ItemWrapper = styled.div`
   }
 `;
 
-const Item = ({data, deleteItem}) => {
+const Item = ({data, deleteItem, restoreItem}) => {
   const [showDetail, setShowDetail] = useState(false);
 
   return(
@@ -71,7 +71,11 @@ const Item = ({data, deleteItem}) => {
         <IoMdArrowDropup className="item-icon" onClick={() => setShowDetail(!showDetail)}/> : 
         <IoMdArrowDropdown className="item-icon" onClick={() => setShowDetail(!showDetail)}/>}
       </div>
-      {showDetail && <ItemDetail data={data} deleteItem={deleteItem}/>}
+      {showDetail && <ItemDetail 
+        data={data} 
+        deleteItem={deleteItem} 
+        restoreItem={restoreItem}
+      />}
     </ItemWrapper>
   );
 };

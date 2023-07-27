@@ -36,12 +36,22 @@ const ItemList = () => {
 
   const deleteItem = useCallback(async (data) => {
     if(window.confirm('DO YOU WANT TO DELETE?')){
-      if (data.logo){
+      if (data.logo && data.deletedAt){
         const result = await axios.delete(`${data.logo}`);
         console.log(result.data);
       }
       const deleteResult = await axios.delete(`${server}/business/delete/${data.id}`);
       console.log(deleteResult.data);
+      setPageNum(0);
+      setIsUpdated(isUpdated+1);
+      setShowDetail(false);
+    }
+  }, []); 
+
+  const restoreItem = useCallback(async (data) => {
+    if(window.confirm('Do you want to Restore?')){
+      const restoreResult = await axios.put(`${server}/business/restore/${data.id}`);
+      console.log(restoreResult.data);
       setPageNum(0);
       setIsUpdated(isUpdated+1);
       setShowDetail(false);
@@ -72,6 +82,7 @@ const ItemList = () => {
             key={index} 
             data={element} 
             deleteItem={deleteItem}
+            restoreItem={restoreItem}
           />
         ))}
       </InfiniteScroll>

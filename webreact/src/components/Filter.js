@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import AddModal from "../modals/AddModal";
 import { ManageContext } from "../contexts/ManageContext";
 import { styled } from "styled-components";
@@ -100,11 +100,11 @@ const Filter = () => {
     setDeletedData, 
     sortBy, 
     setSortBy, 
-    setAddModal, 
     isUpdated,
     setIsUpdated,
   } = useContext(ManageContext);
   const {fieldList} = useContext(FieldContext);
+  const [addModal, setAddModal] = useState(false);
 
   return (
     <FilterWrapper>
@@ -156,7 +156,7 @@ const Filter = () => {
           ADD
         </div>
       </div>
-      <AddModal />
+      <AddModal addModal={addModal} setAddModal={setAddModal}/>
     </FilterWrapper>
   );
 };

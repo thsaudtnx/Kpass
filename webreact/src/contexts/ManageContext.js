@@ -13,6 +13,8 @@ export function ManageContextProvider({children}){
   const [field, setField] = useState('ALL');
   const [sortBy, setSortBy] = useState('ALL');
   const [deletedData, setDeletedData] = useState(false);
+
+  
   const [data, setData] = useState([]);
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);

@@ -51,7 +51,7 @@ const ItemDetailWrapper = styled.div`
   }
 `;
 
-const ItemDetail = ({data, deleteItem}) => {
+const ItemDetail = ({data, deleteItem, restoreItem}) => {
   const [editModal, setEditModal] = useState(false);
 
   return (
@@ -80,7 +80,7 @@ const ItemDetail = ({data, deleteItem}) => {
       {data.deletedAt && <div className='item-detail-buttons'>
         <div 
           className="item-detail-button" 
-          onClick={() => setEditModal(true)}>
+          onClick={() => restoreItem(data)}>
           RESTORE
         </div>
         <div className="item-detail-button" onClick={() => deleteItem(data)}>
@@ -94,7 +94,7 @@ const ItemDetail = ({data, deleteItem}) => {
           onClick={() => setEditModal(true)}>
           UPDATE
         </div>
-        <div className="item-detail-button" onClick={() => deleteItem()}>
+        <div className="item-detail-button" onClick={() => deleteItem(data)}>
           DELETE
         </div>
       </div>}

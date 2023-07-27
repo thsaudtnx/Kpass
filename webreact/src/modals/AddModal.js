@@ -84,13 +84,11 @@ const ModalWrapper = styled.div`
 
 `;
 
-const AddModal = () => {
+const AddModal = ({addModal, setAddModal}) => {
   const {
     setPageNum, 
     isUpdated, 
     setIsUpdated, 
-    addModal, 
-    setAddModal, 
     setHasMore, 
     setData,
     data,
