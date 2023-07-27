@@ -264,7 +264,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
             style={{right : '100px'}} 
             onClick={async () => {
               //빈칸이 있을때
-              if (!editedData.name || !editedData.type || !editedData.phone || !editedData.address){
+              if (!editedData.name || !editedData.type || !editedData.address){
                 window.alert('THERE IS AN EMPTY SECTION');
               } 
               // 초기 상태와 똑같을때

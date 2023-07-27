@@ -25,8 +25,8 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
   try {
     const result = await Field.findAll({});
-    console.log(result.data);
-    res.send({ok : 1, fieldList : result.data});
+    console.log(result);
+    res.send({ok : 1, fieldList : result});
   } catch(err) {
     console.error(err);
     next(err);
