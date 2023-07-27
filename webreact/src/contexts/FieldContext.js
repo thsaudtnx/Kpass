@@ -1,13 +1,12 @@
 import React from "react";
 import { createContext, useState ,useEffect } from "react";
 import axios from 'axios';
-import { useCallback } from "react";
 import {server} from '../lib/serverURL';
 
 export const FieldContext = createContext();
 
 export function FieldContextProvider ({children}) {
-  const [fieldList, setFieldList] = useState();
+  const [fieldList, setFieldList] = useState([]);
   const [isUpdated, setIsUpdated] = useState(0);
 
   useEffect(() => {
@@ -15,7 +14,7 @@ export function FieldContextProvider ({children}) {
       await axios.get(`${server}/field`)
         .then(res => {
           console.log(res.data);
-          setFieldList(res.data);
+          setFieldList(res.data.fieldList);
         })
         .catch(err => {
           console.error(err);

@@ -163,7 +163,6 @@ const FieldItem = ({field, onRemove, onEdit}) => {
 const FieldListModal = ({fieldListModal, setFieldListModal}) => {
 
   const {fieldList, isUpdated, setIsUpdated} = useContext(FieldContext);
-  console.log(fieldList);
   const [inputText, setInputText] = useState();
 
   useEffect(() => {
