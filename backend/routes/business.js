@@ -1,6 +1,7 @@
 const express = require('express');
 const Business = require('../models/business');
 const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const router = express.Router();
 
@@ -75,35 +76,42 @@ const router = express.Router();
  *                      type: integer
  */
 router.get('/list', async (req, res, next) => {
-  const {pageNum, pageSize, field_id, inputText, sortBy, deletedData} = req.query;
-  const Op = Sequelize.Op;
+  const {
+    pageNum, 
+    pageSize, 
+    field_id, 
+    inputText, 
+    sortBy, 
+    deletedData
+  } = req.query;
+
   let where = {};
   let order = [];
   if (deletedData==='true'){
     where['deletedAt'] = {[Op.not]: null}
   };
-  if (field_id!==0) {
+  if (field_id!=='0') {
     where['field_id'] = field_id;
   }
   if (inputText) {
     where['name'] = {[Op.like]: `%${inputText}%`};
   }
+
   switch(sortBy){
-    case 'ALL':
+    case '0': //ALL
       order = ['id', 'ASC'];
       break;
-    case 'KPASS':
+    case '1': //KPASS
       order = ['kpass', 'DESC'];
       break;
-    case 'TRAVELWALLET':
+    case '2': //TRAVELWALLET
       order = ['travelwallet', 'DESC'];
       break;
     default :
       order = ['id', 'ASC'];
       break;
   }
-  console.log(req.query);
-  console.log(where, order);
+  
   try {
     const business = await Business.findAll({
       paranoid : deletedData==='true' ? false :  true,

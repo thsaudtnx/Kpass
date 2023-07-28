@@ -10,8 +10,8 @@ export function ManageContextProvider({children}){
 
   const [isUpdated, setIsUpdated] = useState(0);
   const [inputText, setInputText] = useState();
-  const [field_id, setField_id] = useState(0);
-  const [sortBy, setSortBy] = useState('ALL');
+  const [field_id, setField_id] = useState(0); //0 : All , 1 : Restaurant ...
+  const [sortBy, setSortBy] = useState(0); //0 : ALL, 1 : KPASS, 2 : TRAVELWALLET
   const [deletedData, setDeletedData] = useState(false);
 
 
@@ -21,8 +21,6 @@ export function ManageContextProvider({children}){
   const [hasMore, setHasMore] = useState(true);
 
   const getData = useCallback(async () => {
-    /* console.log(`data : ${data.length} \nhasMore : ${hasMore}
-    \npageNum : ${pageNum} \npageSize : ${pageSize} \nfield : ${field} \ninputText : ${inputText} \nsortBy : ${sortBy} \ndeletedData : ${deletedData}`); */
       await axios.get(`${server}/business/list`, {
         params : {
           pageNum : pageNum,

@@ -152,7 +152,7 @@ const Filter = () => {
             setPageNum(0);
             setIsUpdated(isUpdated + 1);
           }}>
-          {['ALL', 'KPASS', 'TRAVELWALLET'].map((element, index) => <option key={index} value={element}>{element}</option>)}
+          {['ALL', 'KPASS', 'TRAVELWALLET'].map((element, index) => <option key={index} value={index}>{element}</option>)}
         </select>
         <div className="button" onClick={() => setAddModal(true)}>
           ADD
