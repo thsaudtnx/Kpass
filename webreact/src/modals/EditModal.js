@@ -164,12 +164,12 @@ const EditModal = ({editModal, setEditModal, data}) => {
             />
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">TYPE</div>
+            <div className="modal-content-section-left">FIELD</div>
             <select 
               className="modal-content-section-right"
-              value={editedData.type} 
-              onChange={e => setEditedData({...editedData, type : e.target.value})}>
-              {fieldList?.map(f => <option key={f.id} value={f.english}>{f.english}</option>)}
+              value={editedData.field_id} 
+              onChange={e => setEditedData({...editedData, field_id : e.target.value})}>
+              {fieldList?.map(f => <option key={f.id} value={f.id}>{f.english}</option>)}
             </select>
           </div>
           <div className="modal-content-section">

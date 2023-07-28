@@ -57,8 +57,8 @@ const router = express.Router();
  *                      type: string
  *                    name:
  *                      type: string
- *                    type:
- *                      type: string
+ *                    field_id:
+ *                      type: number
  *                    phone:
  *                      type: string
  *                    address:
@@ -75,15 +75,15 @@ const router = express.Router();
  *                      type: integer
  */
 router.get('/list', async (req, res, next) => {
-  const {pageNum, pageSize, field, inputText, sortBy, deletedData} = req.query;
+  const {pageNum, pageSize, field_id, inputText, sortBy, deletedData} = req.query;
   const Op = Sequelize.Op;
   let where = {};
   let order = [];
   if (deletedData==='true'){
     where['deletedAt'] = {[Op.not]: null}
   };
-  if (field!=='ALL') {
-    where['type'] = field;
+  if (field_id!==0) {
+    where['field_id'] = field_id;
   }
   if (inputText) {
     where['name'] = {[Op.like]: `%${inputText}%`};
@@ -138,8 +138,8 @@ router.get('/list', async (req, res, next) => {
  *                type: string
  *              name:
  *                type: string
- *              type:
- *                type: string
+ *              field_id:
+ *                type: number
  *              phone:
  *                type: string
  *              address:
@@ -285,8 +285,8 @@ router.put('/restore/:id', async (req, res, next) => {
  *                type: string
  *              name:
  *                type: string
- *              type:
- *                type: string
+ *              field_id:
+ *                type: number
  *              phone:
  *                type: string
  *              address:

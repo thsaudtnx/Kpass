@@ -10,11 +10,11 @@ export function ManageContextProvider({children}){
 
   const [isUpdated, setIsUpdated] = useState(0);
   const [inputText, setInputText] = useState();
-  const [field, setField] = useState('ALL');
+  const [field_id, setField_id] = useState(0);
   const [sortBy, setSortBy] = useState('ALL');
   const [deletedData, setDeletedData] = useState(false);
 
-  
+
   const [data, setData] = useState([]);
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -27,7 +27,7 @@ export function ManageContextProvider({children}){
         params : {
           pageNum : pageNum,
           pageSize : pageSize,
-          field : field,
+          field_id : field_id,
           inputText : inputText,
           sortBy : sortBy,
           deletedData : deletedData,
@@ -47,7 +47,7 @@ export function ManageContextProvider({children}){
         .catch(err => {
           console.error(err);
         })
-  }, [pageNum, pageSize, field, inputText, sortBy, deletedData, setData, isUpdated, hasMore]);
+  }, [pageNum, pageSize, field_id, inputText, sortBy, deletedData, setData, isUpdated, hasMore]);
 
   useEffect(() => {
     getData();
@@ -63,8 +63,8 @@ export function ManageContextProvider({children}){
       setPageSize,
       hasMore,
       setHasMore,
-      field,
-      setField,
+      field_id,
+      setField_id,
       sortBy,
       setSortBy,
       data,

@@ -64,7 +64,7 @@ const Item = ({data, deleteItem, restoreItem}) => {
         <div>{data.id}</div>
         {data.logo ? <img src={data.logo} style={{width : '50px', height : '50px', objectFit : 'contain'}} /> : <div />}
         <div className="item-name" style={{textDecoration : data.deletedAt ? 'line-through' : 'none'}}>{data.name}</div>
-        <div>{data.type}</div>
+        <div>{data.field_id}</div>
         <div>{data.kpass}%</div>
         <div>{data.travelwallet}%</div>
         {showDetail ? 

@@ -87,7 +87,7 @@ const ModalWrapper = styled.div`
 const initData = {
   logo : null,
   name : null,
-  type : null,
+  field_id : null,
   phone : null,
   address : null,
   addressdetail : null,
@@ -120,7 +120,7 @@ const AddModal = ({addModal, setAddModal}) => {
     async () => {
     if (!newData.logo && 
       !newData.name && 
-      !newData.type && 
+      !newData.field_id && 
       !newData.phone && 
       !newData.address && 
       !newData.addressdetail && 
@@ -193,13 +193,13 @@ const AddModal = ({addModal, setAddModal}) => {
             />
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">TYPE</div>
+            <div className="modal-content-section-left">FIELD</div>
             <select
               className="modal-content-section-right" 
-              value={newData.type} 
-              onChange={e => setNewData({...newData, type : e.target.value})}>
+              value={newData.field_id} 
+              onChange={e => setNewData({...newData, field_id : e.target.value})}>
               <option value={null} defaultChecked>---</option>
-              {fieldList?.map(f => <option key={f.id} value={f.english}>{f.english}</option>)}
+              {fieldList?.map(f => <option key={f.id} value={f.id}>{f.english}</option>)}
             </select>
           </div>
           <div className="modal-content-section">

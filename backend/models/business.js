@@ -11,8 +11,8 @@ module.exports = class Business extends Sequelize.Model {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      type: {
-        type: Sequelize.STRING,
+      field_id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       phone: {
