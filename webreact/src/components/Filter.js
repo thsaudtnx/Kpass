@@ -93,8 +93,8 @@ const Filter = () => {
   const fieldList = useSelector(state => state.field);
   const {
     setPageNum,
-    field, 
-    setField, 
+    field_id, 
+    setField_id, 
     inputText, 
     setInputText, 
     deletedData, 
@@ -111,9 +111,8 @@ const Filter = () => {
     <FilterWrapper>
       <div className='filter-left'>
         <select
-          value={field}
           onChange={e => {
-            setField(e.target.value);
+            setField_id(e.target.value);
             setPageNum(0);
             setIsUpdated(isUpdated + 1);
           }}>

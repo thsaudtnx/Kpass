@@ -21,7 +21,7 @@ const ItemListWrapper = styled.div`
   }
 `;
 
-const category = ['ID', 'LOGO', 'NAME', 'TYPE', 'KPASS', 'TRAVELWALLET'];
+const category = ['ID', 'LOGO', 'NAME', 'FIELD', 'KPASS', 'TRAVELWALLET'];
 
 const ItemList = () => {
   const {

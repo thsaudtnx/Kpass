@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {IoMdArrowDropdown, IoMdArrowDropup} from 'react-icons/io';
 import { styled } from "styled-components";
 import ItemDetail from "./ItemDetail";
+import { useSelector } from "react-redux";
 
 
 const ItemWrapper = styled.div`
@@ -57,6 +58,7 @@ const ItemWrapper = styled.div`
 
 const Item = ({data, deleteItem, restoreItem}) => {
   const [showDetail, setShowDetail] = useState(false);
+  const fieldList = useSelector(state => state.field);
 
   return(
     <ItemWrapper>
@@ -64,7 +66,7 @@ const Item = ({data, deleteItem, restoreItem}) => {
         <div>{data.id}</div>
         {data.logo ? <img src={data.logo} style={{width : '50px', height : '50px', objectFit : 'contain'}} /> : <div />}
         <div className="item-name" style={{textDecoration : data.deletedAt ? 'line-through' : 'none'}}>{data.name}</div>
-        <div>{data.field_id}</div>
+        <div>{fieldList?.find(field => field.id===data.field_id)?.english}</div>
         <div>{data.kpass}%</div>
         <div>{data.travelwallet}%</div>
         {showDetail ? 

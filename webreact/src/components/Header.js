@@ -5,6 +5,7 @@ import {server} from '../lib/serverURL';
 import { styled } from "styled-components";
 import ProfileModal from "../modals/ProfileModal";
 import FieldListModal from "../modals/FieldListModal";
+import ExcelDownload from "./ExcelDownload";
 
 const HeaderWrapper = styled.div`
   display : flex;
@@ -61,6 +62,7 @@ const Header = () => {
         KPASS MANAGE
       </div>
       <div className="header-buttons">
+        <ExcelDownload/>
         <div className="header-button" onClick={() => setFieldListModal(true)}>
           EDIT FIELD LIST
         </div>
