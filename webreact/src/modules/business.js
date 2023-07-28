@@ -5,29 +5,10 @@ import { server } from '../lib/serverURL';
 const FETCH_BUSINESS = "business/FETCH_BUSINESS";
 
 //액션 생성 함수 with Redux-Thunk
-export const fetchBusinessAsync = () => async (dispatch, getState) => {
-  try {
-    const fetchResult = await axios.get(`${server}/business/list`, {
-      params : {
-        pageNum : pageNum,
-        pageSize : pageSize,
-        field : field,
-        inputText : inputText,
-        sortBy : sortBy,
-        deletedData : deletedData,
-      }
-    })
-    return dispatch({
-      type : FETCH_BUSINESS,
-      payload : fetchResult.data
-    })
-  } catch(err) {
-    console.error(err);
-  }
-};
+export const fetchBusinessAsync = () => async (dispatch, getState) => {};
 
 export const deleteFieldAsync = (id) => async (dispatch) => {
-  
+
 };
 
 export const editFieldAsync = (editedData) => async (dispatch) => {};
