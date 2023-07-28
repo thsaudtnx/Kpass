@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useMemo, useContext } from "react";
+import React, { useEffect, useState, useMemo, useContext, useCallback } from "react";
 import Modal from 'react-modal';
 import {AiOutlineClose} from 'react-icons/ai';
 import { styled } from "styled-components";
-import { onInsert, onRemove, onEdit } from "../lib/api";
-import { FieldContext } from "../contexts/FieldContext";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteFieldAsync, editFieldAsync, insertFieldAsync } from "../modules/field";
 
 const modalStyle = {
   overlay: {
@@ -106,11 +106,10 @@ const FieldItemWrapper = styled.div`
 `;
 
 
-const FieldItem = ({field, onRemove, onEdit, setFieldListModal}) => {
+const FieldItem = ({field, onDelete, onEdit}) => {
 
   const [edit, setEdit] = useState(false);
   const [editedData, setEditedData] = useState(field);
-  const {isUpdated, setIsUpdated} = useContext(FieldContext);
   
   return (
     <FieldItemWrapper>
@@ -138,8 +137,6 @@ const FieldItem = ({field, onRemove, onEdit, setFieldListModal}) => {
                 window.alert('Section Empty!');
               } else if (window.confirm('Do you want to edit the field?')){
                 onEdit(editedData);
-                setIsUpdated(isUpdated + 1);
-                setFieldListModal(false);
               }
             }
             setEdit(!edit);
@@ -155,9 +152,7 @@ const FieldItem = ({field, onRemove, onEdit, setFieldListModal}) => {
               setEditedData(field);
             } else {
               if (window.confirm("Do you want to delete the field?")){
-                onRemove(field.id);
-                setIsUpdated(isUpdated + 1);
-                setFieldListModal(false);
+                onDelete(field.id);
               }
             }
           }}>
@@ -171,7 +166,12 @@ const FieldItem = ({field, onRemove, onEdit, setFieldListModal}) => {
 
 const FieldListModal = ({fieldListModal, setFieldListModal}) => {
 
-  const {fieldList, isUpdated, setIsUpdated} = useContext(FieldContext);
+  const fieldList = useSelector(state => state.field);
+  const dispatch = useDispatch();
+  const onInsert = useCallback((newData) => dispatch(insertFieldAsync(newData)), []);
+  const onDelete = useCallback((id) => dispatch(deleteFieldAsync(id)), []);
+  const onEdit = useCallback((editedData) => dispatch(editFieldAsync(editedData)), []);
+
   const [inputTextEnglish, setInputTextEnglish] = useState();
   const [inputTextKorean, setInputTextKorean] = useState();
 
@@ -219,10 +219,8 @@ const FieldListModal = ({fieldListModal, setFieldListModal}) => {
                 english : inputTextEnglish, 
                 korean : inputTextKorean
               });
-              setIsUpdated(isUpdated + 1);
               setInputTextEnglish();
               setInputTextKorean();
-              setFieldListModal(false);
             }
           }}>ADD</div>
         </div>
@@ -238,7 +236,7 @@ const FieldListModal = ({fieldListModal, setFieldListModal}) => {
                 key={item.id}
                 field={item}
                 onEdit={onEdit}
-                onRemove={onRemove}
+                onDelete={onDelete}
                 setFieldListModal={setFieldListModal}
               />
             ))}

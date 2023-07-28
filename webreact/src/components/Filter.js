@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import AddModal from "../modals/AddModal";
 import { ManageContext } from "../contexts/ManageContext";
 import { styled } from "styled-components";
-import { FieldContext } from "../contexts/FieldContext";
+import { useSelector } from "react-redux";
 
 const FilterWrapper = styled.div`
   position : sticky;
@@ -90,6 +90,7 @@ const FilterWrapper = styled.div`
 `;
 
 const Filter = () => {
+  const fieldList = useSelector(state => state.field);
   const {
     setPageNum,
     field, 
@@ -103,7 +104,7 @@ const Filter = () => {
     isUpdated,
     setIsUpdated,
   } = useContext(ManageContext);
-  const {fieldList} = useContext(FieldContext);
+
   const [addModal, setAddModal] = useState(false);
 
   return (

@@ -43,6 +43,10 @@ module.exports = class Business extends Sequelize.Model {
         type: Sequelize.SMALLINT,
         allowNull: false,
       },
+      note : {
+        type : Sequelize.STRING,
+        allowNull : true,
+      },
     }, {
       sequelize,
       timestamps: true,

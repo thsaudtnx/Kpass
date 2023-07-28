@@ -8,7 +8,7 @@ import { ManageContext } from "../contexts/ManageContext";
 import { useCallback } from "react";
 import {server} from '../lib/serverURL';
 import { styled } from "styled-components";
-import { FieldContext } from "../contexts/FieldContext";
+import { useSelector } from "react-redux";
 
 const modalStyle = {
   overlay: {
@@ -22,7 +22,7 @@ const modalStyle = {
   },
   content: {
     width: "450px",
-    height: "550px",
+    height: "600px",
     zIndex: "150",
     position: "absolute",
     top: "50%",
@@ -71,7 +71,7 @@ const ModalWrapper = styled.div`
   div.buttons > div.button {
     position : absolute;
     border : 1px solid lightgray;
-    bottom : -50px;
+    bottom : -40px;
     margin-right : 30px;
     padding : 10px;
     cursor : pointer;
@@ -86,7 +86,7 @@ const ModalWrapper = styled.div`
 
 const EditModal = ({editModal, setEditModal, data}) => {
   const {isUpdated, setIsUpdated, setPageNum, setHasMore, setData} = useContext(ManageContext);
-  const {fieldList} = useContext(FieldContext);
+  const fieldList = useSelector(state => state.field);
   const [editedData, setEditedData] = useState({...data, logo : null});
 
   useEffect(() => {
@@ -169,8 +169,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
               className="modal-content-section-right"
               value={editedData.type} 
               onChange={e => setEditedData({...editedData, type : e.target.value})}>
-              <option value={null} defaultChecked>---</option>
-              {fieldList?.map(f => <option key={f.id} value={f.name}>{f.name}</option>)}
+              {fieldList?.map(f => <option key={f.id} value={f.english}>{f.english}</option>)}
             </select>
           </div>
           <div className="modal-content-section">
@@ -255,6 +254,15 @@ const EditModal = ({editModal, setEditModal, data}) => {
               max={100}
               value={editedData.travelwallet} 
               onChange={e => setEditedData({...editedData, travelwallet : parseInt(e.target.value, 10)})} 
+            />
+          </div>
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">NOTE</div>
+            <textarea 
+              className="modal-content-section-right"
+              max={500}
+              value={editedData.note} 
+              onChange={e => setEditedData({...editedData, note : e.target.value})} 
             />
           </div>
         </div>

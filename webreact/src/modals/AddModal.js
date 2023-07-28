@@ -8,7 +8,7 @@ import { ManageContext } from "../contexts/ManageContext";
 import { useCallback } from "react";
 import {server} from '../lib/serverURL';
 import { styled } from "styled-components";
-import { FieldContext } from "../contexts/FieldContext";
+import { useSelector } from "react-redux";
 
 const modalStyle = {
   overlay: {
@@ -22,7 +22,7 @@ const modalStyle = {
   },
   content: {
     width: "450px",
-    height: "550px",
+    height: "600px",
     zIndex: "10",
     position: "absolute",
     top: "50%",
@@ -71,7 +71,7 @@ const ModalWrapper = styled.div`
   div.buttons > div.button {
     position : absolute;
     border : 1px solid lightgray;
-    bottom : -50px;
+    bottom : -40px;
     margin-right : 30px;
     padding : 10px;
     cursor : pointer;
@@ -84,6 +84,20 @@ const ModalWrapper = styled.div`
 
 `;
 
+const initData = {
+  logo : null,
+  name : null,
+  type : null,
+  phone : null,
+  address : null,
+  addressdetail : null,
+  latitude : null,
+  longitude : null,
+  kpass : 0,
+  travelwallet : 0,
+  note : null,
+};
+
 const AddModal = ({addModal, setAddModal}) => {
   const {
     setPageNum, 
@@ -93,38 +107,14 @@ const AddModal = ({addModal, setAddModal}) => {
     setData,
     data,
   } = useContext(ManageContext);
-  const {fieldList} = useContext(FieldContext);
+  const fieldList = useSelector(state => state.field);
 
   useEffect(() => {
     if (addModal) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
   },[addModal]);
 
-  const [newData, setNewData] = useState({
-    logo : null,
-    name : null,
-    type : null,
-    phone : null,
-    address : null,
-    addressdetail : null,
-    latitude : null,
-    longitude : null,
-    kpass : 0,
-    travelwallet : 0,
-  });
-  const initData = useMemo(() => {
-    return {
-      logo : null,
-      name : null,
-      type : null,
-      phone : null,
-      address : null,
-      addressdetail : null,
-      latitude : null,
-      longitude : null,
-      kpass : 0,
-      travelwallet : 0,
-  }}, []);
+  const [newData, setNewData] = useState(initData);
 
   const goBack = useCallback(
     async () => {
@@ -135,7 +125,8 @@ const AddModal = ({addModal, setAddModal}) => {
       !newData.address && 
       !newData.addressdetail && 
       !newData.kpass && 
-      !newData.travelwallet
+      !newData.travelwallet &&
+      !newData.note
       ) setAddModal(false);
     else if (window.confirm('THE INFORMATION IS NOT SAVED. STILL WANT TO EXIT')) {
       if (!!newData.logo){
@@ -208,7 +199,7 @@ const AddModal = ({addModal, setAddModal}) => {
               value={newData.type} 
               onChange={e => setNewData({...newData, type : e.target.value})}>
               <option value={null} defaultChecked>---</option>
-              {fieldList?.map(f => <option key={f.id} value={f.name}>{f.name}</option>)}
+              {fieldList?.map(f => <option key={f.id} value={f.english}>{f.english}</option>)}
             </select>
           </div>
           <div className="modal-content-section">
@@ -294,6 +285,15 @@ const AddModal = ({addModal, setAddModal}) => {
               max={100}
               value={newData.travelwallet} 
               onChange={e => setNewData({...newData, travelwallet : parseInt(e.target.value, 10)})} 
+            />
+          </div>
+          <div className="modal-content-section">
+            <div className="modal-content-section-left">NOTE</div>
+            <textarea 
+              className="modal-content-section-right"
+              max={250}
+              value={newData.note} 
+              onChange={e => setNewData({...newData, note : e.target.value})} 
             />
           </div>
         </div>

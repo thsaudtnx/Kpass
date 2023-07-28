@@ -3,7 +3,6 @@ import { BrowserRouter } from 'react-router-dom';
 import ManagePage from './pages/ManagePage';
 import LoginPage from './pages/LoginPage';
 
-
 const App = () => {
   return (
     <BrowserRouter>

@@ -26,6 +26,11 @@ const ItemDetailWrapper = styled.div`
     white-space : nowrap;
   }
 
+  textarea.item-detail-section-right {
+    font-size : 12px;
+    color : gray;
+  }
+
   div.item-detail-buttons {
     display : flex; 
     flex-direction : row;
@@ -75,6 +80,14 @@ const ItemDetail = ({data, deleteItem, restoreItem, setShowDetail}) => {
       <div className="item-detail-section">
         <div className="item-detail-section-left">LONGITUDE</div>
         <div className="item-detail-section-right">{data.longitude}</div>
+      </div>
+      <div className="item-detail-section">
+        <div className="item-detail-section-left">NOTE</div>
+          <textarea 
+            className="item-detail-section-right"
+            value={data.note}
+            disabled={true}
+          />
       </div>
 
       {data.deletedAt && <div className='item-detail-buttons'>

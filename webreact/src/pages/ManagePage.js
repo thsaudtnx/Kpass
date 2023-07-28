@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import Header from "../components/Header";
 import Filter from "../components/Filter";
 import ItemList from "../components/ItemList";
 import { ManageContextProvider } from "../contexts/ManageContext";
 import { styled } from "styled-components";
-import { FieldContextProvider } from "../contexts/FieldContext";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteFieldAsync, editFieldAsync, fetchFieldAsync, insertFieldAsync } from "../modules/field";
 
 const PageWrapper = styled.div`
   background : lightGray;
@@ -22,18 +23,22 @@ const PageWrapper = styled.div`
   
 `;
 
+
 const ManagePage = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    (() => dispatch(fetchFieldAsync()))();
+  }, []);
 
   return (
     <PageWrapper>
       <div className="screen">
-      <FieldContextProvider>
         <ManageContextProvider>
-          <Header/>
-          <Filter />
+          <Header />
+          <Filter/>
           <ItemList />
         </ManageContextProvider>
-      </FieldContextProvider>
       </div>
     </PageWrapper>
   );
