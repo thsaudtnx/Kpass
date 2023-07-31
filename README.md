@@ -14,7 +14,7 @@ with a Manage Page on a web
   
 Features
   - Location access using googleMapAPI
-  - Manage state with contextAPI
+  - Manage state with contextAPI and React Query
 </br></br>
 
 ###### 2. Web
@@ -29,7 +29,8 @@ Features
 Features
 - User Authentication with Passport.js
 - Connect MySql with sequelize.js
-- Display API UI using swagger.js 
+- Display API UI using swagger.js
+- Manage state with redux
 </br>
 
 ## 🕰️ Duration
