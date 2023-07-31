@@ -6,6 +6,7 @@ import { ManageContext } from "../contexts/ManageContext";
 import { styled } from "styled-components";
 import axios from "axios";
 import { server } from "../lib/serverURL";
+import { useMediaQuery } from "react-responsive";
 
 
 const ItemListWrapper = styled.div`
@@ -13,15 +14,22 @@ const ItemListWrapper = styled.div`
 
   .item-list-header {
     display : grid;
-    grid-template-columns : 100px 150px 200px 200px 100px 100px;
+    grid-template-columns : 1fr 1.5fr 2fr 2fr 1fr 3fr 1fr;
     border-bottom : 1px solid lightGray;
     padding : 10px;
     margin : 0px 20px;
     font-size : 12px;
+
+    @media (max-width : 670px) {
+      margin : 0px 5px;
+      font-size : 10px;
+    }
+
+    @media (max-width : 900px) {
+      grid-template-columns : 1.5fr 3fr 2fr 2fr 1fr;
+    }
   }
 `;
-
-const category = ['ID', 'LOGO', 'NAME', 'FIELD', 'KPASS', 'TRAVELWALLET'];
 
 const ItemList = () => {
   const {
@@ -33,6 +41,12 @@ const ItemList = () => {
     setIsUpdated,
     setShowDetail,
   } = useContext(ManageContext);
+  const isMobile = useMediaQuery({query : '(max-width : 900px)'});
+  const category = isMobile ? [
+    'LOGO', 'NAME', 'KPASS', 'TRAVELWALLET'
+  ] : [
+    'ID', 'LOGO', 'NAME', 'FIELD', 'KPASS', 'TRAVELWALLET'
+  ];
 
   const deleteItem = useCallback(async (data) => {
     if(window.confirm('DO YOU WANT TO DELETE?')){

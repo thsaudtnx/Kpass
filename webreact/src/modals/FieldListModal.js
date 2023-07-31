@@ -4,30 +4,7 @@ import {AiOutlineClose} from 'react-icons/ai';
 import { styled } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteFieldAsync, editFieldAsync, insertFieldAsync } from "../modules/field";
-
-const modalStyle = {
-  overlay: {
-    position: 'fixed',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    width: "100%",
-    height: "100%",
-    zIndex: "1000000",
-    top: "0",
-    left: "0",
-  },
-  content: {
-    width: "450px",
-    height: "450px",
-    zIndex: "10",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    borderRadius: "10px",
-    backgroundColor: "white",
-    justifyContent: "center",
-  }
-};
+import { useMediaQuery } from "react-responsive";
 
 const ModalWrapper = styled.div`
 
@@ -53,6 +30,10 @@ const ModalWrapper = styled.div`
     border : 1px solid lightGray;
     width : 130px;
     outline : none;
+    @media (max-width : 500px) {
+      width : 25vw;
+      padding : 5px 10px;
+    }
   }
 
   div.modal-filter > div.modal-filter-button {
@@ -66,16 +47,22 @@ const ModalWrapper = styled.div`
       background : lightGray;
       cursor : pointer;
     }
+    @media (max-width : 500px) {
+      padding : 3px 10px;
+    }
   }
 
   div.modal-content-header {
     display : grid;
-    grid-template-columns : 70px 1fr 1fr;
+    grid-template-columns : 70px 1fr 1fr 1fr;
     border-bottom : 1px solid lightGray;
     padding : 10px;
     margin-bottom : 10px;
     font-size : 12px;
     color : gray;
+    @media (max-width : 500px) {
+      grid-template-columns : 1fr 1fr 1fr;
+    }
   }
 `;
 
@@ -85,6 +72,18 @@ const FieldItemWrapper = styled.div`
   padding : 10px;
   font-size : 12px;
   color : gray;
+  @media (max-width : 500px) {
+    grid-template-columns : 1fr 1fr 1fr;
+  }
+
+  div.item-words {
+    margin-left : 5px;
+    margin-right : 5px;
+    overflow: hidden;  		// 을 사용해 영역을 감출 것
+    text-overflow: ellipsis;  	// 로 ... 을 만들기 
+    white-space: nowrap; 		// 아래줄로 내려가는 것을 막기위해
+    word-break:break-all
+  }
 
   div.item-buttons {
     display : flex;
@@ -110,22 +109,23 @@ const FieldItem = ({field, onDelete, onEdit}) => {
 
   const [edit, setEdit] = useState(false);
   const [editedData, setEditedData] = useState(field);
+  const isMobile = useMediaQuery({query : '(max-width : 500px)'});
   
   return (
     <FieldItemWrapper>
-      <div>{field.id}</div>
+      {!isMobile && <div>{field.id}</div>}
       {edit ? <input 
         type="text" 
         placeholder={editedData.english} 
         value={editedData.english} 
         onChange={e => setEditedData({...editedData, english : e.target.value})}
-      /> : <div>{field.english}</div>}
+      /> : <div className="item-words">{field.english}</div>}
       {edit ? <input 
         type="text" 
         placeholder={editedData.korean} 
         value={editedData.korean} 
         onChange={e => setEditedData({...editedData, korean : e.target.value})}
-      /> : <div>{field.korean}</div>}
+      /> : <div className="item-words">{field.korean}</div>}
       <div className="item-buttons">
         <button 
           className="item-button" 
@@ -166,6 +166,7 @@ const FieldItem = ({field, onDelete, onEdit}) => {
 
 const FieldListModal = ({fieldListModal, setFieldListModal}) => {
 
+  const isMobile = useMediaQuery({query : '(max-width : 500px)'});
   const fieldList = useSelector(state => state.field);
   const dispatch = useDispatch();
   const onInsert = useCallback((newData) => dispatch(insertFieldAsync(newData)), []);
@@ -186,7 +187,29 @@ const FieldListModal = ({fieldListModal, setFieldListModal}) => {
       shouldCloseOnOverlayClick={false} 
       onRequestClose={() => setFieldListModal(false)} 
       ariaHideApp={false} 
-      style={modalStyle}>
+      style={{
+        overlay: {
+          position: 'fixed',
+          backgroundColor: 'rgba(0, 0, 0, 0.4)',
+          width: "100%",
+          height: "100%",
+          zIndex: "1000000",
+          top: "0",
+          left: "0",
+        },
+        content: {
+          width: isMobile ? '80vw' : "450px",
+          height: isMobile ? '80vh' : "450px",
+          zIndex: "10",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          borderRadius: "10px",
+          backgroundColor: "white",
+          justifyContent: "center",
+        }
+      }}>
         <ModalWrapper>
         <div className="modal-header">
           <div>FIELD LIST</div>
@@ -226,7 +249,7 @@ const FieldListModal = ({fieldListModal, setFieldListModal}) => {
         </div>
         <div className="modal-content">
           <div className="modal-content-header">
-            <div>id</div>
+            {!isMobile && <div>id</div>}
             <div>English</div>
             <div>Korean</div>
           </div>

@@ -9,30 +9,7 @@ import { useCallback } from "react";
 import {server} from '../lib/serverURL';
 import { styled } from "styled-components";
 import { useSelector } from "react-redux";
-
-const modalStyle = {
-  overlay: {
-    position: 'fixed',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    width: "100%",
-    height: "100%",
-    zIndex: "1000000",
-    top: "0",
-    left: "0",
-  },
-  content: {
-    width: "450px",
-    height: "600px",
-    zIndex: "10",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    borderRadius: "10px",
-    backgroundColor: "white",
-    justifyContent: "center",
-  }
-};
+import { useMediaQuery } from "react-responsive";
 
 const ModalWrapper = styled.div`
   div.modal-header {
@@ -52,6 +29,11 @@ const ModalWrapper = styled.div`
 
   div.modal-content-section-left {
     width : 80px;
+    margin-right : 5px;
+    @media (max-width : 500px) {
+      font-size : 12px;
+      width : 50px;
+    }
   }
 
   .modal-content-section-right {
@@ -59,6 +41,10 @@ const ModalWrapper = styled.div`
     width : 250px;
     padding : 10px 20px;
     border : 1px solid lightGray;
+    @media (max-width : 500px) {
+      width : 50vw;
+      padding : 5px 10px;
+    }
   }
 
   div.buttons {
@@ -79,6 +65,9 @@ const ModalWrapper = styled.div`
       border : 1px solid white;
       background : lightGray;
       color : white;
+    }
+    @media (max-width : 500px) {
+      font-size : 12px;
     }
   }
 
@@ -107,6 +96,7 @@ const AddModal = ({addModal, setAddModal}) => {
     setData,
     data,
   } = useContext(ManageContext);
+  const isMobile = useMediaQuery({query : '(max-width : 500px)'});
   const fieldList = useSelector(state => state.field);
 
   useEffect(() => {
@@ -166,10 +156,32 @@ const AddModal = ({addModal, setAddModal}) => {
       shouldCloseOnOverlayClick={false} 
       onRequestClose={() => setAddModal(false)} 
       ariaHideApp={false} 
-      style={modalStyle}>
+      style={{
+        overlay: {
+          position: 'fixed',
+          backgroundColor: 'rgba(0, 0, 0, 0.4)',
+          width: "100%",
+          height: "100%",
+          zIndex: "1000000",
+          top: "0",
+          left: "0",
+        },
+        content: {
+          width: isMobile ? '80vw' : "450px",
+          height: isMobile ? '90vh' : "600px",
+          zIndex: "10",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          borderRadius: "10px",
+          backgroundColor: "white",
+          justifyContent: "center",
+        }
+      }}>
       <ModalWrapper>
         <div className="modal-header">
-          <div style={{fontSize : '20px', }}>REGISTER BUSINESS</div>
+          <div style={{fontSize : isMobile ? '15px' : '20px', }}>REGISTER BUSINESS</div>
           <div style={{cursor : 'pointer'}} onClick={() => goBack()}>
             <AiOutlineClose />
           </div>

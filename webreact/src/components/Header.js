@@ -12,11 +12,29 @@ const HeaderWrapper = styled.div`
   flex-direction : row;
   align-items : center;
   justify-content : space-between;
+  @media (max-width : 670px) {
+    flex-direction : column;
+    align-items : flex-start;
+    margin-bottom : 15px;
+  }
 
   div.header-title {
-    padding : 20px;
+    display : flex;
+    flex-direction : row;
+    align-items : center;
     font-size : 20px; 
     font-weight : bold;
+    padding : 20px;
+    @media (max-width : 670px) {
+      font-size : 18px;
+      padding : 10px;
+    }
+
+    @media (max-width : 300px) {
+      font-size : 15px;
+      padding : 10px;
+    }
+    
   }
 
   div.header-buttons {
@@ -26,13 +44,24 @@ const HeaderWrapper = styled.div`
   }
 
   div.header-button {
+    padding-left : 20px;
+    padding-right : 20px;
     font-size : 14px;
     color : gray;
-    padding : 10px;
     &:hover {
       cursor : pointer;
       font-weight : bold;
       color : black;
+    }
+    @media (max-width : 670px) {
+      font-size : 12px;
+      padding-left : 10px;
+      padding-right : 10px;
+    }
+    @media (max-width : 300px) {
+      font-size : 10px;
+      padding-left : 10px;
+      padding-right : 10px;
     }
   }
 
@@ -59,19 +88,13 @@ const Header = () => {
   return (
     <HeaderWrapper>
       <div className='header-title'>
-        KPASS MANAGE
+        <div>KPASS MANAGE</div>
+        <div><ExcelDownload/></div>
       </div>
       <div className="header-buttons">
-        <ExcelDownload/>
-        <div className="header-button" onClick={() => setFieldListModal(true)}>
-          EDIT FIELD LIST
-        </div>
-        <div className="header-button" onClick={() => setProfileModal(true)}>
-          CHANGE PASSWORD
-        </div>
-        <div className="header-button" onClick={() => logout()}>
-          LOGOUT
-        </div>
+        <div className="header-button" onClick={() => setFieldListModal(true)}>EDIT FIELD LIST</div>
+        <div className="header-button" onClick={() => setProfileModal(true)}>CHANGE PASSWORD</div>
+        <div className="header-button" onClick={() => logout()}>LOGOUT</div>
       </div>
       <ProfileModal profileModal={profileModal} setProfileModal={setProfileModal}/>
       <FieldListModal fieldListModal={fieldListModal} setFieldListModal={setFieldListModal}/>

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import EditModal from '../modals/EditModal';
 import { styled } from "styled-components";
+import { useMediaQuery } from "react-responsive";
+import { useSelector } from "react-redux";
 
 const ItemDetailWrapper = styled.div`
   background : #e3e3e3;
@@ -10,6 +12,10 @@ const ItemDetailWrapper = styled.div`
   fontSize : 12px;
   position : relative;
   font-size : 12px;
+  @media (max-width : 670px) {
+    font-size : 10px;
+    padding : 10px;
+  }
 
   div.item-detail-section {
     display : flex;
@@ -53,14 +59,24 @@ const ItemDetailWrapper = styled.div`
       background : gray;
       color : white;
     }
+    @media (max-width : 670px) {
+      font-size : 10px;
+      padding : 5px;
+    }
   }
 `;
 
 const ItemDetail = ({data, deleteItem, restoreItem, setShowDetail}) => {
   const [editModal, setEditModal] = useState(false);
+  const isMobile = useMediaQuery({query : '(max-width : 900px)'});
+  const fieldList = useSelector(state => state.field);
 
   return (
     <ItemDetailWrapper>
+      {isMobile && <div className="item-detail-section">
+        <div className="item-detail-section-left">TYPE</div>
+        <div className="item-detail-section-right">{fieldList?.find(field => field.id===data.field_id)?.english}</div>
+      </div>}
       <div className="item-detail-section">
         <div className="item-detail-section-left">PHONE</div>
         <div className="item-detail-section-right">{data.phone}</div>

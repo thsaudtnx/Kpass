@@ -19,6 +19,10 @@ const PageWrapper = styled.div`
     border : 1px solid lightGray;
     border-radius : 5px;
     padding : 30px;
+    @media (max-width : 350px) {
+      width : 100vw;
+      padding : 10px;
+    }
   }
 
   div.header {
@@ -42,6 +46,9 @@ const PageWrapper = styled.div`
     border : 1px solid lightGray;
     margin-bottom : 20px;
     outline : none;
+    @media (max-width : 350px) {
+      width : 60vw;
+    }
   }
 
   div.button {
@@ -64,9 +71,11 @@ const PageWrapper = styled.div`
       background : lightGray;
       cursor : pointer;
     }
+    @media (max-width : 350px) {
+      width : 60vw;
+    }
   }
 `;
-
 
 const LoginPage = () => {
   const navigate = useNavigate();

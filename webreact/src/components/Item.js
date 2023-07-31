@@ -3,6 +3,7 @@ import {IoMdArrowDropdown, IoMdArrowDropup} from 'react-icons/io';
 import { styled } from "styled-components";
 import ItemDetail from "./ItemDetail";
 import { useSelector } from "react-redux";
+import { useMediaQuery } from "react-responsive";
 
 
 const ItemWrapper = styled.div`
@@ -10,7 +11,7 @@ const ItemWrapper = styled.div`
   div.item-header-unshow-detail {
     display : grid;
     align-items : center;
-    grid-template-columns : 100px 150px 200px 200px 100px 2fr 1fr;
+    grid-template-columns : 1fr 1.5fr 2fr 2fr 1fr 3fr 1fr;
     transition : all 0.1s;
     background : white;
     padding : 20px;
@@ -20,23 +21,41 @@ const ItemWrapper = styled.div`
       background : lightGray;
       color : black;
     }
+    @media (max-width : 900px) {
+      grid-template-columns : 1.5fr 3fr 2fr 2fr 1fr;
+      padding : 10px;
+    }
+    @media (max-width : 670px) {
+      font-size : 10px;
+    }
   }
 
   div.item-header-show-detail {
     display : grid;
     align-items : center;
-    grid-template-columns : 100px 150px 200px 200px 100px 2fr 1fr;
+    grid-template-columns : 1fr 1.5fr 2fr 2fr 1fr 3fr 1fr;
     transition : all 0.1s;
     background : lightGray;
     padding : 20px;
     font-size : 12px;
     color : black;
+    @media (max-width : 900px) {
+      grid-template-columns : 1.5fr 3fr 2fr 2fr 1fr;
+      padding : 10px;
+    }
+    @media (max-width : 670px) {
+      font-size : 10px;
+    }
   }
 
   .item-icon {
     width : 25px; 
     height : 25px; 
     cursor : pointer;
+    @media (max-width : 670px) {
+      width : 15px;
+      height : 15px;
+    }
   }
 
   div.item-name {
@@ -59,14 +78,15 @@ const ItemWrapper = styled.div`
 const Item = ({data, deleteItem, restoreItem}) => {
   const [showDetail, setShowDetail] = useState(false);
   const fieldList = useSelector(state => state.field);
+  const isMobile = useMediaQuery({query : '(max-width : 900px)'});
 
   return(
     <ItemWrapper>
       <div className={showDetail ? "item-header-show-detail" : "item-header-unshow-detail"}>
-        <div>{data.id}</div>
-        {data.logo ? <img src={data.logo} style={{width : '50px', height : '50px', objectFit : 'contain'}} /> : <div />}
+        {!isMobile && <div>{data.id}</div>}
+        {data.logo ? <img src={data.logo} style={isMobile ? {width : '25px', height : '25px', objectFit : 'contain'} : {width : '50px', height : '50px', objectFit : 'contain'}} /> : <div />}
         <div className="item-name" style={{textDecoration : data.deletedAt ? 'line-through' : 'none'}}>{data.name}</div>
-        <div>{fieldList?.find(field => field.id===data.field_id)?.english}</div>
+        {!isMobile && <div>{fieldList?.find(field => field.id===data.field_id)?.english}</div>}
         <div>{data.kpass}%</div>
         <div>{data.travelwallet}%</div>
         {showDetail ? 

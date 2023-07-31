@@ -4,8 +4,8 @@ import Filter from "../components/Filter";
 import ItemList from "../components/ItemList";
 import { ManageContextProvider } from "../contexts/ManageContext";
 import { styled } from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteFieldAsync, editFieldAsync, fetchFieldAsync, insertFieldAsync } from "../modules/field";
+import { useDispatch } from "react-redux";
+import { fetchFieldAsync } from "../modules/field";
 
 const PageWrapper = styled.div`
   background : lightGray;
@@ -19,8 +19,23 @@ const PageWrapper = styled.div`
     border-radius : 5px;
     border : 1px solid lightGray;
     margin : auto;
+
+    @media (max-width : 1080px) {
+      border : none;
+      border-radius : 0px;
+      margin : 0px;
+      width : 100vw;
+      padding : 10px;
+    }
+
+    @media (max-width : 500px) {
+      border : none;
+      border-radius : 0px;
+      margin : 0px;
+      width : 100vw;
+      padding : 0px;
+    }
   }
-  
 `;
 
 

@@ -12,12 +12,18 @@ const FilterWrapper = styled.div`
   flex-direction : row;
   justify-content : space-between;
   padding : 20px;
+  @media (max-width : 900px) {
+    flex-direction : column;
+  }
+  @media (max-width : 670px) {
+    padding : 10px;
+  }
 
   div.filter-left {
     display : flex;
     flex-direction : row;
     align-items : center;
-    margin-bottom : 0px;
+    margin-bottom : 10px;
   }
 
   div.filter-left > select {
@@ -26,6 +32,11 @@ const FilterWrapper = styled.div`
     cursor : pointer;
     width : 150px;
     outline : none;
+    @media (max-width : 670px) {
+      width : 20vw;
+      font-size : 12px;
+      padding : 5px 10px;
+    }
   }
 
   div.filter-left > input.inputText {
@@ -36,6 +47,11 @@ const FilterWrapper = styled.div`
     cursor : pointer;
     margin-right : 10px;
     outline : none;
+    @media (max-width : 670px) {
+      width : 35vw;
+      font-size : 12px;
+      padding : 5px 10px;
+    }
   }
 
   div.filter-left > div.button {
@@ -51,12 +67,26 @@ const FilterWrapper = styled.div`
       color : white;
       border : 1px solid white;
     }
+    @media (max-width : 670px) {
+      font-size : 12px;
+      padding : 5px 8px;
+      margin-right : 0px;
+    }
+  }
+
+  div.deleted {
+    display : flex;
+    flex-direction : row;
+    @media (max-width : 670px) {
+      display : none;
+    }
   }
 
   div.filter-left > input[type="checkbox"] {
     width : 14px;
     height : 14px;
     cursor : pointer;
+    
   }
 
   div.filter-right {
@@ -70,6 +100,10 @@ const FilterWrapper = styled.div`
     border : 1px solid lightGray;
     margin-right : 10px;
     cursor : pointer;
+    @media (max-width : 670px) {
+      font-size : 10px;
+      padding : 5px 10px;
+    }
   }
 
   div.filter-right > div.button {
@@ -85,6 +119,10 @@ const FilterWrapper = styled.div`
       border : 1px solid white;
       background : lightGray;
       color : white;
+    }
+    @media (max-width : 670px) {
+      font-size : 10px;
+      padding : 5px 10px;
     }
   }
 `;
@@ -131,16 +169,19 @@ const Filter = () => {
           setIsUpdated(isUpdated + 1);}}>
           SEARCH
         </div> 
-        <input 
-          type="checkbox"
-          value={deletedData}
-          onChange={() => {
-            setDeletedData(!deletedData);
-            setPageNum(0);
-            setIsUpdated(isUpdated + 1);
-          }}
-        />
-        <div style={{fontSize : 14, color : 'gray'}}>DELETED DATA</div>
+        <div className="deleted">
+          <input 
+            type="checkbox"
+            value={deletedData}
+            onChange={() => {
+              setDeletedData(!deletedData);
+              setPageNum(0);
+              setIsUpdated(isUpdated + 1);
+            }}
+          />
+          <div style={{fontSize : 14, color : 'gray'}}>DELETED</div>
+        </div>
+        
       </div>
 
       <div className="filter-right">

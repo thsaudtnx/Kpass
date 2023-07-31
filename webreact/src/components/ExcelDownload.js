@@ -3,6 +3,7 @@ import {CSVLink} from 'react-csv';
 import { useSelector } from "react-redux";
 import { ManageContext } from "../contexts/ManageContext";
 import {AiOutlineDownload} from 'react-icons/ai';
+import { useMediaQuery } from 'react-responsive';
 
 const header = [
   {label : '업체명', key : 'name'},
@@ -19,6 +20,7 @@ const header = [
 const ExcelDownload = () => {
   const fieldList = useSelector(state => state.field);
   const {data} = useContext(ManageContext);
+  const isMobile = useMediaQuery({query : '(max-width : 670px)'});
 
   return (
     <CSVLink style={{
@@ -32,7 +34,11 @@ const ExcelDownload = () => {
       filename="kpassList.csv"
       className="hidden"
       target="_blank">
-      <AiOutlineDownload style={{width : '20px', height : '20px'}}/>
+      <AiOutlineDownload style={ isMobile ? {
+        width : '20px', height : '20px', paddingLeft : '15px'
+      } : {
+        width : '25px', height : '25px', paddingLeft : '20px'}}
+      />
     </CSVLink>
   );
 };

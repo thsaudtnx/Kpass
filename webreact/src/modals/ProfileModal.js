@@ -2,36 +2,10 @@ import React, { useEffect, useState, useMemo } from "react";
 import Modal from 'react-modal';
 import {AiOutlineClose} from 'react-icons/ai';
 import axios from "axios";
-import { useContext } from "react";
-import { ManageContext } from "../contexts/ManageContext";
-import { useCallback } from "react";
 import {server} from '../lib/serverURL';
 import { styled } from "styled-components";
 import { useParams } from "react-router";
-
-const modalStyle = {
-  overlay: {
-    position: 'fixed',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    width: "100%",
-    height: "100%",
-    zIndex: "1000000",
-    top: "0",
-    left: "0",
-  },
-  content: {
-    width: "350px",
-    height: "250px",
-    zIndex: "10",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    borderRadius: "10px",
-    backgroundColor: "white",
-    justifyContent: "center",
-  }
-}
+import { useMediaQuery } from "react-responsive";
 
 const ModalWrapper = styled.div`
   div.modal-header {
@@ -40,6 +14,9 @@ const ModalWrapper = styled.div`
     justify-content : space-between;
     align-items : center;
     margin-bottom : 30px;
+    @media (max-width : 400px) {
+      font-size : 14px;
+    }
   }
 
   div.modal-content-section {
@@ -51,6 +28,11 @@ const ModalWrapper = styled.div`
 
   div.modal-content-section-left {
     width : 150px;
+    margin-right : 5px;
+    @media (max-width : 400px) {
+      font-size : 12px;
+      width : 100px;
+    }
   }
 
   input.modal-content-section-right {
@@ -58,6 +40,11 @@ const ModalWrapper = styled.div`
     padding : 10px 20px;
     border : 1px solid lightGray;
     outline : none;
+    @media (max-width : 400px) {
+      font-size : 12px;
+      width : 40vw;
+      padding : 5px 15px;
+    }
   }
 
   div.modal-buttons {
@@ -79,14 +66,18 @@ const ModalWrapper = styled.div`
       color : white;
       background : lightGray;
     }
+    @media (max-width : 400px) {
+      padding : 5px;
+      font-size : 12px;
+    }
   }
 `
 
 const ProfileModal = ({profileModal, setProfileModal}) => {
-
   const params = useParams();
   const [password, setPassword] = useState();
   const [passwordConfirm, setPasswordConfirm] = useState();
+  const isMobile = useMediaQuery({query : '(max-width : 400px)'});
   
   useEffect(() => {
     if (profileModal) document.body.style.overflow = 'hidden';
@@ -99,7 +90,27 @@ const ProfileModal = ({profileModal, setProfileModal}) => {
       shouldCloseOnOverlayClick={false} 
       onRequestClose={() => setProfileModal(false)} 
       ariaHideApp={false} 
-      style={modalStyle}>
+      style={{overlay: {
+        position: 'fixed',
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        width: "100%",
+        height: "100%",
+        zIndex: "1000000",
+        top: "0",
+        left: "0",
+      },
+      content: {
+        width: isMobile ? '80vw' : "350px",
+        height: isMobile ? '170px' : "250px",
+        zIndex: "10",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        borderRadius: "10px",
+        backgroundColor: "white",
+        justifyContent: "center",
+      }}}>
       <ModalWrapper>
         <div className="modal-header">
           <div>CHANGE PASSWORD</div>
