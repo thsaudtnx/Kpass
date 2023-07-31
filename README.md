@@ -47,12 +47,14 @@ Features
 
 ## 📌 Usage (App Deployment)
 
-* ### How to access the app?
+* ### Developer Mode
 1. 프롬프트창에서 ssh 있는 경로로 들어간다.
 2. ssh -i LightsailDefaultKey-ap-southeast-1.pem  bitnami@13.215.32.109
 3. cd ~/Kpass
-4. mysql 직접접속 mysql -u root -p 후 0000
-5. 
+4. mysql -u root -p
+   enter in the password
+6. git pull origin main
+7. sudo pm2 reload all
 
 * ### How to publish Expo React Native App to Google Play Store? [youtube](https://youtu.be/oBWBDaqNuws)
 
