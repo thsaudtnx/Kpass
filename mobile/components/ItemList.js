@@ -3,17 +3,17 @@ import {View, FlatList, ActivityIndicator, Text} from 'react-native';
 import Item from "./Item";
 import { useContext } from "react";
 import { LogContext } from "../contexts/LogContext";
-import PALETTE from "../styles/PALETTE";
 
 export default function ItemList(){
-  const {showData} = useContext(LogContext);
+  const {showData, fieldQuery, businessQuery, locationQuery} = useContext(LogContext);
+  
   return (
     <View style={{
       width : '100%',
       height : '90%',
       paddingHorizontal : 10,
-      paddingVertical : 5,
-    }}>
+      paddingVertical : 5,}}>
+      {(fieldQuery.isLoading || businessQuery.isLoading || locationQuery.isLoading) ? <ActivityIndicator /> :
       <FlatList
         keyExtractor={item => item.id}
         data={showData}
@@ -24,7 +24,7 @@ export default function ItemList(){
         }
         ItemSeparatorComponent={() => <View style={{height: 10}} />}
         renderItem={({item}) => <Item item={item}/>}
-      />
+      />}
     </View>
   );
 };

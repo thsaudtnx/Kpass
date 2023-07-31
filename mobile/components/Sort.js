@@ -14,21 +14,21 @@ import { renderers } from 'react-native-popup-menu';
 const { SlideInMenu } = renderers;
 
 export default function Sort() {
-  const {sortBy, setSortBy, locationPermission} = useContext(LogContext);
+  const {sortBy, setSortBy, locationQuery} = useContext(LogContext);
 
-  const options = locationPermission ? [
-    {label: 'ALL', value: 'ALL',},
-    {label: 'DISTANCE', value: 'DISTANCE'},
-    {label: 'KPASS', value: 'KPASS'},
-    {label: 'TRAVELWALLET', value: 'TRAVELWALLET'},
+  const options = locationQuery.data ? [
+    {id: 0, name: 'All',},
+    {id: 1, name: 'Distance'},
+    {id: 2, name: 'Kpass'},
+    {id: 3, name: 'Travelwallet'},
   ] : [
-    {label: 'ALL', value: 'ALL',},
-    {label: 'KPASS', value: 'KPASS'},
-    {label: 'TRAVELWALLET', value: 'TRAVELWALLET'},
+    {id: 0, name: 'All',},
+    {id: 2, name: 'Kpass'},
+    {id: 3, name: 'Travelwallet'},
   ];
 
   return (
-    <View style={{}}>
+    <View>
       <Menu name="sortBy" renderer={SlideInMenu}>
         <MenuTrigger 
           customStyles={{
@@ -49,10 +49,10 @@ export default function Sort() {
         }}>
           {options.map(o => (
             <MenuOption 
-              key={o.label}
-              onSelect={() => setSortBy(o.value)} 
-              disabled={sortBy===o.value} 
-              text={(sortBy===o.value ? '\u2713  ' : '') + o.label}
+              key={o.id}
+              onSelect={() => setSortBy(o.id)} 
+              disabled={sortBy===o.id} 
+              text={(sortBy===o.id ? '\u2713  ' : '') + o.name}
               style={{padding : 20}}
             />
           ))}

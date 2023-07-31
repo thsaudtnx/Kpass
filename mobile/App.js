@@ -5,14 +5,16 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PALETTE from './styles/PALETTE';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { LogContextProvider } from './contexts/LogContext';
-import SplashScreen from './screens/SplashScreen';
 import { Image, View } from 'react-native';
+import { QueryClient, QueryClientProvider } from 'react-query'
 import KpassScreen1 from './screens/KpassScreen1';
 import KpassScreen2 from './screens/KpassScreen2';
 import KpassScreen3 from './screens/KpassScreen3';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
+
+const queryClient = new QueryClient();
 
 function RootDrawer(){
   return (
@@ -56,14 +58,10 @@ function RootDrawer(){
 
 export default function App() {
   return (
+    <QueryClientProvider client={queryClient}>
     <NavigationContainer>
       <LogContextProvider>
-        <Stack.Navigator initialRouteName="Splash">
-          <Stack.Screen
-            name="Splash"
-            component={SplashScreen}
-            options={{ headerShown: false }}
-          />
+        <Stack.Navigator initialRouteName="RootDrawer">
           <Stack.Screen
             name="RootDrawer"
             component={RootDrawer}
@@ -91,6 +89,6 @@ export default function App() {
         </Stack.Navigator>
       </LogContextProvider>
     </NavigationContainer>
-    
+    </QueryClientProvider>
   );
 }

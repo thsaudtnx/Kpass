@@ -5,11 +5,14 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import server from "../lib/server";
+import { useQuery } from "react-query";
+import { getField } from "../api/field";
+import { baseURL } from "../api/client";
 
 export default function DetailScreen() {
   const navigation = useNavigation();
   const route = useRoute();
+  const {data, isLoading} = useQuery('field', getField);
 
   useEffect(() => {
     navigation.setOptions({headerTitle : route.params.name});
@@ -22,7 +25,7 @@ export default function DetailScreen() {
         alignItems : 'center',
         padding : 20,}}>
         <Image 
-          source={route.params.item.logo && {uri : server + route.params.item.logo.split('5000')[1]}} 
+          source={route.params.item.logo && {uri :route.params.item.logo}} 
           resizeMode='contain'
           style={{
             width : 100,
@@ -33,7 +36,7 @@ export default function DetailScreen() {
         />
         <View>
           <Text style={{fontSize : 16, fontWeight : 'bold', marginBottom : 5}}>{route.params.item.name}</Text> 
-          <Text>{route.params.item.type}</Text>
+          <Text>{data?.find(field => field.id===route.params.item.field_id)?.english}</Text>
         </View>
       </View>
 
@@ -60,7 +63,9 @@ export default function DetailScreen() {
           <Icon name="location-sharp" size={25} style={{marginRight : 20, color : PALETTE.LOCATION_RED}}/>
           <Text style={{fontSize : 15, flex : 1, flexWrap : 'wrap'}}>{route.params.item.address}</Text>
         </View>
-
+        <View>
+          <Text style={{fontSize : 15, flex : 1, flexWrap : 'wrap'}}>{route.params.item.addressdetail}</Text>
+        </View>
         <View style={{flexDirection : 'row', alignItems : 'center', marginBottom : 10}}>
           <Image 
             source={require('../assets/icon_k_pass.png')} 

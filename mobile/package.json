@@ -16,6 +16,7 @@
     "@react-navigation/drawer": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
+    "@types/axios": "^0.14.0",
     "axios": "^1.4.0",
     "expo": "~48.0.18",
     "expo-clipboard": "~4.1.2",
@@ -34,9 +35,11 @@
     "react-native-screens": "~3.20.0",
     "react-native-select-dropdown": "^3.3.4",
     "react-native-snap-carousel": "^3.9.1",
+    "react-native-template-typescript": "^6.12.11",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.11",
-    "react-native-webview": "11.26.0"
+    "react-native-webview": "11.26.0",
+    "react-query": "^3.39.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

@@ -1,136 +1,55 @@
 import React from "react";
 import { createContext, useState } from "react";
-import axios from 'axios';
 import logsStorage from "../storages/logsStorage";
 import { useEffect } from "react";
 import * as Location from "expo-location";
-import server from "../lib/server";
+import client from "../api/client";
+import { useQuery } from "react-query";
+import { getField } from "../api/field";
+import { getBusiness } from "../api/business";
+import { getLocation } from "../api/location";
 
 export const LogContext = createContext();
 
 export function LogContextProvider({children}){
-  const [position, setPosition] = useState({latitude : null, longitude : null,});
-  const [locationPermission, setLocationPermission] = useState(true);
   const [inputText, setInputText] = useState('');
-  const [field, setField] = useState('ALL');
-  const [sortBy, setSortBy] = useState('ALL');
-  const [data, setData] = useState();
+  const [fieldId, setFieldId] = useState(0);
+  const [sortBy, setSortBy] = useState(0); //0 All, 1 Distance, 2 Kpass, 3 Travelwallet
   const [showData, setShowData] = useState();
-  const [loadingGetData, setLoadingGetData] = useState(true);
-  const [loadingGetLocation, setLoadingGetLocation] = useState(true);
-  const dateFormatter = (date) => {
-    return date.getFullYear() + "-" +
-    ("00" + (date.getMonth() + 1)).slice(-2) + "-" +
-    ("00" + date.getDate()).slice(-2) + " " +
-    ("00" + date.getHours()).slice(-2) + ":" +
-    ("00" + date.getMinutes()).slice(-2) + ":" +
-    ("00" + date.getSeconds()).slice(-2);
-  }
-
-  useEffect(() => {
-    //logsStorage.clearAll();
-    (async () => {
-      const updatedAt = await logsStorage.getUpdatedAt();
-      if (updatedAt) {
-        console.log(`The device is last updated at ${updatedAt}`);
-        let storageData = await logsStorage.getData();
-        const serverData = await axios.get(`${server}/mobile`, {
-          params : {
-            updatedAt : updatedAt
-          }
-        });
-        console.log('Updated server data : ', serverData.data);
-        if (serverData.data.length!==0){
-          let newData = [...storageData];
-          serverData.data.forEach(servd => {
-            flag = false;
-            storageData.forEach(stord => {
-              if (servd.id===stord.id){
-                flag = true;
-                if (servd.deletedAt) newData = newData.filter(d => d.id!==servd.id);
-                else if (servd.createdAt !== servd.updatedAt) newData = newData.map(d => d.id===servd.id ? servd : d);
-              }
-            });
-            if (!flag) newData = [...newData, servd];
-          })
-          setData(newData);
-          logsStorage.setData(newData);
-          logsStorage.setUpdatedAt(dateFormatter(new Date()));
-          console.log({updatedAt : dateFormatter(new Date()), data : newData});
-        } else {
-          setData(storageData);
-        }
-      } else {
-        console.log(`The device is new`);
-        const serverData = await axios.get(`${server}/mobile`);
-        console.log('서버 데이터 : ', serverData.data);
-        setData(serverData.data);
-        logsStorage.setData(serverData.data);
-        logsStorage.setUpdatedAt(dateFormatter(new Date()));
-        console.log({updatedAt : dateFormatter(new Date()), data : serverData.data});
-      }
-      setLoadingGetData(false);
-    })();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const foregroundPermission = await Location.requestForegroundPermissionsAsync();
-        if (foregroundPermission){
-          setLocationPermission(true);
-          const {coords: { latitude, longitude }} = await Location.getCurrentPositionAsync();
-          setPosition({...position, latitude : latitude, longitude : longitude});
-          console.log('latitude : ', latitude,'longitude : ', longitude);
-        } else {
-          setLocationPermission(false);
-          Alert.alert('위치 정보를 가져올 수 없습니다.');
-        }
-        setLoadingGetLocation(false);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
-  }, []);
+  const fieldQuery = useQuery('field', getField);
+  const businessQuery = useQuery('business', getBusiness);
+  const locationQuery = useQuery('location', getLocation);
 
   useEffect(() => {
     setShowData(
-      data
-        ?.filter(d => d.name.includes(inputText) && (field==='ALL' ? true : d.field===field))
+      businessQuery?.data
+        ?.filter(d => d.name.includes(inputText) && (fieldId===0 ? true : d.field_id===fieldId))
         ?.sort((a, b) => {
-          if (sortBy==='ALL') return 1;
-          else if (sortBy==='DISTANCE'){
-            const dis_a = (a.latitude - position.latitude)**2 + (a.longitude - position.longitude)**2;
-            const dis_b = (b.latitude - position.latitude)**2 + (b.longitude - position.longitude)**2;
+          if (sortBy===0) return 1;
+          else if (sortBy===1){
+            const dis_a = (a.latitude - locationQuery.data.latitude)**2 + (a.longitude - locationQuery.data.longitude)**2;
+            const dis_b = (b.latitude - locationQuery.data.latitude)**2 + (b.longitude - locationQuery.data.longitude)**2;
             if (dis_a > dis_b) return 1;
             else return -1;
           }
-          else if (sortBy==='KPASS') return b.kpass - a.kpass;
-          else if (sortBy==='TRAVELWALLET') return b.travelwallet - a.travelwallet;
+          else if (sortBy===2) return b.kpass - a.kpass;
+          else if (sortBy===3) return b.travelwallet - a.travelwallet;
         })
     )
-  }, [inputText, sortBy, field, data]);
+  }, [inputText, sortBy, fieldId, (fieldQuery.isLoading || businessQuery.isLoading || locationQuery.isLoading)]);
 
   return (
-    <LogContext.Provider 
-      value={{
-        position, 
-        setPosition, 
-        locationPermission,
-        setLocationPermission,
-        inputText,
-        setInputText,
-        field,
-        setField,
-        sortBy,
-        setSortBy,
-        data,
-        setData,
-        showData,
-        loadingGetData,
-        loadingGetLocation,
-      }}
-    >
+    <LogContext.Provider value={{
+      fieldQuery,
+      businessQuery,
+      locationQuery,
+      inputText,
+      setInputText,
+      fieldId,
+      setFieldId,
+      sortBy,
+      setSortBy,
+      showData,}}>
       {children}
     </LogContext.Provider>
   );

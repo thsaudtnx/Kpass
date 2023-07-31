@@ -4,14 +4,15 @@ import PALETTE from "../styles/PALETTE";
 import { useContext } from "react";
 import { LogContext } from "../contexts/LogContext";
 import { useNavigation } from "@react-navigation/native";
-import server from "../lib/server";
+
 
 export default function Item({item}){
   const navigation = useNavigation();
-  const {position} = useContext(LogContext);
+  const {locationQuery, fieldQuery} = useContext(LogContext);
+
   return (
     <TouchableOpacity 
-      onPress={() => navigation.push('Detail', {item, position})}
+      onPress={() => navigation.push('Detail', {item, position : locationQuery.data})}
       style={{
         padding : 10,
         backgroundColor : PALETTE.WHITE,
@@ -21,15 +22,19 @@ export default function Item({item}){
         borderRadius : 10,}}>
         <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', padding : 10}}>
           <Image 
-            source={item.logo && {uri : server + item.logo.split('5000')[1]}} 
+            source={item.logo && {uri : item.logo}} 
             resizeMode='contain'
             style={{
               width : 70,
               height : 70,
               marginRight : 15}}/>
           <View>
-            <Text style={{marginBottom : 5, fontSize : 17, fontWeight : 'bold'}}>{item.name}</Text>
-            <Text style={{fontSize : 12}}>{item.type}</Text>
+            <Text style={{
+              marginBottom : 5, 
+              fontSize : 17, 
+              fontWeight : 'bold',
+              }}>{ (item.name.length > 15) ? (item.name.substring(0,12) + '...') : item.name}</Text>
+            <Text style={{fontSize : 12}}>{fieldQuery.data?.find(field => field.id===item.field_id)?.english}</Text>
           </View>
         </View>
         <View 

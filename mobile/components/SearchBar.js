@@ -24,6 +24,7 @@ export default function SearchBar() {
           }} 
         />
         <TextInput style={{
+          minWidth : 300,
           borderWidth : 1,
           borderColor : PALETTE.BORDER,
           borderRadius : 10,

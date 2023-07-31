@@ -20,16 +20,13 @@ const HomeScreen = () => {
   return (
     <MenuProvider>
       <View style={{backgroundColor : PALETTE.BACKGROUND, flex : 1,}}>
-        <View 
-          style={{
-            display : 'flex', 
-            flexDirection : 'row',
-            alignItems : 'center',
-            position : 'relative',
-          }}
-        >
+        <View style={{
+          display : 'flex', 
+          flexDirection : 'row',
+          alignItems : 'center',
+          position : 'relative',}}>
           <SearchBar />
-          <Filter/>
+          <Filter />
           <Sort />
         </View>
         <ItemList/>
