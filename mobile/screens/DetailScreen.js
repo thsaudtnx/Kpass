@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { View, Text, Image, Linking, ScrollView } from "react-native";
 import PALETTE from "../styles/PALETTE";
 import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useQuery } from "react-query";
 import { getField } from "../api/field";
-import { baseURL } from "../api/client";
 
 export default function DetailScreen() {
   const navigation = useNavigation();
@@ -25,7 +25,7 @@ export default function DetailScreen() {
         alignItems : 'center',
         padding : 20,}}>
         <Image 
-          source={route.params.item.logo && {uri :route.params.item.logo}} 
+          source={route.params.item.logo ? {uri :route.params.item.logo} : require('../assets/Kpass-icon.png')} 
           resizeMode='contain'
           style={{
             width : 100,
@@ -64,6 +64,7 @@ export default function DetailScreen() {
           <Text style={{fontSize : 15, flex : 1, flexWrap : 'wrap'}}>{route.params.item.address}</Text>
         </View>
         <View>
+          <MaterialIcon name="add-location-alt" size={25} style={{marginRight : 20, color : PALETTE.GRAY}} />
           <Text style={{fontSize : 15, flex : 1, flexWrap : 'wrap'}}>{route.params.item.addressdetail}</Text>
         </View>
         <View style={{flexDirection : 'row', alignItems : 'center', marginBottom : 10}}>
@@ -110,8 +111,8 @@ export default function DetailScreen() {
           initialRegion={{
             latitude : parseFloat(route.params.position.latitude),
             longitude : parseFloat(route.params.position.longitude),
-            latitudeDelta : 0.5,
-            longitudeDelta : 0.5, //나의 위치와 업체의 위치를 한눈에 들어오게 하는 델타 값구하기
+            latitudeDelta : 0.1,
+            longitudeDelta : 0.1, //나의 위치와 업체의 위치를 한눈에 들어오게 하는 델타 값구하기
           }}>
           <Marker
             coordinate={{latitude: parseFloat(route.params.item.latitude), longitude: parseFloat(route.params.item.longitude)}}
