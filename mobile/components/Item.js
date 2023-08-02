@@ -22,7 +22,7 @@ export default function Item({item}){
         borderRadius : 10,}}>
         <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', padding : 10}}>
           <Image 
-            source={item.logo ? {uri : item.logo} : require('../assets/Kpass-icon.png')} 
+            source={item.logo ? {uri : item.logo} : require('../assets/kpass-app-icon(no-bg).png')} 
             resizeMode='contain'
             style={{
               width : 70,

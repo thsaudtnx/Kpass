@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useCallback, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import {server} from '../lib/serverURL';
-import logo from '../lib/images/oxpayment-logo.png';
 import styled from 'styled-components';
 
 const PageWrapper = styled.div`
@@ -13,7 +12,7 @@ const PageWrapper = styled.div`
 
   div.loginModal {
     width : 300px;
-    height : 350px;
+    height : 250px;
     margin : auto;
     background : white;
     border : 1px solid lightGray;
@@ -103,7 +102,6 @@ const LoginPage = () => {
     <PageWrapper>
       <div className="loginModal">
         <div className="header">
-          <img src={logo} alt={logo} style={{width : '100px', objectFit : 'contain', marginBottom : '10px'}}/>
           <div style={{fontSize : '20px', fontWeight : 'bold', marginLeft : '10px'}}>KPASS LOGIN</div>
         </div>
         

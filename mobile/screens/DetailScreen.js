@@ -25,7 +25,7 @@ export default function DetailScreen() {
         alignItems : 'center',
         padding : 20,}}>
         <Image 
-          source={route.params.item.logo ? {uri :route.params.item.logo} : require('../assets/Kpass-icon.png')} 
+          source={route.params.item.logo ? {uri :route.params.item.logo} : require('../assets/kpass-app-icon(no-bg).png')} 
           resizeMode='contain'
           style={{
             width : 100,
@@ -113,7 +113,8 @@ export default function DetailScreen() {
             longitude : parseFloat(route.params.position.longitude),
             latitudeDelta : 0.1,
             longitudeDelta : 0.1, //나의 위치와 업체의 위치를 한눈에 들어오게 하는 델타 값구하기
-          }}>
+          }}
+        >
           <Marker
             coordinate={{latitude: parseFloat(route.params.item.latitude), longitude: parseFloat(route.params.item.longitude)}}
             title={route.params.item.name}

@@ -4,10 +4,10 @@
     "slug": "kpass",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Kpass-icon.png",
+    "icon": "./assets/kpass-app-icon(bg).png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/kpass-app-splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
