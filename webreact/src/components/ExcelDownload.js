@@ -4,6 +4,10 @@ import { useSelector } from "react-redux";
 import { ManageContext } from "../contexts/ManageContext";
 import {AiOutlineDownload} from 'react-icons/ai';
 import { useMediaQuery } from 'react-responsive';
+import axios from 'axios';
+import { server } from "../lib/serverURL";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const header = [
   {label : '업체명', key : 'name'},
@@ -16,11 +20,24 @@ const header = [
   {label : '비고', key : 'note'},
 ];
 
-
 const ExcelDownload = () => {
   const fieldList = useSelector(state => state.field);
-  const {data} = useContext(ManageContext);
   const isMobile = useMediaQuery({query : '(max-width : 670px)'});
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios.get(`${server}/business`)
+        .then(res => {
+          console.log(res.data);
+          setData(res.data.data);
+        })
+        .catch(err => {
+          console.error(err);
+        })
+    };
+    fetchData();
+  });
 
   return (
     <CSVLink style={{

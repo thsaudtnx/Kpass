@@ -7,6 +7,34 @@ const router = express.Router();
 
 /**
  * @swagger
+ * /business:
+ *  get:
+ *    description: "GET All business data for excel download"
+ *    tags: [business]
+ *    responses:
+ *      "200":
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                ok : 
+ *                  type: integer
+ *                data : 
+ *                  type : object
+ */
+router.get('/', async (req, res, next) => {
+  try {
+    const business = await Business.findAll();
+    res.send({ok : 1, data : business});
+  } catch(err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+/**
+ * @swagger
  * /business/list:
  *  get:
  *    description: "GET business data with options"

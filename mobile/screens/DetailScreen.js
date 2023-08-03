@@ -23,13 +23,15 @@ export default function DetailScreen() {
       <View style={{
         flexDirection : 'row',
         alignItems : 'center',
-        padding : 20,}}>
+        paddingHorizontal : 20,
+        paddingTop : 20,
+        paddingBottom : 10,}}>
         <Image 
-          source={route.params.item.logo ? {uri :route.params.item.logo} : require('../assets/kpass-app-icon(no-bg).png')} 
+          source={route.params.item.logo ? {uri :route.params.item.logo} : require('../assets/kpass-app-button(no-bg).png')} 
           resizeMode='contain'
           style={{
-            width : 100,
-            height : 100,
+            width : 70,
+            height : 70,
             marginBottom : 5,
             marginRight : 20,
           }}
@@ -51,21 +53,24 @@ export default function DetailScreen() {
           flexDirection : 'row', 
           alignItems : 'center',
           marginBottom : 20,}}>
-          <Icon name="call" size={25} style={{marginRight : 20, color : PALETTE.WHATSAPP_GREEN}}/>
+          <Icon name="call" size={20} style={{marginRight : 20, color : PALETTE.WHATSAPP_GREEN}}/>
           <TouchableWithoutFeedback onPress={()=>Linking.openURL(`tel:${route.params.item.phone}`)}>
-            <Text style={{fontSize : 15,}}>{route.params.item.phone}</Text>
+            <Text style={{fontSize : 14,}}>{route.params.item.phone}</Text>
           </TouchableWithoutFeedback>
         </View>
         <View style={{
           flexDirection : 'row', 
           alignItems : 'center',
           marginBottom : 20,}}>
-          <Icon name="location-sharp" size={25} style={{marginRight : 20, color : PALETTE.LOCATION_RED}}/>
-          <Text style={{fontSize : 15, flex : 1, flexWrap : 'wrap'}}>{route.params.item.address}</Text>
+          <Icon name="location-sharp" size={20} style={{marginRight : 20, color : PALETTE.LOCATION_RED}}/>
+          <Text style={{fontSize : 14, flex : 1, flexWrap : 'wrap'}}>{route.params.item.address}</Text>
         </View>
-        <View>
-          <MaterialIcon name="add-location-alt" size={25} style={{marginRight : 20, color : PALETTE.GRAY}} />
-          <Text style={{fontSize : 15, flex : 1, flexWrap : 'wrap'}}>{route.params.item.addressdetail}</Text>
+        <View style={{
+          flexDirection : 'row', 
+          alignItems : 'center',
+          marginBottom : 20,}}>
+          <MaterialIcon name="add-location-alt" size={20} style={{marginRight : 20, color : PALETTE.GRAY}} />
+          <Text style={{fontSize : 14, flex : 1, flexWrap : 'wrap'}}>{route.params.item.addressdetail}</Text>
         </View>
         <View style={{flexDirection : 'row', alignItems : 'center', marginBottom : 10}}>
           <Image 

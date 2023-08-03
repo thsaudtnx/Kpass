@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import PALETTE from "../styles/PALETTE";
-import { ImageBackground, View } from "react-native";
+import {View, Platform, StatusBar  } from "react-native";
 import SearchBar from "../components/SearchBar";
 import Filter from "../components/Filter";
 import ItemList from "../components/ItemList";
 import { useNavigation } from "@react-navigation/native";
 import { MenuProvider } from 'react-native-popup-menu';
 import Sort from "../components/Sort";
+import { SafeAreaContainer } from "../containers/SafeAreaContainer";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -19,6 +20,7 @@ const HomeScreen = () => {
 
   return (
     <MenuProvider>
+      <SafeAreaContainer />
       <View style={{backgroundColor : PALETTE.BACKGROUND, flex : 1,}}>
         <View style={{
           display : 'flex', 

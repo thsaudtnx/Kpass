@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "kpass",
+    "name": "Kpass",
     "slug": "kpass",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/kpass-app-icon(bg).png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/kpass-app-splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#462679"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -22,8 +22,13 @@
       "bundleIdentifier": "com.gg1985.kpass"
     },
     "android": {
+      "config": {
+        "googleMaps" : {
+          "apiKey" : "AIzaSyDrGXx7xRTChSkb3q1NwT6oHkt-4uukBqA"
+        }
+      },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/kpass-app-icon(bg).png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.gg1985.kpass"

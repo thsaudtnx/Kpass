@@ -41,7 +41,7 @@ export default function Sort() {
             padding : 10
           }}
         >
-          <MaterialCommunityIcons name="sort" size={25} style={{color : PALETTE.BLACK}}/>
+          <MaterialCommunityIcons name="sort" size={20} style={{color : PALETTE.BLACK}}/>
         </MenuTrigger>
         <MenuOptions style={{
           paddingBottom : 10,
@@ -53,7 +53,7 @@ export default function Sort() {
               onSelect={() => setSortBy(o.id)} 
               disabled={sortBy===o.id} 
               text={(sortBy===o.id ? '\u2713  ' : '') + o.name}
-              style={{padding : 20}}
+              style={{padding : 10}}
             />
           ))}
         </MenuOptions>

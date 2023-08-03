@@ -311,7 +311,7 @@ const AddModal = ({addModal, setAddModal}) => {
         </div>
         <div className="buttons">
           <div className="button" style={{right : '100px'}} onClick={() => {
-            if (!newData.name || !newData.type || !newData.address) {
+            if (!newData.name || !newData.field_id || !newData.address) {
               window.alert('There is an empty section!');
             }
             else if (data?.map(d => d.name).includes(newData.name)){

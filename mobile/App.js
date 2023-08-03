@@ -5,11 +5,18 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PALETTE from './styles/PALETTE';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { LogContextProvider } from './contexts/LogContext';
-import { Image, View } from 'react-native';
+import { Image, View, Text, TextInput} from 'react-native';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import KpassScreen1 from './screens/KpassScreen1';
 import KpassScreen2 from './screens/KpassScreen2';
 import KpassScreen3 from './screens/KpassScreen3';
+
+//글자 크기 제한 통일
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
+TextInput.defaultProps = TextInput.defaultProps || {};
+TextInput.defaultProps.autoCorrect = false;
+TextInput.defaultProps.allowFontScaling = false;
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -34,7 +41,7 @@ function RootDrawer(){
                 source={require('./assets/oxpay-logo-white.png')} 
                 resizeMode='contain'
                 style={{
-                  width : 80,
+                  width : 60,
                   height : '100%',
                 }}
               />

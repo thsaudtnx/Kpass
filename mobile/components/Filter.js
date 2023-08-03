@@ -30,20 +30,19 @@ export default function Filter() {
             padding : 10
           }}
         >
-          <MaterialCommunityIcons name="filter" size={25} style={{color : PALETTE.BLACK, marginRight : 5}}/>
+          <MaterialCommunityIcons name="filter" size={25} style={{color : PALETTE.BLACK}}/>
         </MenuTrigger>
         <MenuOptions style={{
           paddingBottom : 10,
           backgroundColor : PALETTE.BACKGROUND,}}>
-          {fieldQuery.isLoading ? <ActivityIndicator size={25}/> : 
-          <ScrollView>
+          {fieldQuery.data && <ScrollView>
             {[{id : 0, english : 'All', korean : '모두'}, ...fieldQuery.data]?.map(item => (
               <MenuOption 
                 key={item.id} 
                 onSelect={() => setFieldId(item.id)} 
                 text={(fieldId===item.id ? '\u2713  ' : '') + item.english}
                 disabled={fieldId===item.id}
-                style={{padding : 15}} />
+                style={{padding : 10}} />
             ))}
           </ScrollView>}
         </MenuOptions>
