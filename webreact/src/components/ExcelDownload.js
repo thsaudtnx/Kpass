@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import {CSVLink} from 'react-csv';
 import { useSelector } from "react-redux";
-import { ManageContext } from "../contexts/ManageContext";
 import {AiOutlineDownload} from 'react-icons/ai';
 import { useMediaQuery } from 'react-responsive';
 import axios from 'axios';
@@ -23,13 +22,13 @@ const header = [
 const ExcelDownload = () => {
   const fieldList = useSelector(state => state.field);
   const isMobile = useMediaQuery({query : '(max-width : 670px)'});
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       await axios.get(`${server}/business`)
         .then(res => {
-          console.log(res.data);
+          //console.log(res.data.data);
           setData(res.data.data);
         })
         .catch(err => {
@@ -37,7 +36,7 @@ const ExcelDownload = () => {
         })
     };
     fetchData();
-  });
+  }, []);
 
   return (
     <CSVLink style={{
