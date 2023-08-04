@@ -303,6 +303,7 @@ const AddModal = ({addModal, setAddModal}) => {
             }
             else if (window.confirm('DO YOU WANT TO ADD?')){
               onInsertBusiness(newData);
+              setNewData(initData);
               setAddModal(false);
             }
           }}>CONFIRM</div>

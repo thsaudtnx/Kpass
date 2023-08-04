@@ -298,6 +298,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
                   console.log(deleteResult.data);
                 }
                 onEditBusiness(editedData);
+                setEditedData(data);
                 setEditModal(false);
               }
           }}>
