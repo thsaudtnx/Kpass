@@ -125,6 +125,7 @@ export default function business(state = initialState, action) {
         data : state.data.filter(item => item.id!==action.payload)
       })
     case EDIT_BUSINESS:
+      console.log(action.payload);
       return ({
         ...state,
         data : state.data.map(item => item.id===action.payload.id ? action.payload : item)

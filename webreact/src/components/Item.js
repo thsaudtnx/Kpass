@@ -86,7 +86,7 @@ const Item = ({data}) => {
         {!isMobile && <div>{data.id}</div>}
         {data.logo ? <img src={data.logo} style={isMobile ? {width : '25px', height : '25px', objectFit : 'contain'} : {width : '50px', height : '50px', objectFit : 'contain'}} /> : <div />}
         <div className="item-name" style={{textDecoration : data.deletedAt ? 'line-through' : 'none'}}>{data.name}</div>
-        {!isMobile && <div>{fieldList?.find(field => field.id===data.field_id)?.english}</div>}
+        {!isMobile && <div>{fieldList?.find(field => field.id===parseInt(data.field_id, 10))?.english}</div>}
         <div>{data.kpass}%</div>
         <div>{data.travelwallet}%</div>
         {showDetail ? 

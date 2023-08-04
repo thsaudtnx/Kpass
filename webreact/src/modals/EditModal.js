@@ -81,6 +81,10 @@ const EditModal = ({editModal, setEditModal, data}) => {
     dispatch(editBusinessAsync(editedData));
   }, [editedData]);
   
+  console.log(fieldList);
+
+
+
   useEffect(() => {
     if (editModal) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
