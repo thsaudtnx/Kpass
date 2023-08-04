@@ -3,13 +3,12 @@ import Modal from 'react-modal';
 import {AiOutlineClose} from 'react-icons/ai';
 import axios from "axios";
 import GooglePlacesAutocomplete, {geocodeByAddress, getLatLng} from 'react-google-places-autocomplete';
-import { useContext } from "react";
-import { ManageContext } from "../contexts/ManageContext";
 import { useCallback } from "react";
 import {server} from '../lib/serverURL';
 import { styled } from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
+import { editBusinessAsync } from "../modules/business";
 
 const ModalWrapper = styled.div`
   div.modal-header {
@@ -74,41 +73,44 @@ const ModalWrapper = styled.div`
 `;
 
 const EditModal = ({editModal, setEditModal, data}) => {
-  const {isUpdated, setIsUpdated, setPageNum, setHasMore, setData} = useContext(ManageContext);
   const fieldList = useSelector(state => state.field);
-  const [editedData, setEditedData] = useState({...data, logo : null});
+  const [editedData, setEditedData] = useState(data);
   const isMobile = useMediaQuery({query : '(max-width : 500px)'});
+  const dispatch = useDispatch();
+  const onEditBusiness = useCallback((editedData) => {
+    dispatch(editBusinessAsync(editedData));
+  }, [editedData]);
   
   useEffect(() => {
     if (editModal) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
   },[editModal]);
 
-  const goBack = useCallback(
-    async () => {
-      if (JSON.stringify(editedData)===JSON.stringify({...data, logo : null})) setEditModal(false);
-      else if (window.confirm('THE INFORMATION IS NOT SAVED. STILL WANT TO EXIT?')) {
-        if (editedData.logo){
-          const deleteResult = await axios.delete(`${editedData.logo}`);
-          console.log(deleteResult.data);
-        }
-        setEditModal(false);
-        setEditedData({...data, logo : null});
-      }
-    }, [editedData]);
-
-  const uploadLogo = useCallback(
-    async e => {
-      e.preventDefault();
-      const formData = new FormData();
-      formData.append('file', e.target.file.files[0]);
-      if (editedData.logo) {
+  const goBack = useCallback(async () => {
+    if (JSON.stringify(editedData)===JSON.stringify(data)) {
+      setEditModal(false);
+    }
+    else if (window.confirm('THE INFORMATION IS NOT SAVED. STILL WANT TO EXIT?')) {
+      if (editedData.logo!==data.logo){
         const deleteResult = await axios.delete(`${editedData.logo}`);
         console.log(deleteResult.data);
-      } 
-      const postResult = await axios.post(`${server}/business/upload`, formData);
-      console.log(postResult.data);
-      setEditedData({...editedData, logo : postResult.data});
+      }
+      setEditModal(false);
+      setEditedData(data);
+    }
+  }, [editedData]);
+
+  const uploadLogo = useCallback(async e => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('file', e.target.file.files[0]);
+    if (editedData.logo!==data.logo) {
+      const deleteResult = await axios.delete(`${editedData.logo}`);
+      console.log(deleteResult.data);
+    } 
+    const postResult = await axios.post(`${server}/business/upload`, formData);
+    console.log(postResult.data);
+    setEditedData({...editedData, logo : postResult.data});
   }, [editedData]);
 
   return (
@@ -159,13 +161,11 @@ const EditModal = ({editModal, setEditModal, data}) => {
               alignItems : 'center'
             }}
             onSubmit={ e => uploadLogo(e)}>
-            {!editedData.logo && !data.logo && <div style={{width : '50px', height : '50px', marginRight : '30px'}}></div>}
-            {editedData.logo && <img src={editedData.logo} style={{width : '50px', height : '50px', objectFit : 'contain', marginRight : '30px'}}></img>}
-            {!editedData.logo && data.logo && <img src={data.logo} style={{width : '50px', height : '50px', objectFit : 'contain', marginRight : '30px'}}></img>}
+            {editedData.logo ? <img src={editedData.logo} style={{width : '50px', height : '50px', objectFit : 'contain', marginRight : '30px'}} /> : 
+            <div style={{marginRight : '30px', width : '50px', height : '50px',}} />}
             <input type='file' name='file' style={{cursor : 'pointer'}}/>
             <button type='submit' style={{cursor : 'pointer'}}>Upload</button>
           </form>
-          
           
           <div className="modal-content-section">
             <div className="modal-content-section-left">NAME</div>
@@ -288,29 +288,17 @@ const EditModal = ({editModal, setEditModal, data}) => {
                 window.alert('THERE IS AN EMPTY SECTION');
               } 
               // 초기 상태와 똑같을때
-              else if (JSON.stringify(editedData)===JSON.stringify({...data, logo : null})) setEditModal(false);
+              else if (JSON.stringify(editedData)===JSON.stringify(data)) {
+                setEditModal(false);
+              }
               //무언가 바뀌었을때
               else if(window.confirm('DO YOU WANT TO EDIT?')){
-                if (editedData.logo){ //로고가 바뀌었을때 기존 로고 삭제
+                if (editedData.logo!==data.logo){ //로고가 바뀌었을때 기존 로고 삭제
                   const deleteResult = await axios.delete(`${data.logo}`);
                   console.log(deleteResult.data);
                 }
-                let updateObject = {};
-                for (const key in editedData){
-                  if (key==='logo') {
-                    if (editedData[key]!==null)updateObject[key] = editedData[key]
-                  }
-                  else if (data[key]!==editedData[key]) updateObject[key] = editedData[key];
-                }
-                console.log(updateObject);
-                const result =  await axios.patch(`${server}/business/edit/${data.id}`, updateObject);
-                console.log(result.data);
-                setPageNum(0);
-                setData([]);
-                setHasMore(true);
-                setIsUpdated(isUpdated + 1);
-                setEditedData({...data, logo : null});
-                setEditModal(false); 
+                onEditBusiness(editedData);
+                setEditModal(false);
               }
           }}>
             CONFIRM

@@ -199,12 +199,14 @@ router.get('/list', async (req, res, next) => {
  *                  type: integer
  *                message : 
  *                  type: string
+ *                data : 
+ *                  type: integer
  *                
  */
 router.post('/add', async (req, res, next) => {
   try {
      const result = await Business.create(req.body);
-      res.status(200).json({ok : 1, message : 'INSERT SUCCESS'})
+      res.status(200).json({ok : 1, message : 'INSERT SUCCESS', id : result.id});
     } catch(err) {
     console.error(err);
     next(err);

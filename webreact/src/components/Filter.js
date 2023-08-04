@@ -1,8 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import AddModal from "../modals/AddModal";
-import { ManageContext } from "../contexts/ManageContext";
 import { styled } from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { initBusiness } from "../modules/business";
+import { setDeletedData, setFieldId, setSortBy, setInputText, setSearch } from "../modules/filter";
 
 const FilterWrapper = styled.div`
   position : sticky;
@@ -129,31 +130,19 @@ const FilterWrapper = styled.div`
 
 const Filter = () => {
   const fieldList = useSelector(state => state.field);
-  const {
-    setPageNum,
-    field_id, 
-    setField_id, 
-    inputText, 
-    setInputText, 
-    deletedData, 
-    setDeletedData, 
-    sortBy, 
-    setSortBy, 
-    isUpdated,
-    setIsUpdated,
-  } = useContext(ManageContext);
-
+  const {field_id, inputText, deletedData, sortBy, search} = useSelector(state => state.filter);
   const [addModal, setAddModal] = useState(false);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    (() => dispatch(initBusiness()))();
+  }, [field_id, deletedData, sortBy, search]);
 
   return (
     <FilterWrapper>
       <div className='filter-left'>
         <select
-          onChange={e => {
-            setField_id(e.target.value);
-            setPageNum(0);
-            setIsUpdated(isUpdated + 1);
-          }}>
+          value={field_id}
+          onChange={e => dispatch(setFieldId(e.target.value))}>
             <option value={0}>All</option>
           {fieldList?.map(f => <option key={f.id} value={f.id}>{f.english}</option>)}
         </select>
@@ -162,21 +151,18 @@ const Filter = () => {
           type='text' 
           placeholder='SEARCH BY NAME'
           value={inputText}
-          onChange={e => setInputText(e.target.value)}
+          onChange={e => dispatch(setInputText(e.target.value))}
         />
         <div className="button" onClick={() => {
-          setPageNum(0);
-          setIsUpdated(isUpdated + 1);}}>
+          dispatch(setSearch());}}>
           SEARCH
         </div> 
         <div className="deleted">
           <input 
             type="checkbox"
             value={deletedData}
-            onChange={() => {
-              setDeletedData(!deletedData);
-              setPageNum(0);
-              setIsUpdated(isUpdated + 1);
+            onChange={e => {
+              dispatch(setDeletedData(e.target.checked));
             }}
           />
           <div style={{fontSize : 14, color : 'gray'}}>DELETED</div>
@@ -188,9 +174,7 @@ const Filter = () => {
         <select
           value={sortBy}
           onChange={ e => {
-            setSortBy(e.target.value);
-            setPageNum(0);
-            setIsUpdated(isUpdated + 1);
+            dispatch(setSortBy(e.target.value));
           }}>
           {['ALL', 'KPASS', 'TRAVELWALLET'].map((element, index) => <option key={index} value={index}>{element}</option>)}
         </select>

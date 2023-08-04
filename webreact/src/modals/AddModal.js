@@ -3,13 +3,12 @@ import Modal from 'react-modal';
 import {AiOutlineClose} from 'react-icons/ai';
 import axios from "axios";
 import GooglePlacesAutocomplete, {geocodeByAddress, getLatLng} from 'react-google-places-autocomplete';
-import { useContext } from "react";
-import { ManageContext } from "../contexts/ManageContext";
 import { useCallback } from "react";
 import {server} from '../lib/serverURL';
 import { styled } from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
+import { insertBusinessAsync } from "../modules/business";
 
 const ModalWrapper = styled.div`
   div.modal-header {
@@ -88,37 +87,22 @@ const initData = {
 };
 
 const AddModal = ({addModal, setAddModal}) => {
-  const {
-    setPageNum, 
-    isUpdated, 
-    setIsUpdated, 
-    setHasMore, 
-    setData,
-    data,
-  } = useContext(ManageContext);
   const isMobile = useMediaQuery({query : '(max-width : 500px)'});
   const fieldList = useSelector(state => state.field);
+  const {data} = useSelector(state => state.business);
+  const dispatch = useDispatch();
+  const onInsertBusiness = useCallback((newData) => dispatch(insertBusinessAsync(newData)));
+  const [newData, setNewData] = useState(initData);
 
   useEffect(() => {
     if (addModal) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
   },[addModal]);
 
-  const [newData, setNewData] = useState(initData);
-
-  const goBack = useCallback(
-    async () => {
-    if (!newData.logo && 
-      !newData.name && 
-      !newData.field_id && 
-      !newData.phone && 
-      !newData.address && 
-      !newData.addressdetail && 
-      !newData.kpass && 
-      !newData.travelwallet &&
-      !newData.note
-      ) setAddModal(false);
-    else if (window.confirm('THE INFORMATION IS NOT SAVED. STILL WANT TO EXIT')) {
+  const goBack = useCallback(async () => {
+    if (JSON.stringify(newData)===JSON.stringify(initData)) {
+      setAddModal(false);
+    } else if (window.confirm('Do you want to exit?')) {
       if (!!newData.logo){
         const result = await axios.delete(`${newData.logo}`);
         console.log(result.data);
@@ -318,17 +302,8 @@ const AddModal = ({addModal, setAddModal}) => {
               window.alert('Already same name exist!');
             }
             else if (window.confirm('DO YOU WANT TO ADD?')){
-              return axios.post(`${server}/business/add`, newData)
-                .then(res => {
-                  console.log(newData);
-                  console.log(res.data.message);
-                  setPageNum(0);
-                  setData([]);
-                  setHasMore(true);
-                  setIsUpdated(isUpdated + 1);
-                  setNewData(initData);
-                  setAddModal(false);
-                })
+              onInsertBusiness(newData);
+              setAddModal(false);
             }
           }}>CONFIRM</div>
           <div className="button" style={{right : '0px'}} onClick={() => goBack()}>CANCEL</div>

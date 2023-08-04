@@ -8,7 +8,6 @@ const FETCH_FIELD = "field/FETCH_FIELD";
 export const fetchFieldAsync = () => async (dispatch) => {
   try {
     const fetchResult = await axios.get(`${server}/field`);
-    console.log(fetchResult.data);
     return dispatch({
       type : FETCH_FIELD,
       payload : fetchResult.data.fieldList
@@ -23,7 +22,6 @@ export const deleteFieldAsync = (id) => async (dispatch) => {
     const deleteResult = await axios.delete(`${server}/field/${id}`)
     console.log(deleteResult.data);
     const fetchResult = await axios.get(`${server}/field`);
-    console.log(fetchResult.data);
     return dispatch({
       type : FETCH_FIELD,
       payload : fetchResult.data.fieldList
@@ -41,7 +39,6 @@ export const editFieldAsync = (editedData) => async (dispatch) => {
     });
     console.log(editResult.data);
     const fetchResult = await axios.get(`${server}/field`);
-    console.log(fetchResult.data);
     return dispatch({
       type : FETCH_FIELD,
       payload : fetchResult.data.fieldList
@@ -56,7 +53,6 @@ export const insertFieldAsync = (newData) => async (dispatch) => {
     const insertResult = await axios.post(`${server}/field`, newData);
     console.log(insertResult.data);
     const fetchResult = await axios.get(`${server}/field`);
-    console.log(fetchResult.data);
     return dispatch({
       type : FETCH_FIELD,
       payload : fetchResult.data.fieldList

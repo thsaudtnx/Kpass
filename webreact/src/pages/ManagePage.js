@@ -1,8 +1,7 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Header from "../components/Header";
 import Filter from "../components/Filter";
 import ItemList from "../components/ItemList";
-import { ManageContextProvider } from "../contexts/ManageContext";
 import { styled } from "styled-components";
 import { useDispatch } from "react-redux";
 import { fetchFieldAsync } from "../modules/field";
@@ -41,19 +40,16 @@ const PageWrapper = styled.div`
 
 const ManagePage = () => {
   const dispatch = useDispatch();
-
   useEffect(() => {
-    (() => dispatch(fetchFieldAsync()))();
+    dispatch(fetchFieldAsync());
   }, []);
 
   return (
     <PageWrapper>
       <div className="screen">
-        <ManageContextProvider>
-          <Header />
-          <Filter/>
-          <ItemList />
-        </ManageContextProvider>
+        <Header />
+        <Filter />
+        <ItemList />
       </div>
     </PageWrapper>
   );

@@ -75,7 +75,7 @@ const ItemWrapper = styled.div`
   }
 `;
 
-const Item = ({data, deleteItem, restoreItem}) => {
+const Item = ({data}) => {
   const [showDetail, setShowDetail] = useState(false);
   const fieldList = useSelector(state => state.field);
   const isMobile = useMediaQuery({query : '(max-width : 900px)'});
@@ -96,8 +96,6 @@ const Item = ({data, deleteItem, restoreItem}) => {
       {showDetail && <ItemDetail 
         data={data} 
         setShowDetail={setShowDetail}
-        deleteItem={deleteItem} 
-        restoreItem={restoreItem}
       />}
     </ItemWrapper>
   );

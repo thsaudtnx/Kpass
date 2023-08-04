@@ -164,15 +164,8 @@ const FieldItem = ({field, onDelete, onEdit}) => {
 };
 
 
-const FieldListModal = ({fieldListModal, setFieldListModal}) => {
-
+const FieldListModal = ({fieldListModal, setFieldListModal, fieldList, onInsert, onDelete, onEdit}) => {
   const isMobile = useMediaQuery({query : '(max-width : 500px)'});
-  const fieldList = useSelector(state => state.field);
-  const dispatch = useDispatch();
-  const onInsert = useCallback((newData) => dispatch(insertFieldAsync(newData)), []);
-  const onDelete = useCallback((id) => dispatch(deleteFieldAsync(id)), []);
-  const onEdit = useCallback((editedData) => dispatch(editFieldAsync(editedData)), []);
-
   const [inputTextEnglish, setInputTextEnglish] = useState();
   const [inputTextKorean, setInputTextKorean] = useState();
 

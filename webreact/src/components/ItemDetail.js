@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import EditModal from '../modals/EditModal';
 import { styled } from "styled-components";
 import { useMediaQuery } from "react-responsive";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteBusinessAsync, restoreBusinessAsync } from "../modules/business";
 
 const ItemDetailWrapper = styled.div`
   background : #e3e3e3;
@@ -66,10 +67,23 @@ const ItemDetailWrapper = styled.div`
   }
 `;
 
-const ItemDetail = ({data, deleteItem, restoreItem, setShowDetail}) => {
+const ItemDetail = ({data, setShowDetail}) => {
   const [editModal, setEditModal] = useState(false);
   const isMobile = useMediaQuery({query : '(max-width : 900px)'});
   const fieldList = useSelector(state => state.field);
+  const dispatch = useDispatch();
+  const onDeleteBusiness = useCallback((data) => {
+    if (window.confirm(`Do you want to delete${data.deletedAt && ' forever'}?`)){
+      dispatch(deleteBusinessAsync(data));
+      setShowDetail(false);
+    }
+  }, [data]);
+  const onRestoreBusiness = useCallback((id) => {
+    if (window.confirm("Do you want to restore?")){
+      dispatch(restoreBusinessAsync(id));
+      setShowDetail(false);
+    }
+  }, [data]);
 
   return (
     <ItemDetailWrapper>
@@ -107,40 +121,27 @@ const ItemDetail = ({data, deleteItem, restoreItem, setShowDetail}) => {
       </div>
 
       {data.deletedAt && <div className='item-detail-buttons'>
-        <div 
-          className="item-detail-button" 
-          onClick={() => {
-            restoreItem(data);
-            setShowDetail(false);
-            }}>
+        <div className="item-detail-button" 
+          onClick={() => onRestoreBusiness(data.id)}>
           RESTORE
         </div>
-        <div 
-          className="item-detail-button" 
-          onClick={() => {
-            deleteItem(data);
-            setShowDetail(false);
-          }}>
+        <div className="item-detail-button" 
+          onClick={() => onDeleteBusiness(data)}>
           DELETE FOREVER
         </div>
       </div>}
 
       {!data.deletedAt && <div className='item-detail-buttons'>
-        <div 
-          className="item-detail-button" 
+        <div className="item-detail-button" 
           onClick={() => setEditModal(true)}>
           UPDATE
         </div>
         <div 
           className="item-detail-button" 
-          onClick={() => {
-            deleteItem(data);
-            setShowDetail(false);
-          }}>
+          onClick={() => onDeleteBusiness(data)}>
           DELETE
         </div>
       </div>}
-
       <EditModal editModal={editModal} setEditModal={setEditModal} data={data}/>
     </ItemDetailWrapper>
   );

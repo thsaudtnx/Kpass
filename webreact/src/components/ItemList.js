@@ -1,12 +1,10 @@
-import React, { useCallback } from "react";
-import { useContext } from "react";
+import React, { useCallback, useEffect } from "react";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Item from "../components/Item";
-import { ManageContext } from "../contexts/ManageContext";
 import { styled } from "styled-components";
-import axios from "axios";
-import { server } from "../lib/serverURL";
 import { useMediaQuery } from "react-responsive";
+import { useDispatch, useSelector } from "react-redux";
+import { changePageNum, deleteBusinessAsync, fetchBusinessAsync, fetchBusinessLaterAsync, restoreBusinessAsync } from "../modules/business";
 
 
 const ItemListWrapper = styled.div`
@@ -32,57 +30,36 @@ const ItemListWrapper = styled.div`
 `;
 
 const ItemList = () => {
-  const {
-    data, 
-    hasMore, 
-    getData,
-    setPageNum,
-    isUpdated,
-    setIsUpdated,
-    setShowDetail,
-  } = useContext(ManageContext);
   const isMobile = useMediaQuery({query : '(max-width : 900px)'});
-  const category = isMobile ? [
-    'LOGO', 'NAME', 'KPASS', 'TRAVELWALLET'
-  ] : [
-    'ID', 'LOGO', 'NAME', 'FIELD', 'KPASS', 'TRAVELWALLET'
-  ];
-
-  const deleteItem = useCallback(async (data) => {
-    if(window.confirm('DO YOU WANT TO DELETE?')){
-      if (data.logo && data.deletedAt){
-        const result = await axios.delete(`${data.logo}`);
-        console.log(result.data);
-      }
-      const deleteResult = await axios.delete(`${server}/business/delete/${data.id}`);
-      console.log(deleteResult.data);
-      setPageNum(0);
-      setIsUpdated(isUpdated+1);
-      setShowDetail(false);
-    }
-  }, []); 
-
-  const restoreItem = useCallback(async (data) => {
-    if(window.confirm('Do you want to Restore?')){
-      const restoreResult = await axios.put(`${server}/business/restore/${data.id}`);
-      console.log(restoreResult.data);
-      setPageNum(0);
-      setIsUpdated(isUpdated+1);
-      setShowDetail(false);
-    }
-  }, []); 
-
+  const category = isMobile ? ['LOGO', 'NAME', 'KPASS', 'TRAVELWALLET'] : ['ID', 'LOGO', 'NAME', 'FIELD', 'KPASS', 'TRAVELWALLET'];
+  const {data, hasMore, pageNum, pageSize} = useSelector(state => state.business);
+  const {field_id, inputText, deletedData, sortBy, search} = useSelector(state => state.filter);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    (() => {
+      dispatch(fetchBusinessAsync({
+        field_id, 
+        inputText, 
+        deletedData, 
+        sortBy, 
+        pageNum, 
+        pageSize
+      }));
+    })();
+  }, [field_id, search, deletedData, sortBy, pageNum, pageSize]);
+  
   return (
     <ItemListWrapper>
       <div className='item-list-header'>
         {category.map((element, index) => <div key={index}>{element}</div>)}
       </div>
-
       <InfiniteScroll
         className="content"
         style={{padding : 10}}
-        dataLength={() => {return data.length}}
-        next={() => getData()}
+        dataLength={data.length}
+        next={() => {
+          if (data.length!==0) dispatch(changePageNum(pageNum + 1))
+        }}
         hasMore={hasMore}
         loader={<div style={{width : '100%', padding : 20, fontSize : 14, fontWeight : 'bold', color : 'gray'}}>Loading...</div>}
         endMessage={
@@ -95,8 +72,6 @@ const ItemList = () => {
           <Item 
             key={index} 
             data={element} 
-            deleteItem={deleteItem}
-            restoreItem={restoreItem}
           />
         ))}
       </InfiniteScroll>
