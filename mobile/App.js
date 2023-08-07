@@ -48,17 +48,17 @@ function RootDrawer(){
             </View>
         }}/>
       <Drawer.Screen 
-        name="Kpass 카드란?" 
+        name="K-Pass 카드란?" 
         component={KpassScreen1} 
-        options={{drawerLabel : 'K-pass 카드란?'}} />
+        options={{drawerLabel : 'K-Pass 카드란?'}} />
       <Drawer.Screen 
-        name="Kpass 카드 사용방법" 
+        name="K-Pass 카드 사용방법" 
         component={KpassScreen2} 
-        options={{drawerLabel : 'K-pass 카드 사용방법'}} />
+        options={{drawerLabel : 'K-Pass 카드 사용방법'}} />
       <Drawer.Screen 
-        name="Kpass 카드 혜택" 
+        name="K-Pass 카드 혜택" 
         component={KpassScreen3} 
-        options={{drawerLabel : 'K-pass 카드 혜택'}} />
+        options={{drawerLabel : 'K-Pass 카드 혜택'}} />
     </Drawer.Navigator>
   )
 };

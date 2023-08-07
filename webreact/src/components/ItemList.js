@@ -9,13 +9,12 @@ import { changePageNum, deleteBusinessAsync, fetchBusinessAsync, fetchBusinessLa
 
 const ItemListWrapper = styled.div`
   color : gray;
-
   .item-list-header {
     display : grid;
     grid-template-columns : 1fr 1.5fr 2fr 2fr 1fr 3fr 1fr;
     border-bottom : 1px solid lightGray;
     padding : 10px;
-    margin : 0px 20px;
+    margin : 10px 20px;
     font-size : 12px;
 
     @media (max-width : 670px) {
@@ -31,7 +30,7 @@ const ItemListWrapper = styled.div`
 
 const ItemList = () => {
   const isMobile = useMediaQuery({query : '(max-width : 900px)'});
-  const category = isMobile ? ['LOGO', 'NAME', 'KPASS', 'TRAVELWALLET'] : ['ID', 'LOGO', 'NAME', 'FIELD', 'KPASS', 'TRAVELWALLET'];
+  const category = isMobile ? ['Logo', 'Name', 'Kpass', 'TravelWallet'] : ['Id', 'Logo', 'Name', 'Field', 'Kpass', 'TravelWallet'];
   const {data, hasMore, pageNum, pageSize} = useSelector(state => state.business);
   const {field_id, inputText, deletedData, sortBy, search} = useSelector(state => state.filter);
   const dispatch = useDispatch();
@@ -62,11 +61,7 @@ const ItemList = () => {
         }}
         hasMore={hasMore}
         loader={<div style={{width : '100%', padding : 20, fontSize : 14, fontWeight : 'bold', color : 'gray'}}>Loading...</div>}
-        endMessage={
-          <p style={{ textAlign: 'center' }}>
-            <b>NO MORE DATA</b>
-          </p>
-        }
+        endMessage={<div style={{height : '5vh'}}/>}
       >
         {data?.map((element, index)=> (
           <Item 

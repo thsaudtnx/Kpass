@@ -29,8 +29,9 @@ const ModalWrapper = styled.div`
   div.modal-content-section-left {
     width : 150px;
     margin-right : 5px;
+    font-size : 12px;
     @media (max-width : 400px) {
-      font-size : 12px;
+      font-size : 10px;
       width : 100px;
     }
   }
@@ -101,19 +102,19 @@ const ProfileModal = ({profileModal, setProfileModal}) => {
       },
       content: {
         width: isMobile ? '80vw' : "350px",
-        height: isMobile ? '170px' : "250px",
+        height: isMobile ? '170px' : "200px",
         zIndex: "10",
         position: "absolute",
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        borderRadius: "10px",
+        borderRadius: "3px",
         backgroundColor: "white",
         justifyContent: "center",
       }}}>
       <ModalWrapper>
         <div className="modal-header">
-          <div>CHANGE PASSWORD</div>
+          <div>Change Password</div>
           <div 
             style={{cursor : 'pointer'}} 
             onClick={() => {
@@ -126,7 +127,7 @@ const ProfileModal = ({profileModal, setProfileModal}) => {
         </div>
         <div className="content">
           <div className="modal-content-section">
-            <div className="modal-content-section-left">new password</div>
+            <div className="modal-content-section-left">New password</div>
             <input 
               type="password"
               className="modal-content-section-right"
@@ -135,7 +136,7 @@ const ProfileModal = ({profileModal, setProfileModal}) => {
             />
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">password confirm</div>
+            <div className="modal-content-section-left">Confirm Password</div>
             <input 
               type="password"
               className="modal-content-section-right"
@@ -148,7 +149,7 @@ const ProfileModal = ({profileModal, setProfileModal}) => {
         <div className="modal-buttons">
           <div
             className="modal-button"
-            style={{right : '100px'}}
+            style={{right : '80px'}}
             onClick={async () => {
               if (!password || !passwordConfirm){
                 window.alert('There is an empty section!');
@@ -169,7 +170,7 @@ const ProfileModal = ({profileModal, setProfileModal}) => {
                 });
               }
             }}>
-            CONFIRM
+            Confirm
           </div>
           <div 
             className="modal-button"
@@ -179,7 +180,7 @@ const ProfileModal = ({profileModal, setProfileModal}) => {
               setPasswordConfirm();
               setProfileModal(false);
             }}>
-            CANCEL
+            Cancel
           </div>
         </div>
       </ModalWrapper>

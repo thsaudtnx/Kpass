@@ -20,13 +20,16 @@ const ModalWrapper = styled.div`
   }
 
   div.modal-content > div.modal-content-section {
-    margin-bottom : 15px;
+    margin-bottom : 20px;
     display : flex;
     align-items : center;
     flex-direction : row;
+    font-size : 12px;
   }
 
   div.modal-content-section-left {
+    display : flex;
+    flex-direction : row;
     width : 80px;
     margin-right : 5px;
     @media (max-width : 500px) {
@@ -73,17 +76,17 @@ const ModalWrapper = styled.div`
 `;
 
 const initData = {
-  logo : null,
-  name : null,
+  logo : "",
+  name : "",
   field_id : null,
-  phone : null,
-  address : null,
-  addressdetail : null,
+  phone : "",
+  address : "",
+  addressdetail : "",
   latitude : null,
   longitude : null,
   kpass : 0,
   travelwallet : 0,
-  note : null,
+  note : "",
 };
 
 const AddModal = ({addModal, setAddModal}) => {
@@ -152,20 +155,20 @@ const AddModal = ({addModal, setAddModal}) => {
         },
         content: {
           width: isMobile ? '80vw' : "450px",
-          height: isMobile ? '90vh' : "600px",
+          height: isMobile ? '90vh' : "650px",
           zIndex: "10",
           position: "absolute",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          borderRadius: "10px",
+          borderRadius: "3px",
           backgroundColor: "white",
           justifyContent: "center",
         }
       }}>
       <ModalWrapper>
         <div className="modal-header">
-          <div style={{fontSize : isMobile ? '15px' : '20px', }}>REGISTER BUSINESS</div>
+          <div style={{fontSize : isMobile ? '15px' : '20px', }}>Register New Business</div>
           <div style={{cursor : 'pointer'}} onClick={() => goBack()}>
             <AiOutlineClose />
           </div>
@@ -180,16 +183,24 @@ const AddModal = ({addModal, setAddModal}) => {
             <input type='file' name='file' style={{cursor : 'pointer'}}/>
             <button type='submit' style={{cursor : 'pointer'}}>Upload</button>
           </form>
+
           <div className="modal-content-section">
-            <div className="modal-content-section-left">NAME</div>
+            <div className="modal-content-section-left">
+              <div>Name</div>
+              <div style={{color : 'red', marginLeft : 3}}>*</div>
+            </div>
             <input 
               className="modal-content-section-right"
               value={newData.name} 
               onChange={e => setNewData({...newData, name : e.target.value})} 
             />
           </div>
+
           <div className="modal-content-section">
-            <div className="modal-content-section-left">FIELD</div>
+            <div className="modal-content-section-left">
+              <div>Field</div>
+              <div style={{color : 'red', marginLeft : 3}}>*</div>
+            </div>
             <select
               className="modal-content-section-right" 
               value={newData.field_id} 
@@ -199,7 +210,7 @@ const AddModal = ({addModal, setAddModal}) => {
             </select>
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">PHONE</div>
+            <div className="modal-content-section-left">Phone</div>
             <input 
               className="modal-content-section-right"
               type="text"
@@ -209,7 +220,10 @@ const AddModal = ({addModal, setAddModal}) => {
             />
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">ADDRESS</div>
+            <div className="modal-content-section-left">
+              <div>Address</div>
+              <div style={{color : 'red', marginLeft : 3}}>*</div>
+            </div>
             <GooglePlacesAutocomplete
               className="modal-content-section-right"
               apiKey="AIzaSyCbw2mv0aLtttdNVl2hmkeZYVTo7nCHTZY"
@@ -253,7 +267,7 @@ const AddModal = ({addModal, setAddModal}) => {
             />
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">ADDRESS DETAIL</div>
+            <div className="modal-content-section-left">Address Details</div>
             <input 
               className="modal-content-section-right"
               type="text" 
@@ -262,7 +276,7 @@ const AddModal = ({addModal, setAddModal}) => {
             />
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">KPASS</div>
+            <div className="modal-content-section-left">Kpass</div>
             <input 
               className="modal-content-section-right"
               type="number"
@@ -273,7 +287,7 @@ const AddModal = ({addModal, setAddModal}) => {
             />
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">TRAVEL WALLET</div>
+            <div className="modal-content-section-left">Travel Wallet</div>
             <input 
               className="modal-content-section-right"
               type="number"
@@ -284,7 +298,7 @@ const AddModal = ({addModal, setAddModal}) => {
             />
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">NOTE</div>
+            <div className="modal-content-section-left">Note</div>
             <textarea 
               className="modal-content-section-right"
               max={250}
@@ -294,7 +308,7 @@ const AddModal = ({addModal, setAddModal}) => {
           </div>
         </div>
         <div className="buttons">
-          <div className="button" style={{right : '100px'}} onClick={() => {
+          <div className="button" style={{right : '80px'}} onClick={() => {
             if (!newData.name || !newData.field_id || !newData.address) {
               window.alert('There is an empty section!');
             }
@@ -306,8 +320,8 @@ const AddModal = ({addModal, setAddModal}) => {
               setNewData(initData);
               setAddModal(false);
             }
-          }}>CONFIRM</div>
-          <div className="button" style={{right : '0px'}} onClick={() => goBack()}>CANCEL</div>
+          }}>Confirm</div>
+          <div className="button" style={{right : '0px'}} onClick={() => goBack()}>Cancel</div>
         </div>
       </ModalWrapper>
     </Modal>

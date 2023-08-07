@@ -4,15 +4,17 @@ import { styled } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { initBusiness } from "../modules/business";
 import { setDeletedData, setFieldId, setSortBy, setInputText, setSearch } from "../modules/filter";
+import {AiOutlineSearch, AiOutlineFileAdd} from 'react-icons/ai'
 
 const FilterWrapper = styled.div`
   position : sticky;
-  background : white;
+  background : #f1f1f1;
   top : 0px;
   display : flex;
   flex-direction : row;
   justify-content : space-between;
-  padding : 20px;
+  padding : 10px;
+  z-index : 1;
   @media (max-width : 900px) {
     flex-direction : column;
   }
@@ -24,14 +26,13 @@ const FilterWrapper = styled.div`
     display : flex;
     flex-direction : row;
     align-items : center;
-    margin-bottom : 10px;
   }
 
   div.filter-left > select {
     padding : 10px;
     border : 1px solid lightGray;
     cursor : pointer;
-    width : 150px;
+    width : 120px;
     outline : none;
     @media (max-width : 670px) {
       width : 20vw;
@@ -45,7 +46,6 @@ const FilterWrapper = styled.div`
     width : 200px;
     border : 1px solid lightGray;
     margin-left : 10px;
-    cursor : pointer;
     margin-right : 10px;
     outline : none;
     @media (max-width : 670px) {
@@ -56,8 +56,9 @@ const FilterWrapper = styled.div`
   }
 
   div.filter-left > div.button {
-    padding : 8px 15px;
+    padding : 6px 15px;
     border : 1px solid lightGray;
+    background : white;
     color : gray;
     cursor : pointer;
     margin-right : 10px;
@@ -69,8 +70,7 @@ const FilterWrapper = styled.div`
       border : 1px solid white;
     }
     @media (max-width : 670px) {
-      font-size : 12px;
-      padding : 5px 8px;
+      padding : 1px 5px;
       margin-right : 0px;
     }
   }
@@ -84,8 +84,8 @@ const FilterWrapper = styled.div`
   }
 
   div.filter-left > input[type="checkbox"] {
-    width : 14px;
-    height : 14px;
+    width : 15px;
+    height : 15px;
     cursor : pointer;
     
   }
@@ -149,13 +149,13 @@ const Filter = () => {
         <input 
           className="inputText"
           type='text' 
-          placeholder='SEARCH BY NAME'
+          placeholder='search by name...'
           value={inputText}
           onChange={e => dispatch(setInputText(e.target.value))}
         />
         <div className="button" onClick={() => {
           dispatch(setSearch());}}>
-          SEARCH
+          <AiOutlineSearch style={{width : 18, height : 18}}/>
         </div> 
         <div className="deleted">
           <input 
@@ -165,7 +165,7 @@ const Filter = () => {
               dispatch(setDeletedData(e.target.checked));
             }}
           />
-          <div style={{fontSize : 14, color : 'gray'}}>DELETED</div>
+          <div style={{fontSize : 14, color : 'gray'}}>Deleted</div>
         </div>
         
       </div>
@@ -176,10 +176,17 @@ const Filter = () => {
           onChange={ e => {
             dispatch(setSortBy(e.target.value));
           }}>
-          {['ALL', 'KPASS', 'TRAVELWALLET'].map((element, index) => <option key={index} value={index}>{element}</option>)}
+          {[
+            'All', 
+            'Kpass', 
+            'TravelWallet'
+          ].map((element, index) => (
+            <option
+              key={index} 
+              value={index}>{element}</option>))}
         </select>
         <div className="button" onClick={() => setAddModal(true)}>
-          ADD
+         <AiOutlineFileAdd style={{width : 15, height : 15}}/>
         </div>
       </div>
       <AddModal addModal={addModal} setAddModal={setAddModal}/>

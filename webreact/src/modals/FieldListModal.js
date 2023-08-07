@@ -5,6 +5,8 @@ import { styled } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteFieldAsync, editFieldAsync, insertFieldAsync } from "../modules/field";
 import { useMediaQuery } from "react-responsive";
+import {AiFillDelete, AiFillEdit} from 'react-icons/ai';
+
 
 const ModalWrapper = styled.div`
 
@@ -20,23 +22,31 @@ const ModalWrapper = styled.div`
     display : flex;
     flex-direction : row;
     align-items : center;
-    margin-bottom : 10px;
     position : sticky;
+    @media (max-width : 300px) {
+      flex-direction : column;
+      align-items : flex-start;
+    }
   }
 
   div.modal-filter > input {
+    margin-bottom : 5px;
     margin-right : 5px;
     padding : 10px 20px;
     border : 1px solid lightGray;
     width : 130px;
     outline : none;
-    @media (max-width : 500px) {
+    @media (max-width: 500px) and (min-width: 300px) {
       width : 25vw;
+      padding : 5px 10px;
+    }
+    @media (max-width : 300px) {
       padding : 5px 10px;
     }
   }
 
   div.modal-filter > div.modal-filter-button {
+    margin-bottom : 5px;
     padding : 7px 15px;
     border : 1px solid lightGray;
     color : gray;
@@ -54,27 +64,21 @@ const ModalWrapper = styled.div`
 
   div.modal-content-header {
     display : grid;
-    grid-template-columns : 70px 1fr 1fr 1fr;
+    grid-template-columns : 30px 2fr 2fr 1fr;
     border-bottom : 1px solid lightGray;
     padding : 10px;
     margin-bottom : 10px;
     font-size : 12px;
     color : gray;
-    @media (max-width : 500px) {
-      grid-template-columns : 1fr 1fr 1fr;
-    }
   }
 `;
 
 const FieldItemWrapper = styled.div`
   display : grid;
-  grid-template-columns : 70px 1fr 1fr 1fr;
+  grid-template-columns : 30px 2fr 2fr 1fr;
   padding : 10px;
   font-size : 12px;
   color : gray;
-  @media (max-width : 500px) {
-    grid-template-columns : 1fr 1fr 1fr;
-  }
 
   div.item-words {
     margin-left : 5px;
@@ -93,14 +97,23 @@ const FieldItemWrapper = styled.div`
   }
 
   div.item-button {
+    display : flex;
+    flex-direction : row;
+    align-items : center;
     cursor : pointer;
-    margin-left : 5px;
+    padding : 5px;
   }
 
   input {
     outline : none;
+    max-width : 120px;
     border : 1px solid lightGray;
     padding : 5px 10px;
+    font-size : 12px;
+    @media (max-width : 500px) {
+      width : 60%;
+      min-width : 30px;
+    }
   }
 `;
 
@@ -109,56 +122,53 @@ const FieldItem = ({field, onDelete, onEdit}) => {
 
   const [edit, setEdit] = useState(false);
   const [editedData, setEditedData] = useState(field);
-  const isMobile = useMediaQuery({query : '(max-width : 500px)'});
   
   return (
     <FieldItemWrapper>
-      {!isMobile && <div>{field.id}</div>}
-      {edit ? <input 
+      <div>{field.id}</div>
+      <input 
         type="text" 
+        disabled={!edit}
         placeholder={editedData.english} 
         value={editedData.english} 
         onChange={e => setEditedData({...editedData, english : e.target.value})}
-      /> : <div className="item-words">{field.english}</div>}
-      {edit ? <input 
+      />
+      <input 
         type="text" 
+        disabled={!edit}
         placeholder={editedData.korean} 
         value={editedData.korean} 
         onChange={e => setEditedData({...editedData, korean : e.target.value})}
-      /> : <div className="item-words">{field.korean}</div>}
+      />
+      {edit ? 
       <div className="item-buttons">
-        <button 
-          className="item-button" 
-          onClick={() => {
-            if (edit){
-              if (editedData.english===field.english && editedData.korea===field.korean) {
-                window.alert('Looks the same...');
-              } else if (!editedData.korean || !editedData.english){
-                window.alert('Section Empty!');
-              } else if (window.confirm('Do you want to edit the field?')){
-                onEdit(editedData);
-              }
-            }
-            setEdit(!edit);
+        <button className="item-button" onClick={() => {
+          if (editedData.english===field.english && editedData.korean===field.korean) {
+            //아무것도 안함...
+          } else if (!editedData.korean || !editedData.english){
+            window.alert('Section Empty!');
+          } else if (window.confirm('Do you want to edit the field?')){
+            onEdit(editedData);
+          }
+          setEdit(!edit);}}>Apply</button>
+        <button className="item-button" onClick={() => {
+            setEdit(false);
+            setEditedData(field);
           }}>
-            {edit ? 'apply' : 'edit'}
+          Cancel
         </button>
-        <button 
-          className="item-button" 
-          style={{marginLeft : 5}}
-          onClick={() => {
-            if (edit){
-              setEdit(false);
-              setEditedData(field);
-            } else {
-              if (window.confirm("Do you want to delete the field?")){
-                onDelete(field.id);
-              }
+      </div> : <div className="item-buttons">
+        <div className="item-button" onClick={() => setEdit(true)}>
+          <AiFillEdit style={{width : 12, height : 12, marginRight : 3}}/><div>Edit</div>
+        </div>
+        <div className="item-button" onClick={() => {
+            if (window.confirm("Do you want to delete the field?")){
+              onDelete(field.id);
             }
           }}>
-            {edit ? 'cancel' : 'delete'}
-        </button>
-      </div>
+          <AiFillDelete style={{width : 12, height : 12, marginRight : 3}}/><div>Delete</div>
+        </div>
+      </div>}
     </FieldItemWrapper>
   );
 };
@@ -173,8 +183,8 @@ const FieldListModal = ({fieldListModal, setFieldListModal}) => {
   const onDelete = useCallback((id) => dispatch(deleteFieldAsync(id)), []);
   const onEdit = useCallback((editedData) => dispatch(editFieldAsync(editedData)), []);
 
-  const [inputTextEnglish, setInputTextEnglish] = useState();
-  const [inputTextKorean, setInputTextKorean] = useState();
+  const [inputTextEnglish, setInputTextEnglish] = useState("");
+  const [inputTextKorean, setInputTextKorean] = useState("");
 
   useEffect(() => {
     if (fieldListModal) document.body.style.overflow = 'hidden';
@@ -198,21 +208,21 @@ const FieldListModal = ({fieldListModal, setFieldListModal}) => {
           left: "0",
         },
         content: {
-          width: isMobile ? '80vw' : "450px",
-          height: isMobile ? '80vh' : "450px",
+          width: isMobile ? '80vw' : "500px",
+          height: isMobile ? '80vh' : "600px",
           zIndex: "10",
           position: "absolute",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          borderRadius: "10px",
+          borderRadius: "3px",
           backgroundColor: "white",
           justifyContent: "center",
         }
       }}>
         <ModalWrapper>
         <div className="modal-header">
-          <div>FIELD LIST</div>
+          <div>EDIT FIELD</div>
           <div style={{cursor : 'pointer'}} 
             onClick={() => {
               setFieldListModal(false);
@@ -249,7 +259,7 @@ const FieldListModal = ({fieldListModal, setFieldListModal}) => {
         </div>
         <div className="modal-content">
           <div className="modal-content-header">
-            {!isMobile && <div>id</div>}
+            <div>id</div>
             <div>English</div>
             <div>Korean</div>
           </div>

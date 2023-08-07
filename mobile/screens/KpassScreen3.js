@@ -44,11 +44,11 @@ export default function KpassScreen3(){
     <View style={{backgroundColor : PALETTE.BACKGROUND, height : '100%', width : '100%'}}>
       <View style={styles.container}>
         <Text style={styles.title}>K-Pass 카드 사용자 캐쉬백 혜택</Text>
-        <Text style={styles.content}>{`결제금액의 2%를 사용자의 카드계정에 자동 캐쉬백 처리. 가맹점에 따라 캐쉬백 % 는 상이할수있으니 K-Pass 가맹점 List 상의 캐쉬백 % 를 참고하세요`}</Text>
+        <Text style={styles.content}>{`결제금액의 2%를 사용자의 카드계정에 자동 캐쉬백 처리. 가맹점에 따라 캐쉬백 % 는 상이할수있으니 K-Pass 앱에서 캐쉬백 % 를 참고하세요`}</Text>
       </View>
       <View style={styles.container}>
         <Text style={styles.title}>TravelWallet 카드 캐쉬백</Text>
-        <Text style={styles.content}>{`K-Pass 가맹점은 동시에 트래블월렛의 캐쉬백 가맹점이 됩니다. 결제금액의 1%가 트래블월렛 사용자 카드계정에 자동 캐쉬백 처리되고 캐쉬백 % 는 카드 가맹점 별로 상이할수 있으니 트래블월렛 가맹점 List 상의 캐쉬백 %를  참고하세요`}</Text>
+        <Text style={styles.content}>{`K-Pass 가맹점은 동시에 트래블월렛의 캐쉬백 가맹점이 됩니다. 결제금액의 1%가 트래블월렛 사용자 카드계정에 자동 캐쉬백 처리되고 캐쉬백 % 는 카드 가맹점 별로 상이할수 있으니 K-Pass 앱에서 트래블월렛 가맹점의 캐쉬백 %를  참고하세요`}</Text>
       </View>
     </View>
   );

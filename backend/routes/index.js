@@ -3,7 +3,6 @@ const businessRouter = require('./business');
 const fieldRouter = require('./field');
 const authRouter = require('./auth');
 const mobileRouter = require('./mobile');
-const webRouter = require('./web');
 
 const router = express.Router();
 
@@ -38,7 +37,5 @@ router.use('/auth', authRouter);
  *  description : Retrieve business data for mobile environment
  */
 router.use('/mobile', mobileRouter);
-
-router.use('/web', webRouter);
 
 module.exports = router;

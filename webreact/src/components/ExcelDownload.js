@@ -51,9 +51,9 @@ const ExcelDownload = () => {
       className="hidden"
       target="_blank">
       <AiOutlineDownload style={ isMobile ? {
-        width : '20px', height : '20px', paddingLeft : '15px'
+        width : '15px', height : '15px', paddingLeft : '15px'
       } : {
-        width : '25px', height : '25px', paddingLeft : '20px'}}
+        width : '20px', height : '20px', paddingLeft : '20px'}}
       />
     </CSVLink>
   );

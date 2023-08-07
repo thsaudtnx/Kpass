@@ -24,9 +24,12 @@ const ModalWrapper = styled.div`
     display : flex;
     align-items : center;
     flex-direction : row;
+    font-size : 12px;
   }
 
   div.modal-content-section-left {
+    display : flex;
+    flex-direction : row;
     width : 80px;
     margin-right : 5px;
     @media (max-width : 500px) {
@@ -134,21 +137,21 @@ const EditModal = ({editModal, setEditModal, data}) => {
           left: "0",
         },
         content: {
-          width: isMobile ? '80vw' : "450px",
-          height: isMobile ? '90vh' : "600px",
+          width: isMobile ? '80vw' : "500px",
+          height: isMobile ? '90vh' : "650px",
           zIndex: "150",
           position: "absolute",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          borderRadius: "10px",
+          borderRadius: "3px",
           backgroundColor: "white",
           justifyContent: "center",
         }
       }}>
         <ModalWrapper>
           <div className="modal-header">
-            <div style={{fontSize : isMobile ? '15px' : '20px', }}>UPDATE BUSINESS</div>
+            <div style={{fontSize : isMobile ? '15px' : '20px', }}>Update Business</div>
             <div style={{cursor : 'pointer'}} onClick={() => goBack()}>
               <AiOutlineClose style={{width : '20px', height : '20px'}}/>
             </div>
@@ -172,7 +175,10 @@ const EditModal = ({editModal, setEditModal, data}) => {
           </form>
           
           <div className="modal-content-section">
-            <div className="modal-content-section-left">NAME</div>
+            <div className="modal-content-section-left">
+              <div>Name</div>
+              <div style={{color : 'red', marginLeft : 3}}>*</div>
+            </div>
             <input 
               className="modal-content-section-right"
               value={editedData.name} 
@@ -180,7 +186,10 @@ const EditModal = ({editModal, setEditModal, data}) => {
             />
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">FIELD</div>
+            <div className="modal-content-section-left">
+              <div>Field</div>
+              <div style={{color : 'red', marginLeft : 3}}>*</div>
+            </div>
             <select 
               className="modal-content-section-right"
               value={editedData.field_id} 
@@ -189,7 +198,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
             </select>
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">PHONE</div>
+            <div className="modal-content-section-left">Phone</div>
             <input 
               className="modal-content-section-right"
               type="text"
@@ -199,7 +208,10 @@ const EditModal = ({editModal, setEditModal, data}) => {
             />
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">ADDRESS</div>
+            <div className="modal-content-section-left">
+              <div>Address</div>
+              <div style={{color : 'red', marginLeft : 3}}>*</div>
+            </div>
             <GooglePlacesAutocomplete
               apiKey="AIzaSyCbw2mv0aLtttdNVl2hmkeZYVTo7nCHTZY"
               apiOptions={{ language: 'en', region: 'my' }}
@@ -242,7 +254,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
             />
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">ADDRESS DETAIL</div>
+            <div className="modal-content-section-left">Address Details</div>
             <input 
               className="modal-content-section-right"
               type="text" 
@@ -251,7 +263,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
             />
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">KPASS</div>
+            <div className="modal-content-section-left">Kpass</div>
             <input 
               className="modal-content-section-right"
               type="number"
@@ -262,7 +274,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
             />
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">TRAVEL WALLET</div>
+            <div className="modal-content-section-left">Travel Wallet</div>
             <input 
               className="modal-content-section-right"
               type="number"
@@ -273,7 +285,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
             />
           </div>
           <div className="modal-content-section">
-            <div className="modal-content-section-left">NOTE</div>
+            <div className="modal-content-section-left">Note</div>
             <textarea 
               className="modal-content-section-right"
               max={500}
@@ -285,7 +297,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
         <div className="buttons">
           <div 
             className="button" 
-            style={{right : '100px'}} 
+            style={{right : '80px'}} 
             onClick={async () => {
               //빈칸이 있을때
               if (!editedData.name || !editedData.field_id || !editedData.address){
@@ -306,9 +318,9 @@ const EditModal = ({editModal, setEditModal, data}) => {
                 setEditModal(false);
               }
           }}>
-            CONFIRM
+            Confirm
           </div>
-          <div className="button" style={{right : '0px'}} onClick={() => goBack()}>CANCEL</div>
+          <div className="button" style={{right : '0px'}} onClick={() => goBack()}>Cancel</div>
         </div>
         </ModalWrapper>
     </Modal>

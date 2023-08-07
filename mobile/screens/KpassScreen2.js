@@ -44,15 +44,15 @@ export default function KpassScreen2(){
     <View style={{backgroundColor : PALETTE.BACKGROUND, height : '100%', width : '100%'}}>
       <View style={styles.container}>
         <Text style={styles.title}>K-Pass 카드 등록 및 프리미엄 계정 전환</Text>
-        <Text style={styles.content}>{`안드로이드나 아이폰 앱 스토어에서 GoPayz 를 내려받고 안내에 따라 사용자및 카드등록후 프리미엄 계정으로 전환. 프리미엄 계정은 RM5,000 의 일일 한도내에서 자유롭게 충전및 사용이 가능합니다`}</Text>
+        <Text style={styles.content}>{`안드로이드나 아이폰 앱 스토어에서 GoPayz앱을 내려받고 사용자 등록. 프리미엄 계정으로 전환 후 구매하신 K-Pass 카드를 등록하면 RM5,000의 일일 한도내에서 자유롭게 충전 및 사용이 가능합니다`}</Text>
       </View>
       <View style={styles.container}>
         <Text style={styles.title}>K-Pass 카드 구매 및 가맹점 문의</Text>
-        <Text style={styles.content}>{`말레이시아 한인회 : +60 3 6203 2834 / +60 14 830 7914\nOXPAY : +60 3 6205 3015 / +60 16 811 9534`}</Text>
+        <Text style={styles.content}>{`말레이시아 한인회 : +60 3 6203 2834 / +60 14 830 7914\nOXPAY : +60 3 6205 3015 (카톡 / WhatsApp) / +60 16 811 9534`}</Text>
       </View>
       <View style={styles.container}>
         <Text style={styles.title}>K-Pass 충전</Text>
-        <Text style={styles.content}>{`7 Eleven 을 통한 현금 충전\nInternet Banking 을 이용한 GoPayz 앱 내에서의 충전\nOXPAY 를 통한 개별및 Bulk 충전`}</Text>
+        <Text style={styles.content}>{`7 Eleven 을 통한 현금 충전\nGoPayz 앱에서 인터넷 뱅킹으로 충전\nOXPAY를 통한 개별 및 Bulk 충전\nK-Pass 앱에서 신용카드를 이용한 충전 (추후 제공)`}</Text>
       </View>
     </View>
   );

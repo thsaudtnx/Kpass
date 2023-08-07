@@ -7,29 +7,24 @@ import { useDispatch } from "react-redux";
 import { fetchFieldAsync } from "../modules/field";
 
 const PageWrapper = styled.div`
-  background : lightGray;
+  background : #e9e9e9;
   display : flex;
   width : 100vw;
+  min-height : 100vh;
 
   div.screen {
     width : 1080px;
     background : white;
     padding : 20px;
-    border-radius : 5px;
-    border : 1px solid lightGray;
-    margin : auto;
+    margin : 0px auto;
 
     @media (max-width : 1080px) {
-      border : none;
-      border-radius : 0px;
       margin : 0px;
       width : 100vw;
       padding : 10px;
     }
 
     @media (max-width : 500px) {
-      border : none;
-      border-radius : 0px;
       margin : 0px;
       width : 100vw;
       padding : 0px;

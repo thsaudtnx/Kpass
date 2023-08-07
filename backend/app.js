@@ -19,7 +19,6 @@ passportConfig();
 const app = express();
 app.set('port', process.env.PORT || 5000);
 
-
 sequelize.sync({force : false})
   .then(() => {
     console.log('sequelize 연결 성공');
@@ -35,12 +34,7 @@ if (process.env.NODE_ENV==='production'){
 } else {
   app.use(morgan('dev'));
 }
-app.use(express.static(path.join(__dirname, '../webreact/build'), {
-  setHeaders: (res) => {
-    res.set('Cross-Origin-Opener-Policy', 'same-origin');
-    res.set('Cross-Origin-Embedder-Policy', 'require-corp');
-  }
-}));
+
 app.use(express.json());
 app.use(express.urlencoded({extended : false}));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -69,6 +63,12 @@ app.use(cors({
 app.use(passport.initialize()); //req 객체에 passport 설정을 심음
 app.use(passport.session()); //req.session 객체에 passport 정보 저장
 
+app.use(express.static(path.join(__dirname, '../webreact/build'), {
+  setHeaders: (res) => {
+    res.set('Cross-Origin-Opener-Policy', 'same-origin');
+    res.set('Cross-Origin-Embedder-Policy', 'require-corp');
+  }
+}));
 app.use('/', rootRouter);
 
 const {swaggerUi, specs} = require('./swagger/swagger');
@@ -77,10 +77,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
   error.status = 404;
-  logger.info('hello');
-  logger.error(error.message);
+  res.redirect('/');
   next(error);
 });
+
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};

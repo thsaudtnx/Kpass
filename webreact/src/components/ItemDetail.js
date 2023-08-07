@@ -4,6 +4,9 @@ import { styled } from "styled-components";
 import { useMediaQuery } from "react-responsive";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteBusinessAsync, restoreBusinessAsync } from "../modules/business";
+import {AiOutlineDelete} from 'react-icons/ai';
+import {BiEdit} from 'react-icons/bi';
+import {LiaTrashRestoreAltSolid} from 'react-icons/lia';
 
 const ItemDetailWrapper = styled.div`
   background : #e3e3e3;
@@ -88,31 +91,31 @@ const ItemDetail = ({data, setShowDetail}) => {
   return (
     <ItemDetailWrapper>
       {isMobile && <div className="item-detail-section">
-        <div className="item-detail-section-left">TYPE</div>
+        <div className="item-detail-section-left">Field</div>
         <div className="item-detail-section-right">{fieldList?.find(field => field.id===data.field_id)?.english}</div>
       </div>}
       <div className="item-detail-section">
-        <div className="item-detail-section-left">PHONE</div>
+        <div className="item-detail-section-left">Phone</div>
         <div className="item-detail-section-right">{data.phone}</div>
       </div>
       <div className="item-detail-section">
-        <div className="item-detail-section-left">ADDRESS</div>
+        <div className="item-detail-section-left">Address</div>
         <div className="item-detail-section-right">{data.address}</div>
       </div>
       <div className="item-detail-section">
-        <div className="item-detail-section-left">ADDRESS DETAIL</div>
+        <div className="item-detail-section-left">Address Detail</div>
         <div className="item-detail-section-right">{data.addressdetail}</div>
       </div>
       <div className="item-detail-section">
-        <div className="item-detail-section-left">LATITUDE</div>
+        <div className="item-detail-section-left">Latitude</div>
         <div className="item-detail-section-right">{data.latitude}</div>
       </div>
       <div className="item-detail-section">
-        <div className="item-detail-section-left">LONGITUDE</div>
+        <div className="item-detail-section-left">Longitude</div>
         <div className="item-detail-section-right">{data.longitude}</div>
       </div>
       <div className="item-detail-section">
-        <div className="item-detail-section-left">NOTE</div>
+        <div className="item-detail-section-left">Note</div>
           <textarea 
             className="item-detail-section-right"
             value={data.note}
@@ -123,23 +126,23 @@ const ItemDetail = ({data, setShowDetail}) => {
       {data.deletedAt && <div className='item-detail-buttons'>
         <div className="item-detail-button" 
           onClick={() => onRestoreBusiness(data.id)}>
-          RESTORE
+          <LiaTrashRestoreAltSolid style={{width : 14, height : 14, marginRight : 4}}/>Restore
         </div>
         <div className="item-detail-button" 
           onClick={() => onDeleteBusiness(data)}>
-          DELETE FOREVER
+          <AiOutlineDelete style={{width : 14, height : 14, marginRight : 3}}/>Delete Forever
         </div>
       </div>}
 
       {!data.deletedAt && <div className='item-detail-buttons'>
         <div className="item-detail-button" 
           onClick={() => setEditModal(true)}>
-          UPDATE
+          <BiEdit style={{width : 14, height : 14, marginRight : 4}}/>Update
         </div>
         <div 
           className="item-detail-button" 
           onClick={() => onDeleteBusiness(data)}>
-          DELETE
+          <AiOutlineDelete style={{width : 14, height : 14, marginRight : 3}}/>Delete
         </div>
       </div>}
       <EditModal editModal={editModal} setEditModal={setEditModal} data={data}/>

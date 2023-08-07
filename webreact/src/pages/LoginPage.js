@@ -3,16 +3,17 @@ import React, { useCallback, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import {server} from '../lib/serverURL';
 import styled from 'styled-components';
+import kpassLogo from '../lib/kpass-app-button(no-bg).png';
 
 const PageWrapper = styled.div`
   width : 100vw; 
   height : 100vh;
-  background : #e1e1e1;
+  background : #e9e9e9;
   display : flex;
 
   div.loginModal {
     width : 300px;
-    height : 250px;
+    height : 350px;
     margin : auto;
     background : white;
     border : 1px solid lightGray;
@@ -32,6 +33,13 @@ const PageWrapper = styled.div`
     margin-bottom : 30px;
   }
 
+  div.header > img {
+    width : 100px;
+    height : 100px;
+    margin-top : -20px;
+    margin-bottom : -5px;
+  }
+
   div.local {
     display : flex;
     flex-direction : column;
@@ -43,6 +51,7 @@ const PageWrapper = styled.div`
     width : 250px;
     padding : 10px;
     border : 1px solid lightGray;
+    border-radius : 3px;
     margin-bottom : 20px;
     outline : none;
     @media (max-width : 350px) {
@@ -52,10 +61,9 @@ const PageWrapper = styled.div`
 
   div.button {
     border : 1px solid lightGray;
-    border-radius : 10px;
+    border-radius : 3px;
     background : white;
     font-size : 14px;
-    font-weight : bold;
     color : lightGray;
     width : 270px;
     height : 40px;
@@ -78,8 +86,8 @@ const PageWrapper = styled.div`
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const onSubmit = useCallback(async () => {
     if (username && password){
@@ -102,9 +110,9 @@ const LoginPage = () => {
     <PageWrapper>
       <div className="loginModal">
         <div className="header">
+          <img src={kpassLogo} alt="kpass_logo" />
           <div style={{fontSize : '20px', fontWeight : 'bold', marginLeft : '10px'}}>KPASS LOGIN</div>
         </div>
-        
         <div className="local">
           <input 
             type="text"

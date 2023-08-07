@@ -59,10 +59,9 @@ export default function KpassScreen1(){
         </View>
         <View style={styles.container}>
           <Text style={styles.title}>K-Pass 카드란?</Text>
-          <Text style={styles.content}>{`말레이시아 체류 교민이나 중단기 방문객중 현지 계좌를 개설할 요건이 안되거나 개설하는데 시간이 걸려 현금이나 수수료가 높은 한국 발행 신용카드나 체크카드를 사용해야만 하는 분들의 불편함을 덜어주기 위해 한인회가 OXPAY와 협력하여 발행하는 선불 기반의 Visa 카드입니다`}</Text>
-        </View>
-        <View style={styles.container}>
-          <Text style={styles.title}>K-Pass 카드의 취지</Text>
+          <Text style={styles.content}>{` 말레이시아 체류 교민이나 중단기 방문객 중 현지 계좌를 개설할 요건이 안되거나 개설하는데 시간이 걸려 현금이나 수수료가 높은 한국 발행 신용카드나 체크카드를 사용해야만 하는 분들의 불편함을 덜어주기 위해 말레이시아 한인회가 OXPAY와 협력하여 발행하는 선불 기반의 Visa 카드입니다\n`
+            }
+          </Text>
           <Text style={styles.content}>{`K-PASS 카드를 매개로 (K-PASS 가맹점에서 사용시 자동 캐쉬백 제공) 교민 Community 의 주요 구성원인 교민 소비자와 교민 사업자간의 연계 강화 및 이를 통한 교민사회의 자긍심 고취및 양적 질적 성장 그리고 교민 사업자의 사업 확대에 기여함을 목적으로합니다`}</Text>
         </View>
       </ScrollView>
