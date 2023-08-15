@@ -50,7 +50,7 @@ Features
 
 * ### Developer Mode
 1. Open the window prompt and set the path of ssh
-2. ``` ssh -i LightsailDefaultKey-ap-southeast-1.pem  bitnami@13.215.32.109 ```
+2. ``` ssh -i LightsailDefaultKey-ap-southeast-1.pem  bitnami@XXX.XXX.XXX.XXX ```
 3. ``` cd ~/Kpass ```
 4. If you want to use mysql then... ``` mysql -u root -p ``` then enter in the password
 5. If you wan to edit then push the code to github then ``` git pull origin main ```
