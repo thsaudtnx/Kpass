@@ -28,13 +28,13 @@
         }
       },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/playstore.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.gg1985.kpass"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "kpass-app-button(no-bg).png"
     },
     "extra": {
       "eas": {

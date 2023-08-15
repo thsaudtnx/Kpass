@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { editBusinessAsync } from "../modules/business";
 
+const apiKey = process.env.REACT_APP_API_KEY;
+
 const ModalWrapper = styled.div`
   div.modal-header {
     display : flex;
@@ -213,7 +215,7 @@ const EditModal = ({editModal, setEditModal, data}) => {
               <div style={{color : 'red', marginLeft : 3}}>*</div>
             </div>
             <GooglePlacesAutocomplete
-              apiKey="AIzaSyCbw2mv0aLtttdNVl2hmkeZYVTo7nCHTZY"
+              apiKey={apiKey}
               apiOptions={{ language: 'en', region: 'my' }}
               selectProps={{
                 defaultInputValue : editedData.address,

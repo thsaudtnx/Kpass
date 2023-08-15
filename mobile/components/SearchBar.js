@@ -25,7 +25,7 @@ export default function SearchBar() {
           }} 
         />
         <TextInput style={{
-          width : deviceWidth / 1.4,
+          width : deviceWidth / 1.5,
           minWidth : 200,
           maxWidth : 500,
           borderWidth : 1,
