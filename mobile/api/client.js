@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const baseURL = 'http://13.215.32.109';
+export const baseURL = 'https://k-pass.mcpayment.com.my';
 
 const client = axios.create({
   baseURL,

@@ -17,7 +17,6 @@ const logger = require('./logger');
 
 passportConfig();
 const app = express();
-app.set('port', process.env.PORT || 5000);
 
 sequelize.sync({force : false})
   .then(() => {
@@ -56,7 +55,7 @@ if (process.env.NODE_ENV === 'production'){
 }
 app.use(session(sessionOption));
 app.use(cors({ 
-  origin: ['http://13.215.32.109:80', 'http://localhost:3000'],
+  origin: ['http://13.215.32.109', 'http://localhost:3000', 'https://k-pass.mcpayment.com.my/'],
   methods: ["POST", "PUT", "GET", "DELETE", "PATCH", "OPTIONS", "HEAD"],
   credentials: true,
 }));
@@ -86,8 +85,4 @@ app.use((err, req, res, next) => {
   res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
   res.status(err.status || 500);
   res.render('error');
-});
-
-app.listen(app.get('port'), () => {
-  console.log(app.get('port'), '번 포트에서 대기 중');
 });

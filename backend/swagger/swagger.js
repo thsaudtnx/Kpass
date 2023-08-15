@@ -1,5 +1,6 @@
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
+const { server } = require('../serverURL');
 
 const options = {
   swaggerDefinition : {
@@ -11,7 +12,7 @@ const options = {
     },
     servers : [
       {
-        url : "http://13.215.32.109", //요청 URL
+        url : server, //요청 URL
       },
     ],
   },

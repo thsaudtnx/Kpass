@@ -365,8 +365,10 @@ router.patch ('/edit/:id', async (req, res, next) => {
 
 //Using Multer to add and delete image file
 const multer = require('multer');
+const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
+const { server } = require('../serverURL');
 
 try {
   fs.readdirSync('upload');
@@ -414,8 +416,23 @@ router.use('/upload', express.static('upload')); //set directory path to access 
  *              
  */
 router.post('/upload', upload.single('file'), (req, res, next) => {
+  try {
+    sharp(req.file.path)  // 압축할 이미지 경로
+      .resize({ width: 600 }) // 비율을 유지하며 가로 크기 줄이기
+      .withMetadata()	// 이미지의 exif데이터 유지
+      .toBuffer((err, buffer) => {
+        if (err) throw err;
+        // 압축된 파일 새로 저장(덮어씌우기)
+        fs.writeFile(req.file.path, buffer, (err) => {
+          if (err) throw err;
+        });
+      });
+  } catch (err) {
+    console.log(err);
+  }
+
   if(req.file){
-    const filePath = `http://13.215.32.109/business/upload/` + req.file.filename;
+    const filePath = `${server}/business/upload/` + req.file.filename;
     console.log(req.file);
     res.send(filePath);
   }
