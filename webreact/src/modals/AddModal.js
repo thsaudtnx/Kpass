@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { insertBusinessAsync } from "../modules/business";
 
+const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
+
 const ModalWrapper = styled.div`
   div.modal-header {
     display : flex;
@@ -226,7 +228,7 @@ const AddModal = ({addModal, setAddModal}) => {
             </div>
             <GooglePlacesAutocomplete
               className="modal-content-section-right"
-              apiKey="AIzaSyCbw2mv0aLtttdNVl2hmkeZYVTo7nCHTZY"
+              apiKey={apiKey}
               apiOptions={{ language: 'en', region: 'my' }}
               selectProps={{
                 defaultInputValue : newData.address,

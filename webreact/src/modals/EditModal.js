@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { editBusinessAsync } from "../modules/business";
 
-const apiKey = process.env.REACT_APP_API_KEY;
+const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
 
 const ModalWrapper = styled.div`
   div.modal-header {
