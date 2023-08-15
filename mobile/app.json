@@ -17,14 +17,14 @@
     "ios": {
       "supportsTablet": true,
       "config": {
-        "googleMapsApiKey": "AIzaSyDrGXx7xRTChSkb3q1NwT6oHkt-4uukBqA"
+        "googleMapsApiKey": "AIzaSyBVS9VQGZrSC6ajvym8eQea2qL-TUaWTjY"
       },
       "bundleIdentifier": "com.gg1985.kpass"
     },
     "android": {
       "config": {
         "googleMaps" : {
-          "apiKey" : "AIzaSyDrGXx7xRTChSkb3q1NwT6oHkt-4uukBqA"
+          "apiKey" : "AIzaSyBVS9VQGZrSC6ajvym8eQea2qL-TUaWTjY"
         }
       },
       "adaptiveIcon": {
